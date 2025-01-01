@@ -66,6 +66,7 @@ export function Layout({ children }: LayoutProps) {
                 </Link>
               </nav>
             </div>
+            {/*
             <a
               href="https://github.com/Feareis/cantina-dashboard"
               target="_blank"
@@ -75,6 +76,8 @@ export function Layout({ children }: LayoutProps) {
             >
               <Github size={24} />
             </a>
+            */}
+
           </div>
         </div>
       </header>

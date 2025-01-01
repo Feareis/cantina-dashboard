@@ -44,6 +44,26 @@ const Calculator: React.FC = () => {
     setQuantities({ salade: 0, risotto: 0, plateau: 0, montara: 0 });
   };
 
+  const applyQuota = () => {
+    setQuantities((prev) => ({
+      ...prev,
+      risotto: (prev.risotto || 0) + 200,
+      plateau: (prev.plateau || 0) + 200,
+    }));
+  };
+
+  const applyQuotaPlus = () => {
+    setQuantities((prev) => ({
+      ...prev,
+      plateau: (prev.plateau || 0) + 400,
+    }));
+  };
+
+  const applyQuotaFull = () => {
+    applyQuota();
+    applyQuotaPlus();
+  };
+
   useEffect(() => {
     const poisson =
       quantities.salade * 2 +
@@ -66,13 +86,22 @@ const Calculator: React.FC = () => {
       </h2>
 
       <div className="grid grid-cols-5 gap-4 mt-5 mb-10 w-full px-8">
-        <button className="flex items-center justify-center bg-green-500 text-gray-700 font-medium py-2 rounded hover:bg-green-600 transform transition duration-250 hover:scale-105">
+        <button
+          onClick={applyQuota}
+          className="flex items-center justify-center bg-green-500 text-gray-700 font-medium py-2 rounded hover:bg-green-600 transform transition duration-250 hover:scale-105"
+        >
           <CheckCircle className="mr-2" /> Quota
         </button>
-        <button className="flex items-center justify-center bg-yellow-500 text-gray-700 font-medium py-2 rounded hover:bg-yellow-600 transform transition duration-250 hover:scale-105">
+        <button
+          onClick={applyQuotaPlus}
+          className="flex items-center justify-center bg-yellow-500 text-gray-700 font-medium py-2 rounded hover:bg-yellow-600 transform transition duration-250 hover:scale-105"
+        >
           <PlusCircle className="mr-2" /> Quota+
         </button>
-        <button className="flex items-center justify-center bg-orange-500 text-gray-700 font-medium py-2 rounded hover:bg-orange-600 transform transition duration-250 hover:scale-105">
+        <button
+          onClick={applyQuotaFull}
+          className="flex items-center justify-center bg-orange-500 text-gray-700 font-medium py-2 rounded hover:bg-orange-600 transform transition duration-250 hover:scale-105"
+        >
           <ShieldCheck className="mr-2" /> Quota full
         </button>
         <div></div>
@@ -86,19 +115,19 @@ const Calculator: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full px-8">
         {items.map((item) => (
-            <div key={item.name} className="transform transition duration-200 hover:scale-105">
-              <ProductCard
-                key={item.name}
-                name={item.name}
-                image={item.image}
-                quantity={quantities[item.name.toLowerCase() as keyof typeof quantities] || 0}
-                increments={item.increments}
-                decrements={item.decrements}
-                onIncrement={(value) => increment(item.name.toLowerCase(), value)}
-                onDecrement={(value) => decrement(item.name.toLowerCase(), value)}
-                onInputChange={(e) => handleInputChange(e, item.name.toLowerCase())}
-              />
-            </div>
+          <div key={item.name} className="transform transition duration-200 hover:scale-105">
+            <ProductCard
+              key={item.name}
+              name={item.name}
+              image={item.image}
+              quantity={quantities[item.name.toLowerCase() as keyof typeof quantities] || 0}
+              increments={item.increments}
+              decrements={item.decrements}
+              onIncrement={(value) => increment(item.name.toLowerCase(), value)}
+              onDecrement={(value) => decrement(item.name.toLowerCase(), value)}
+              onInputChange={(e) => handleInputChange(e, item.name.toLowerCase())}
+            />
+          </div>
         ))}
       </div>
 
