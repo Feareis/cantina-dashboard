@@ -1,18 +1,19 @@
-﻿# MBX Community Hub
+﻿# Dashboard La Cantina
 
-Welcome to the **MBX Community Hub** project! 🎉  
-This project is destined for the player community of the Minecraft server [Minebox](https://minebox.co/).
+Welcome to the **Dashboard Cantina** project! 🎉  
+This project is destined for the player community of the GTA5 server [Redstart RP](https://site.redstartrp.fr).
 It provides tailored information and offers various gameplay-related features to meet the specific needs of players.
 
-**Website** : https://mbxmunity.netlify.app/
+**Website** : ???
 
 ---
 
 ## 🚀 Main Features
 
--   Image customization system to share job levels.
--   Interactive map (Coming Soon)
--   Set combination system (Armor, rings, etc.) (Coming Soon)
+-   Dashboard : A visual overview of the current week
+-   Calculateur : Calculate how many resources you need
+-   Vente Exportateur : Enter an export sale 
+-   Vente Client : Enter a customer sale
 
 ---
 
