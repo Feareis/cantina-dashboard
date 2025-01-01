@@ -2,7 +2,6 @@
 
 Welcome to the **Dashboard Cantina** project! 🎉  
 This project is destined for the player community of the GTA5 server [Redstart RP](https://site.redstartrp.fr).
-It provides tailored information and offers various gameplay-related features to meet the specific needs of players.
 
 **Website** : ???
 
