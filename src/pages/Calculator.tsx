@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { CheckCircle, PlusCircle, ShieldCheck, RefreshCw, Fish, Leaf } from "lucide-react";
+import { CheckCircle, PlusCircle, ShieldCheck, RefreshCw } from "lucide-react";
 import ProductCard from "../components/ProductCard";
-import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo } from "../assets/products/indexProducts";
+import MaterialCard from "../components/MaterialCard";
+import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo, Poisson, Epices } from "../assets/products/indexProducts";
 
 const items = [
   { name: "Salade", image: SaladeCayo, increments: [50, 200], decrements: [200, 50] },
@@ -59,7 +60,7 @@ const Calculator: React.FC = () => {
   }, [quantities]);
 
   return (
-    <div className="flex flex-col items-center py-8 text-gray-900">
+    <div className="flex flex-col items-center py-8 text-gray-900 h-screen overflow-y-auto custom-scrollbar">
       <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
         Calculateur de Matières Premières
       </h2>
@@ -101,19 +102,15 @@ const Calculator: React.FC = () => {
         ))}
       </div>
 
-      <div className="w-3/4 items-center p-6 mt-10">
-        <h3 className="text-3xl font-bold text-center bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-10">Total</h3>
-        <div className="text-2xl flex justify-between items-center p-4 bg-blue-100 rounded-md mb-2">
-          <span className="flex items-center font-medium text-gray-700">
-            <Fish className="mr-2 text-blue-500" /> Poisson
-          </span>
-          <span className="font-bold text-blue-600">{total.poisson}</span>
-        </div>
-        <div className="text-2xl flex justify-between items-center p-4 bg-green-100 rounded-md">
-          <span className="flex items-center font-medium text-gray-700">
-            <Leaf className="mr-2 text-green-500" /> Epices
-          </span>
-          <span className="font-bold text-green-600">{total.epices}</span>
+      <div className="w-full border-t border-gray-500 mt-10"></div>
+
+      <div className="w-3/4 items-center p-6">
+        <h3 className="text-3xl font-bold text-center bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent">Total</h3>
+        <div className="grid grid-cols-4 gap-6 w-full px-8 mt-5">
+          <div></div>
+          <MaterialCard name="Poisson" image={Poisson} total={total.poisson} textColor="text-blue-600" bgColor="bg-blue-200" />
+          <MaterialCard name="Epices" image={Epices} total={total.epices} textColor="text-green-600" bgColor="bg-green-200" />
+          <div></div>
         </div>
       </div>
     </div>

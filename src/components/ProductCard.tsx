@@ -5,7 +5,7 @@ interface ProductCardProps {
   image: string;
   quantity: number;
   increments: number[]; // Tableau d'incréments, ex : [1, 10]
-  decrements: number[]; // Tableau de décréments, ex : [1, 10]
+  decrements: number[]; // Tableau de décréments, ex : [10, 1]
   onIncrement: (value: number) => void;
   onDecrement: (value: number) => void;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
