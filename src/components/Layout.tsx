@@ -82,18 +82,7 @@ export function Layout({ children }: LayoutProps) {
       </main>
       <footer className="border-t border-gray-700 mt-16">
         <div className="container mx-auto px-4 py-6 text-center text-gray-400">
-          <p>Made with ❤️</p>
-          <p className="text-xs mt-2">
-            If you encounter any issues, go{' '}
-            <a
-              className="font-bold text-blue-400 hover:underline"
-              href="https://github.com/Feareis/cantina-dashboard/issues"
-              target="_blank"
-            >
-              here
-            </a>{' '}
-            to report them.
-          </p>
+          <p>Made with ❤️ by Feareis </p>
         </div>
       </footer>
     </div>

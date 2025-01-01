@@ -1,7 +1,123 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import { CheckCircle, PlusCircle, ShieldCheck, RefreshCw, Fish, Leaf } from "lucide-react";
+import ProductCard from "../components/ProductCard";
+import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo } from "../assets/products/indexProducts";
+
+const items = [
+  { name: "Salade", image: SaladeCayo, increments: [50, 200], decrements: [200, 50] },
+  { name: "Risotto", image: RisottoCayo, increments: [10, 50], decrements: [50, 10] },
+  { name: "Plateau", image: PlateauCayo, increments: [10, 50], decrements: [50, 10] },
+  { name: "Montara", image: MontaraCayo, increments: [10, 50], decrements: [50, 10] },
+];
 
 const Calculator: React.FC = () => {
-  return <div className="text-center text-xl font-bold">Calculator Page</div>;
+  const [quantities, setQuantities] = useState({
+    salade: 0,
+    risotto: 0,
+    plateau: 0,
+    montara: 0,
+  });
+
+  const [total, setTotal] = useState({
+    poisson: 0,
+    epices: 0,
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
+    const value = parseInt(e.target.value);
+    setQuantities((prev) => ({ ...prev, [key]: isNaN(value) ? 0 : value }));
+  };
+
+  const increment = (key: string, value: number) => {
+    setQuantities((prev) => ({ ...prev, [key]: (prev[key as keyof typeof quantities] || 0) + value }));
+  };
+
+  const decrement = (key: string, value: number) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [key]: Math.max((prev[key as keyof typeof quantities] || 0) - value, 0),
+    }));
+  };
+
+  const resetAll = () => {
+    setQuantities({ salade: 0, risotto: 0, plateau: 0, montara: 0 });
+  };
+
+  useEffect(() => {
+    const poisson =
+      quantities.salade * 2 +
+      quantities.risotto * 5 +
+      quantities.plateau * 10 +
+      quantities.montara * 0;
+    const epices =
+      quantities.salade * 2 +
+      quantities.risotto * 5 +
+      quantities.plateau * 10 +
+      quantities.montara * 5;
+
+    setTotal({ poisson, epices });
+  }, [quantities]);
+
+  return (
+    <div className="flex flex-col items-center py-8 text-gray-900">
+      <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
+        Calculateur de Matières Premières
+      </h2>
+
+      <div className="grid grid-cols-5 gap-4 mt-5 mb-10 w-full px-8">
+        <button className="flex items-center justify-center bg-green-500 text-gray-700 font-medium py-2 rounded hover:bg-green-600 transform transition duration-250 hover:scale-105">
+          <CheckCircle className="mr-2" /> Quota
+        </button>
+        <button className="flex items-center justify-center bg-yellow-500 text-gray-700 font-medium py-2 rounded hover:bg-yellow-600 transform transition duration-250 hover:scale-105">
+          <PlusCircle className="mr-2" /> Quota+
+        </button>
+        <button className="flex items-center justify-center bg-orange-500 text-gray-700 font-medium py-2 rounded hover:bg-orange-600 transform transition duration-250 hover:scale-105">
+          <ShieldCheck className="mr-2" /> Quota full
+        </button>
+        <div></div>
+        <button
+          className="flex items-center justify-center bg-red-500 text-white font-medium py-2 rounded hover:bg-red-600 transform transition duration-250 hover:scale-105"
+          onClick={resetAll}
+        >
+          <RefreshCw className="mr-2" /> Reset all
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full px-8">
+        {items.map((item) => (
+            <div key={item.name} className="transform transition duration-250 hover:scale-105">
+              <ProductCard
+                key={item.name}
+                name={item.name}
+                image={item.image}
+                quantity={quantities[item.name.toLowerCase() as keyof typeof quantities] || 0}
+                increments={item.increments}
+                decrements={item.decrements}
+                onIncrement={(value) => increment(item.name.toLowerCase(), value)}
+                onDecrement={(value) => decrement(item.name.toLowerCase(), value)}
+                onInputChange={(e) => handleInputChange(e, item.name.toLowerCase())}
+              />
+            </div>
+        ))}
+      </div>
+
+      <div className="w-3/4 items-center p-6 mt-10">
+        <h3 className="text-3xl font-bold text-center bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-10">Total</h3>
+        <div className="text-2xl flex justify-between items-center p-4 bg-blue-100 rounded-md mb-2">
+          <span className="flex items-center font-medium text-gray-700">
+            <Fish className="mr-2 text-blue-500" /> Poisson
+          </span>
+          <span className="font-bold text-blue-600">{total.poisson}</span>
+        </div>
+        <div className="text-2xl flex justify-between items-center p-4 bg-green-100 rounded-md">
+          <span className="flex items-center font-medium text-gray-700">
+            <Leaf className="mr-2 text-green-500" /> Epices
+          </span>
+          <span className="font-bold text-green-600">{total.epices}</span>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Calculator;
