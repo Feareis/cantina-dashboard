@@ -7,14 +7,16 @@ import ExportSales from './pages/ExportSales';
 
 function App() {
   return (
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/calculator" element={<Calculator />} />
-          <Route path="/export-sales" element={<ExportSales />} />
-          <Route path="/clients-sales" element={<ClientsSales />} />
-        </Routes>
-      </Layout>
+      <Router>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/calculator" element={<Calculator />} />
+              <Route path="/export-sales" element={<ExportSales />} />
+              <Route path="/clients-sales" element={<ClientsSales />} />
+            </Routes>
+          </Layout>
+      </Router>
   );
 }
 
