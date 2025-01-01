@@ -66,7 +66,7 @@ export function Layout({ children }: LayoutProps) {
               </nav>
             </div>
             <a
-              href="https://github.com/your-github-repo"
+              href="https://github.com/Feareis/cantina-dashboard"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors"
@@ -87,7 +87,7 @@ export function Layout({ children }: LayoutProps) {
             If you encounter any issues, go{' '}
             <a
               className="font-bold text-blue-400 hover:underline"
-              href="https://github.com/your-github-repo/issues"
+              href="https://github.com/Feareis/cantina-dashboard/issues"
               target="_blank"
             >
               here
