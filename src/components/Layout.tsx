@@ -11,7 +11,8 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-      <header className="border-b border-gray-700">
+      {/* Navbar fixe */}
+      <header className="fixed top-0 left-0 w-full bg-gradient-to-br from-gray-900 to-gray-800 text-white border-b border-gray-700 z-50">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
@@ -77,10 +78,14 @@ export function Layout({ children }: LayoutProps) {
           </div>
         </div>
       </header>
-      <main className="flex-grow container mx-auto px-4 py-6">
+
+      {/* Contenu principal avec une marge pour compenser la hauteur de la navbar */}
+      <main className="flex-grow container mx-auto px-4 py-6 mt-24">
         {children}
       </main>
-      <footer className="border-t border-gray-700 mt-16">
+
+      {/* Footer */}
+      <footer className="border-t border-gray-700">
         <div className="container mx-auto px-4 py-6 text-center text-gray-400">
           <p>Made with ❤️ by Feareis </p>
         </div>

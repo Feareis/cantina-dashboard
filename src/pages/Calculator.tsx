@@ -60,7 +60,7 @@ const Calculator: React.FC = () => {
   }, [quantities]);
 
   return (
-    <div className="flex flex-col items-center py-8 text-gray-900 h-screen overflow-y-auto custom-scrollbar">
+    <div className="flex flex-col items-center py-8 text-gray-900">
       <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
         Calculateur de Matières Premières
       </h2>
@@ -86,7 +86,7 @@ const Calculator: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full px-8">
         {items.map((item) => (
-            <div key={item.name} className="transform transition duration-250 hover:scale-105">
+            <div key={item.name} className="transform transition duration-200 hover:scale-105">
               <ProductCard
                 key={item.name}
                 name={item.name}
