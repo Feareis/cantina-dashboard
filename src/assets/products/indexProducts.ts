@@ -4,3 +4,8 @@ export { default as PlateauCayo } from "./plateau_cayo.png";
 export { default as MontaraCayo } from "./montara_cayo.png";
 export { default as Poisson } from "./raw-poisson.png";
 export { default as Epices } from "./raw-epices.png";
+export { default as JusDeCerise } from "./jus_de_cerise.png";
+export { default as Biere } from "./biere.png";
+export { default as BierePils } from "./biere_pils.png";
+export { default as BiereRed } from "./biere_red.png";
+export { default as BiereTriple } from "./biere_triple.png";

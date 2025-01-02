@@ -5,7 +5,9 @@ import ProductCard from "../components/ProductCard";
 import CustomTabs from "../components/CustomTabs";
 import { BadgeDollarSign, BadgeCent, RefreshCw, Percent } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
-import { RisottoCayo, PlateauCayo, MontaraCayo } from "../assets/products/indexProducts";
+import { RisottoCayo, PlateauCayo, MontaraCayo, JusDeCerise, Biere, BierePils, BiereRed, BiereTriple } from "../assets/products/indexProducts";
+import ProductsPrice from "../data/ProductsPrice";
+import Discounts from "../data/Discounts";
 
 const items = [
   {
@@ -31,63 +33,63 @@ const items = [
   },
   {
     name: "Jus de cerise",
-    image: "Jus de cerise",
+    image: JusDeCerise,
     increments: [5],
     decrements: [5],
     category: "Boisson",
   },
   {
-    name: "Bières Simple",
-    image: MontaraCayo,
+    name: "Bières",
+    image: Biere,
     increments: [5],
     decrements: [5],
     category: "Alcool",
   },
   {
     name: "Bières Pils",
-    image: "Bières Pils",
+    image: BierePils,
     increments: [5],
     decrements: [5],
     category: "Alcool",
   },
   {
     name: "Bières Red",
-    image: "Bières Red",
+    image: BiereRed,
     increments: [5],
     decrements: [5],
     category: "Alcool",
   },
   {
     name: "Bières Triple",
-    image: "Bières Triple",
+    image: BiereTriple,
     increments: [5],
     decrements: [5],
     category: "Alcool",
   },
   {
-    name: "Bières de test",
-    image: MontaraCayo,
-    increments: [5],
-    decrements: [5],
-    category: "Alcool",
-  },
-  {
-    name: "Menu 1",
-    image: "Menu 1",
+    name: "Menu Xpress",
+    image: "Menu",
     increments: [2],
     decrements: [2],
     category: "Menu",
   },
   {
-    name: "Menu 2",
-    image: "Menu 2",
+    name: "Menu Survivaliste",
+    image: "Menu",
     increments: [2],
     decrements: [2],
     category: "Menu",
   },
   {
-    name: "Menu 3",
-    image: "Menu 3",
+    name: "Menu Paradise",
+    image: "Menu",
+    increments: [2],
+    decrements: [2],
+    category: "Menu",
+  },
+  {
+    name: "Menu El Patron's",
+    image: "Menu",
     increments: [2],
     decrements: [2],
     category: "Menu",
@@ -98,48 +100,77 @@ const items = [
 const ClientsSales: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("Nourriture");
   const [selectedSale, setSelectedSale] = useState<'propre' | 'sale'>('propre');
-  const [expertise, setExpertise] = useState<number | "">("");
-  const [nbSalade, setNbSalade] = useState<number | "">("");
+  const [cart, setCart] = useState<{ product: string; quantity: number }[]>([]);
+  const [selectedDiscount, setSelectedDiscount] = useState<string | null>(null);
+  const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
 
   const handleSaleSelection = (type: 'propre' | 'sale') => {
     setSelectedSale(type);
   };
 
-  const handleSelect = (selected: string) => {
-      console.log('Selected:', selected);
+  const handleDiscountSelect = (selected: string) => {
+    setSelectedDiscount(selected);
+  };
+
+  const resetAll = () => {
+      setQuantities({ salade: 0, risotto: 0, plateau: 0, montara: 0 });
   };
 
   const formatCurrency = (value: number): string => {
     return `$ ${value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
   };
 
+  // Calculate total for employee
   const calculateEmployeesTotal = (): number => {
-    if (selectedSale === 'propre') {
-      if (!expertise || !nbSalade) {
-        return 0;
-      }
-      return 36 + 36 * ((Number(expertise) || 0) * 0.003) * (Number(nbSalade) || 0);
-    } else if (selectedSale === 'sale') {
-      return (Number(nbSalade) || 0) * 35;
-    }
-    return 0;
+    if (selectedSale === 'propre') return 0;
+
+    return Object.keys(quantities).reduce((total, product) => {
+      const normalizedProduct = product.charAt(0).toUpperCase() + product.slice(1);
+      const productPrice = ProductsPrice[normalizedProduct]?.sale || 0;
+      return total + (quantities[product] || 0) * productPrice;
+    }, 0);
   };
 
   const calculateCompanyTotal = (): number => {
-    const employeesTotal = calculateEmployeesTotal();
-    if (selectedSale === 'propre') {
-      return employeesTotal * 0.3;
-    } else if (selectedSale === 'sale') {
-      return employeesTotal * 0.1;
+    if (selectedSale === 'sale') {
+      return calculateEmployeesTotal() * 0.15;
     }
-    return 0;
+
+    const totalPropre = Object.keys(quantities).reduce((total, product) => {
+      const normalizedProduct = product.charAt(0).toUpperCase() + product.slice(1);
+      const productPrice = ProductsPrice[normalizedProduct]?.propre || 0;
+      return total + (quantities[product] || 0) * productPrice;
+    }, 0);
+
+    if (selectedDiscount && Discounts[selectedDiscount]) {
+      return totalPropre * (1 - Discounts[selectedDiscount]);
+    }
+
+    return totalPropre;
   };
 
   const employeesTotal = calculateEmployeesTotal();
   const companyTotal = calculateCompanyTotal();
 
+  // Add a product to the cart
+  const addProductToCart = (product: string, quantity: number) => {
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.product === product);
+      if (existingProduct) {
+        // Met à jour la quantité du produit existant
+        return prevCart.map((item) =>
+          item.product === product
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      }
+      // Ajoute un nouveau produit au panier
+      return [...prevCart, { product, quantity }];
+    });
+  };
+
   const handleButtonClick = () => {
-    if (employeesTotal > 0 && companyTotal > 0) {
+    if (employeesTotal >= 0 && companyTotal > 0) {
       toast.success(
             <div className="flex flex-col">
               <div className="flex w-full mb-1">
@@ -192,26 +223,38 @@ const ClientsSales: React.FC = () => {
 
   const currentDate = new Date().toLocaleDateString('fr-FR'); // Format DD/MM/YYYY
 
-  const [quantities, setQuantities] = useState({
-    risotto: 0,
-    plateau: 0,
-    montara: 0,
-  });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
-    const value = parseInt(e.target.value);
-    setQuantities((prev) => ({ ...prev, [key]: isNaN(value) ? 0 : value }));
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, product: string) => {
+    const value = parseInt(e.target.value, 10);
+    setQuantities((prev) => {
+      const updatedQuantities = {
+        ...prev,
+        [product]: isNaN(value) ? 0 : value,
+      };
+      console.log("Updated Quantities (Input Change):", updatedQuantities); // Debugging
+      return updatedQuantities;
+    });
   };
 
-  const increment = (key: string, value: number) => {
-    setQuantities((prev) => ({ ...prev, [key]: (prev[key as keyof typeof quantities] || 0) + value }));
+  const increment = (product: string, value: number) => {
+    setQuantities((prev) => {
+      const updatedQuantities = {
+        ...prev,
+        [product]: (prev[product] || 0) + value,
+      };
+      console.log("Updated Quantities (Increment):", updatedQuantities); // Debugging
+      return updatedQuantities;
+    });
   };
 
-  const decrement = (key: string, value: number) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [key]: Math.max((prev[key as keyof typeof quantities] || 0) - value, 0),
-    }));
+  const decrement = (product: string, value: number) => {
+    setQuantities((prev) => {
+      const updatedQuantities = {
+        ...prev,
+        [product]: Math.max((prev[product] || 0) - value, 0), // Prevents negative quantities
+      };
+      console.log("Updated Quantities (Decrement):", updatedQuantities); // Debugging
+      return updatedQuantities;
+    });
   };
 
   return (
@@ -259,14 +302,14 @@ const ClientsSales: React.FC = () => {
             icon={BadgeCent}
           />
           <CustomDropdown
-            options={['Milice', 'Brasserie Cayo', 'Tabac Cayo', 'Repairico']}
+            options={Object.keys(Discounts)}
             className="w-full bg-orange-500 hover:bg-orange-500 text-white"
-            onSelect={handleSaleSelection}
+            onSelect={handleDiscountSelect}
             placeholder="Remise ?"
             icon={Percent}
           />
           <div></div>
-          <CustomButton label="Reset all" onClick={handleSelect} className="bg-red-500 text-white hover:bg-red-600" icon={RefreshCw} />
+          <CustomButton label="Reset all" onClick={resetAll} className="bg-red-500 text-white hover:bg-red-600" icon={RefreshCw} />
         </div>
 
         {/* Bloc principal */}
@@ -305,7 +348,11 @@ const ClientsSales: React.FC = () => {
               <div className="flex flex-col justify-center items-center gap-8">
                 <div className="w-full">
                   <p className="block text-center text-xl font-bold mb-1">Total Employé :</p>
-                  <p className="text-center text-base text-gray-400 mt-1">- Text -</p>
+                  <p className="text-center text-base text-gray-400 mt-1">
+                    {selectedSale === 'propre'
+                      ? ""
+                      : "Recuperer tout le sale pour vous"}
+                  </p>
                   <div
                         className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${
                         selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
@@ -316,7 +363,11 @@ const ClientsSales: React.FC = () => {
                 </div>
                 <div className="w-full">
                   <p className="block text-center text-xl font-bold mb-1">Total Entreprise :</p>
-                  <p className="text-center text-base text-gray-400 mt-1">- Text -</p>
+                  <p className="text-center text-base text-gray-400 mt-1">
+                    {selectedSale === 'propre'
+                      ? "Faites une facture avec F6"
+                      : "Taxe à donner en fin de semaine"}
+                  </p>
                   <div
                         className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${
                         selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"

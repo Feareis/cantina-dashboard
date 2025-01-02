@@ -66,7 +66,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       {/* Dropdown menu */}
       {isOpen && (
         <div
-          className="absolute top-full left-0 mt-2 w-48 bg-gray-900 shadow-lg rounded-lg"
+          className="absolute items-center w-full top-full mt-2 w-48 bg-gray-900 shadow-lg rounded-lg"
           style={{
             zIndex: 50, // S'assurer que le dropdown est au-dessus des autres éléments
             backgroundColor: 'rgba(33, 33, 33, 1)', // Fond opaque
@@ -77,7 +77,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
               <li key={item}>
                 <button
                   onClick={() => handleSelect(item)}
-                  className="block w-full text-left px-4 py-2 hover:bg-indigo-500 hover:text-white"
+                  className="block w-full text-center px-4 py-2 hover:bg-indigo-500 hover:text-white"
                 >
                   {item}
                 </button>
