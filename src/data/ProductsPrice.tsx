@@ -1,6 +1,6 @@
 // This file contains all product prices to be used in the ClientsSales component
 
-const ProductPrices = {
+const ProductPrices: { [key: string]: { propre: number; sale: number } } = {
   "Salade": {
     propre: 200,
     sale: 240,
