@@ -42,7 +42,11 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   }, []);
 
   return (
-    <div ref={dropdownRef} className={`relative inline-block text-left ${className || ''}`}>
+    <div
+      ref={dropdownRef}
+      className={`relative inline-block text-left ${className || ''}`}
+      style={{ zIndex: 50 }} // Assurez que ce composant a un z-index élevé
+    >
       {/* Dropdown button */}
       <div>
         <button
@@ -61,7 +65,13 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 
       {/* Dropdown menu */}
       {isOpen && (
-        <div className="absolute z-10 mt-2 w-full rounded-lg bg-gray-800 shadow-lg">
+        <div
+          className="absolute top-full left-0 mt-2 w-48 bg-gray-900 shadow-lg rounded-lg"
+          style={{
+            zIndex: 50, // S'assurer que le dropdown est au-dessus des autres éléments
+            backgroundColor: 'rgba(33, 33, 33, 1)', // Fond opaque
+          }}
+        >
           <ul className="py-1 text-sm text-white">
             {options.map((item) => (
               <li key={item}>

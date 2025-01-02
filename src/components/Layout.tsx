@@ -64,17 +64,6 @@ export function Layout({ children }: LayoutProps) {
                   <Users size={18} />
                   Vente Clients
                 </Link>
-                <Link
-                              to="/test"
-                              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                              location.pathname === '/test'
-                                ? 'bg-blue-500/20 text-blue-400'
-                                : 'text-gray-400 hover:text-white hover:bg-white/5'
-                              }`}
-                            >
-                              <TestTubeDiagonal size={18} />
-                                Test
-                            </Link>
               </nav>
             </div>
             <Link

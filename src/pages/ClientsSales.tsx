@@ -71,6 +71,28 @@ const items = [
     decrements: [5],
     category: "Alcool",
   },
+  {
+    name: "Menu 1",
+    image: MontaraCayo,
+    increments: [2],
+    decrements: [2],
+    category: "Menu",
+  },
+  {
+    name: "Menu 2",
+    image: MontaraCayo,
+    increments: [2],
+    decrements: [2],
+    category: "Menu",
+  },
+  {
+    name: "Menu 3",
+    image: MontaraCayo,
+    increments: [2],
+    decrements: [2],
+    category: "Menu",
+  },
+
 ];
 
 const ClientsSales: React.FC = () => {
@@ -176,11 +198,6 @@ const ClientsSales: React.FC = () => {
     montara: 0,
   });
 
-  const [total, setTotal] = useState({
-    poisson: 0,
-    epices: 0,
-  });
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
     const value = parseInt(e.target.value);
     setQuantities((prev) => ({ ...prev, [key]: isNaN(value) ? 0 : value }));
@@ -242,7 +259,7 @@ const ClientsSales: React.FC = () => {
           />
           <CustomDropdown
             options={['Milice', 'Brasserie Cayo', 'Tabac Cayo', 'Repairico']}
-            className="w-full bg-orange-500/50 hover:bg-orange-500/50 text-white"
+            className="w-full bg-orange-500 hover:bg-orange-500 text-white"
             onSelect={handleSaleSelection}
             placeholder="Remise ?"
             icon={Percent}
@@ -257,13 +274,13 @@ const ClientsSales: React.FC = () => {
           <div className="flex-1 flex flex-col p-6 rounded-lg">
             {/* Onglets */}
               <CustomTabs
-              tabs={["Nourriture", "Boisson", "Alcool", "Autre"]}
+              tabs={["Nourriture", "Boisson", "Alcool", "Menu"]}
               activeTab={activeTab}
               onTabChange={(tab) => setActiveTab(tab)}
             />
 
             {/* Produits */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+            <div className="text-gray-700 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
               {items
                   .filter((item) => item.category === activeTab)
                   .map((item, index) => (
@@ -271,6 +288,7 @@ const ClientsSales: React.FC = () => {
                           key={index}
                           name={item.name}
                           image={item.image}
+                          quantity={quantities[item.name.toLowerCase() as keyof typeof quantities] || 0}
                           increments={item.increments}
                           decrements={item.decrements}
                         />
