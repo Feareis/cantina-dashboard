@@ -3,7 +3,7 @@ import CustomButton from "../components/CustomButton";
 import CustomDropdown from '../components/CustomDropdown';
 import ProductCard from "../components/ProductCard";
 import CustomTabs from "../components/CustomTabs";
-import { BadgeDollarSign, BadgeCent, ArrowUpNarrowWide, Salad, CheckCircle, PlusCircle, ShieldCheck, RefreshCw, Percent } from "lucide-react";
+import { BadgeDollarSign, BadgeCent, Salad, CheckCircle, PlusCircle, ShieldCheck, RefreshCw, Percent } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
 import { RisottoCayo, PlateauCayo, MontaraCayo } from "../assets/products/indexProducts";
 
@@ -73,21 +73,21 @@ const items = [
   },
   {
     name: "Menu 1",
-    image: MontaraCayo,
+    image: "Menu 1",
     increments: [2],
     decrements: [2],
     category: "Menu",
   },
   {
     name: "Menu 2",
-    image: MontaraCayo,
+    image: "Menu 2",
     increments: [2],
     decrements: [2],
     category: "Menu",
   },
   {
     name: "Menu 3",
-    image: MontaraCayo,
+    image: "Menu 3",
     increments: [2],
     decrements: [2],
     category: "Menu",
@@ -227,7 +227,7 @@ const ClientsSales: React.FC = () => {
       <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent">
         Vente Client
       </h2>
-      <div className="flex flex-col w-full justify-between p-6 gap-6 text-white">
+      <div className="flex flex-col w-full justify-between p-4 gap-6 text-white">
 
         {/* Date et Nom de l'employé */}
         <div className="text-2xl font-medium text-gray-400">
@@ -269,12 +269,12 @@ const ClientsSales: React.FC = () => {
         </div>
 
         {/* Bloc principal */}
-        <div className="flex w-full gap-4 px-8">
+        <div className="flex w-full gap-4 px-4">
           {/* Conteneur principal des onglets et produits */}
           <div className="flex-1 flex flex-col p-6 rounded-lg">
             {/* Onglets */}
               <CustomTabs
-              tabs={["Nourriture", "Boisson", "Alcool", "Menu"]}
+              tabs={["Nourriture", "Boisson", "Alcool", "Menu", "Autre"]}
               activeTab={activeTab}
               onTabChange={(tab) => setActiveTab(tab)}
             />
