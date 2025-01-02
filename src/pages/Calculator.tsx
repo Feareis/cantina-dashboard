@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CheckCircle, PlusCircle, ShieldCheck, RefreshCw } from "lucide-react";
 import ProductCard from "../components/calculator/ProductCard";
 import MaterialCard from "../components/calculator/MaterialCard";
+import CustomButton from "../components/calculator/CustomButton";
 import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo, Poisson, Epices } from "../assets/products/indexProducts";
 
 const items = [
@@ -80,42 +81,22 @@ const Calculator: React.FC = () => {
   }, [quantities]);
 
   return (
-    <div className="flex flex-col items-center py-8 text-gray-900">
+    <div className="flex flex-col items-center py-3 text-gray-900">
       <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
         Calculateur de Matières Premières
       </h2>
 
       <div className="grid grid-cols-5 gap-4 mt-5 mb-10 w-full px-8">
-        <button
-          onClick={applyQuota}
-          className="flex items-center justify-center bg-green-500 text-gray-700 font-medium py-2 rounded hover:bg-green-600 transform transition duration-250 hover:scale-105"
-        >
-          <CheckCircle className="mr-2" /> Quota
-        </button>
-        <button
-          onClick={applyQuotaPlus}
-          className="flex items-center justify-center bg-yellow-500 text-gray-700 font-medium py-2 rounded hover:bg-yellow-600 transform transition duration-250 hover:scale-105"
-        >
-          <PlusCircle className="mr-2" /> Quota+
-        </button>
-        <button
-          onClick={applyQuotaFull}
-          className="flex items-center justify-center bg-orange-500 text-gray-700 font-medium py-2 rounded hover:bg-orange-600 transform transition duration-250 hover:scale-105"
-        >
-          <ShieldCheck className="mr-2" /> Quota Full
-        </button>
+        <CustomButton label="Quota" onClick={applyQuota} className="bg-green-500 text-gray-700 hover:bg-green-600" icon={CheckCircle} />
+        <CustomButton label="Quota+" onClick={applyQuotaPlus} className="bg-yellow-500 text-gray-700 hover:bg-yellow-600" icon={PlusCircle} />
+        <CustomButton label="Quota Full" onClick={applyQuotaFull} className="bg-orange-500 text-gray-700 hover:bg-orange-600" icon={ShieldCheck} />
         <div></div>
-        <button
-          className="flex items-center justify-center bg-red-500 text-white font-medium py-2 rounded hover:bg-red-600 transform transition duration-250 hover:scale-105"
-          onClick={resetAll}
-        >
-          <RefreshCw className="mr-2" /> Reset all
-        </button>
+        <CustomButton label="Reset all" onClick={resetAll} className="bg-red-500 text-white hover:bg-red-600" icon={RefreshCw} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full px-8">
         {items.map((item) => (
-          <div key={item.name} className="transform transition duration-200 hover:scale-105">
+          <div key={item.name}>
             <ProductCard
               key={item.name}
               name={item.name}
