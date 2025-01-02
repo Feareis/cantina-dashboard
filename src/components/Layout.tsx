@@ -66,6 +66,17 @@ export function Layout({ children }: LayoutProps) {
                 </Link>
               </nav>
             </div>
+            <Link
+              to="/admin-patron"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              location.pathname === '/admin-patron'
+                ? 'bg-blue-500/20 text-blue-400'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Users size={18} />
+                Patron
+            </Link>
             {/*
             <a
               href="https://github.com/Feareis/cantina-dashboard"
