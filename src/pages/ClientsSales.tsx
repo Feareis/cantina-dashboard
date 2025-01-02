@@ -100,7 +100,6 @@ const items = [
 const ClientsSales: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("Nourriture");
   const [selectedSale, setSelectedSale] = useState<'propre' | 'sale'>('propre');
-  const [cart, setCart] = useState<{ product: string; quantity: number }[]>([]);
   const [selectedDiscount, setSelectedDiscount] = useState<string | null>(null);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
 
@@ -152,23 +151,6 @@ const ClientsSales: React.FC = () => {
   const employeesTotal = calculateEmployeesTotal();
   const companyTotal = calculateCompanyTotal();
 
-  // Add a product to the cart
-  const addProductToCart = (product: string, quantity: number) => {
-    setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.product === product);
-      if (existingProduct) {
-        // Met à jour la quantité du produit existant
-        return prevCart.map((item) =>
-          item.product === product
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
-      // Ajoute un nouveau produit au panier
-      return [...prevCart, { product, quantity }];
-    });
-  };
-
   const handleButtonClick = () => {
     if (employeesTotal >= 0 && companyTotal > 0) {
       toast.success(
@@ -201,9 +183,7 @@ const ClientsSales: React.FC = () => {
             }
           );
 
-          // Reset inputs after successful toast
-          setExpertise("");
-          setNbSalade("");
+          resetAll();
     } else {
       toast.error(
         <div className="flex flex-col text-sm">
