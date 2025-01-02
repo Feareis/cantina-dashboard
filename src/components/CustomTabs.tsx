@@ -30,7 +30,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
       className={`flex flex-col w-full p-4 ${tabColors.backgroundColor} ${className}`}
     >
       <div className="flex border-b relative">
-        {tabs.map((tab, index) => (
+        {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => onTabChange(tab)}
