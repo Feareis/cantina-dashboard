@@ -3,7 +3,7 @@ import CustomButton from "../components/CustomButton";
 import CustomDropdown from '../components/CustomDropdown';
 import ProductCard from "../components/ProductCard";
 import CustomTabs from "../components/CustomTabs";
-import { BadgeDollarSign, BadgeCent, CheckCircle, RefreshCw, Percent } from "lucide-react";
+import { BadgeDollarSign, BadgeCent, RefreshCw, Percent } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
 import { RisottoCayo, PlateauCayo, MontaraCayo } from "../assets/products/indexProducts";
 
@@ -284,7 +284,7 @@ const ClientsSales: React.FC = () => {
             <div className="text-gray-700 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
               {items
                   .filter((item) => item.category === activeTab)
-                  .map((item, index) => (
+                  .map((item) => (
                         <ProductCard
                           key={item.name}
                           name={item.name}
