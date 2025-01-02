@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { SaladeCayo } from "../assets/products/indexProducts";
 import CustomButton from "../components/CustomButton";
 import { BadgeDollarSign, BadgeCent, ArrowUpNarrowWide, Salad } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
