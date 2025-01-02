@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CheckCircle, PlusCircle, ShieldCheck, RefreshCw } from "lucide-react";
-import ProductCard from "../components/ProductCard";
-import MaterialCard from "../components/MaterialCard";
+import ProductCard from "../components/calculator/ProductCard";
+import MaterialCard from "../components/calculator/MaterialCard";
 import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo, Poisson, Epices } from "../assets/products/indexProducts";
 
 const items = [
@@ -102,7 +102,7 @@ const Calculator: React.FC = () => {
           onClick={applyQuotaFull}
           className="flex items-center justify-center bg-orange-500 text-gray-700 font-medium py-2 rounded hover:bg-orange-600 transform transition duration-250 hover:scale-105"
         >
-          <ShieldCheck className="mr-2" /> Quota full
+          <ShieldCheck className="mr-2" /> Quota Full
         </button>
         <div></div>
         <button

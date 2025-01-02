@@ -88,7 +88,7 @@ export function Layout({ children }: LayoutProps) {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-700">
+      <footer className="bg-gradient-to-br from-gray-900 to-gray-800 border-t border-gray-700">
         <div className="container mx-auto px-4 py-6 text-center text-gray-400">
           <p>Made with ❤️ by Feareis </p>
         </div>
