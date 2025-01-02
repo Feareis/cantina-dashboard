@@ -1,7 +1,13 @@
 import React from 'react';
 
 const Dashboard: React.FC = () => {
-  return <div className="text-center text-xl font-bold">Dashboard Page</div>;
+  return (
+      <div className="flex flex-col items-center py-3 text-gray-900">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
+        Dashboard
+        </h2>
+      </div>
+  );
 };
 
 export default Dashboard;
