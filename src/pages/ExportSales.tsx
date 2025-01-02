@@ -186,20 +186,20 @@ const ExportSales: React.FC = () => {
         <div className="flex flex-col w-full md:w-1/2 bg-gray-800/70 p-6 rounded-lg shadow gap-6">
           <div className="flex flex-col justify-center items-center h-full gap-8">
             <div className="w-2/3">
-              <p className="block text-center text-lg font-bold mb-1">Total Employé :</p>
-              <p className="text-center text-sm text-gray-400 mt-1">Dans vos poches directement</p>
-              <div className={`text-center text-lg font-semibold px-4 py-2 rounded mt-5 ${selectedSale === 'propre' ? 'bg-green-600/50 text-white' : 'bg-red-500/50 text-white'}`}>
+              <p className="block text-center text-xl font-bold mb-1">Total Employé :</p>
+              <p className="text-center text-base text-gray-400 mt-1">- Dans vos poches directement -</p>
+              <div className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${selectedSale === 'propre' ? 'bg-green-600/50 text-white' : 'bg-red-500/50 text-white'}`}>
                 {formatCurrency(employeesTotal)}
               </div>
             </div>
             <div className="w-2/3">
-              <p className="block text-center text-lg font-bold mb-1">Total Entreprise :</p>
-              <p className="text-center text-sm text-gray-400 mt-1">
+              <p className="block text-center text-xl font-bold mb-1">Total Entreprise :</p>
+              <p className="text-center text-base text-gray-400 mt-1">
                 {selectedSale === 'propre'
-                  ? "Séparé de ce que vous gagnez, pas de taxe"
-                  : "Taxe à donner en fin de semaine"}
+                  ? "- Séparé de ce que vous gagnez, pas de taxe -"
+                  : "- Taxe à donner en fin de semaine -"}
               </p>
-              <div className={`text-center text-lg font-semibold px-4 py-2 rounded mt-5 ${selectedSale === 'propre' ? 'bg-green-600/50 text-white' : 'bg-red-500/50 text-white'}`}>
+              <div className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${selectedSale === 'propre' ? 'bg-green-600/50 text-white' : 'bg-red-500/50 text-white'}`}>
                 {formatCurrency(companyTotal)}
               </div>
             </div>
