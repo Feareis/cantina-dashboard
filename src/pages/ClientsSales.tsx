@@ -213,6 +213,7 @@ const ClientsSales: React.FC = () => {
       [key]: Math.max((prev[key as keyof typeof quantities] || 0) - value, 0),
     }));
   };
+
   return (
     <div className="flex flex-col items-center py-3 text-gray-900">
       <Toaster
@@ -285,12 +286,15 @@ const ClientsSales: React.FC = () => {
                   .filter((item) => item.category === activeTab)
                   .map((item, index) => (
                         <ProductCard
-                          key={index}
+                          key={item.name}
                           name={item.name}
                           image={item.image}
                           quantity={quantities[item.name.toLowerCase() as keyof typeof quantities] || 0}
                           increments={item.increments}
                           decrements={item.decrements}
+                          onIncrement={(value) => increment(item.name.toLowerCase(), value)}
+                          onDecrement={(value) => decrement(item.name.toLowerCase(), value)}
+                          onInputChange={(e) => handleInputChange(e, item.name.toLowerCase())}
                         />
                   ))}
               </div>
