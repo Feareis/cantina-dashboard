@@ -3,7 +3,7 @@ import CustomButton from "../components/CustomButton";
 import CustomDropdown from '../components/CustomDropdown';
 import ProductCard from "../components/ProductCard";
 import CustomTabs from "../components/CustomTabs";
-import { BadgeDollarSign, BadgeCent, Salad, CheckCircle, PlusCircle, ShieldCheck, RefreshCw, Percent } from "lucide-react";
+import { BadgeDollarSign, BadgeCent, CheckCircle, RefreshCw, Percent } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
 import { RisottoCayo, PlateauCayo, MontaraCayo } from "../assets/products/indexProducts";
 
