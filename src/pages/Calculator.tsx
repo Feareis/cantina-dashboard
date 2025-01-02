@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CheckCircle, PlusCircle, ShieldCheck, RefreshCw } from "lucide-react";
 import ProductCard from "../components/ProductCard";
-import MaterialCard from "../components/calculator/MaterialCard";
+import MaterialCard from "../components/MaterialCard";
 import CustomButton from "../components/CustomButton";
 import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo, Poisson, Epices } from "../assets/products/indexProducts";
 

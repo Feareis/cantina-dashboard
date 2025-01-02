@@ -28,7 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <img
         src={image}
         alt={name}
-        className="w-full h-full object-cover rounded-md mb-4"
+        className="w-4/6 h-full object-cover rounded-md mb-4"
       />
       <div className="w-full border-t border-gray-500 my-2"></div>
       <div className="flex items-center gap-2 px-4 py-2">
