@@ -39,59 +39,59 @@ const items = [
     category: "Boisson",
   },
   {
-    name: "Bières",
+    name: "Bière",
     image: Biere,
-    increments: [5],
-    decrements: [5],
+    increments: [1],
+    decrements: [1],
     category: "Alcool",
   },
   {
-    name: "Bières Pils",
+    name: "Bière Pils",
     image: BierePils,
-    increments: [5],
-    decrements: [5],
+    increments: [1],
+    decrements: [1],
     category: "Alcool",
   },
   {
-    name: "Bières Red",
+    name: "Bière Red",
     image: BiereRed,
-    increments: [5],
-    decrements: [5],
+    increments: [1],
+    decrements: [1],
     category: "Alcool",
   },
   {
-    name: "Bières Triple",
+    name: "Bière Triple",
     image: BiereTriple,
-    increments: [5],
-    decrements: [5],
+    increments: [1],
+    decrements: [1],
     category: "Alcool",
   },
   {
     name: "Menu Xpress",
     image: "Menu",
-    increments: [2],
-    decrements: [2],
+    increments: [1],
+    decrements: [1],
     category: "Menu",
   },
   {
     name: "Menu Survivaliste",
     image: "Menu",
-    increments: [2],
-    decrements: [2],
+    increments: [1],
+    decrements: [1],
     category: "Menu",
   },
   {
     name: "Menu Paradise",
     image: "Menu",
-    increments: [2],
-    decrements: [2],
+    increments: [1],
+    decrements: [1],
     category: "Menu",
   },
   {
     name: "Menu El Patron's",
     image: "Menu",
-    increments: [2],
-    decrements: [2],
+    increments: [1],
+    decrements: [1],
     category: "Menu",
   },
 
@@ -151,6 +151,42 @@ const ClientsSales: React.FC = () => {
   const employeesTotal = calculateEmployeesTotal();
   const companyTotal = calculateCompanyTotal();
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, product: string) => {
+    const value = parseInt(e.target.value, 10);
+    setQuantities((prev) => {
+      const updatedQuantities = {
+        ...prev,
+        [product]: isNaN(value) ? 0 : value,
+      };
+      // console.log("Updated Quantities (Input Change):", updatedQuantities); // Debugging
+      return updatedQuantities;
+    });
+  };
+
+  const increment = (product: string, value: number) => {
+    setQuantities((prev) => {
+      const updatedQuantities = {
+        ...prev,
+        [product]: (prev[product] || 0) + value,
+      };
+      // console.log("Updated Quantities (Increment):", updatedQuantities); // Debugging
+      return updatedQuantities;
+    });
+  };
+
+  const decrement = (product: string, value: number) => {
+    setQuantities((prev) => {
+      const updatedQuantities = {
+        ...prev,
+        [product]: Math.max((prev[product] || 0) - value, 0), // Prevents negative quantities
+      };
+      // console.log("Updated Quantities (Decrement):", updatedQuantities); // Debugging
+      return updatedQuantities;
+    });
+  };
+
+  const currentDate = new Date().toLocaleDateString('fr-FR'); // Format DD/MM/YYYY
+
   const handleButtonClick = () => {
     if (employeesTotal >= 0 && companyTotal > 0) {
       toast.success(
@@ -201,42 +237,6 @@ const ClientsSales: React.FC = () => {
     }
   };
 
-  const currentDate = new Date().toLocaleDateString('fr-FR'); // Format DD/MM/YYYY
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, product: string) => {
-    const value = parseInt(e.target.value, 10);
-    setQuantities((prev) => {
-      const updatedQuantities = {
-        ...prev,
-        [product]: isNaN(value) ? 0 : value,
-      };
-      console.log("Updated Quantities (Input Change):", updatedQuantities); // Debugging
-      return updatedQuantities;
-    });
-  };
-
-  const increment = (product: string, value: number) => {
-    setQuantities((prev) => {
-      const updatedQuantities = {
-        ...prev,
-        [product]: (prev[product] || 0) + value,
-      };
-      console.log("Updated Quantities (Increment):", updatedQuantities); // Debugging
-      return updatedQuantities;
-    });
-  };
-
-  const decrement = (product: string, value: number) => {
-    setQuantities((prev) => {
-      const updatedQuantities = {
-        ...prev,
-        [product]: Math.max((prev[product] || 0) - value, 0), // Prevents negative quantities
-      };
-      console.log("Updated Quantities (Decrement):", updatedQuantities); // Debugging
-      return updatedQuantities;
-    });
-  };
-
   return (
     <div className="flex flex-col items-center py-3 text-gray-900">
       <Toaster
@@ -259,7 +259,7 @@ const ClientsSales: React.FC = () => {
           <span>Nom Employé : Oscar Kirk</span>
         </div>
 
-        {/* Bloc Top : Type de Vente + Remise */}
+        {/* Bloc Bottom : Type de Vente + Remise */}
         <div className="grid grid-cols-5 gap-4 mt-5 w-full px-8">
           <CustomButton
             label="Vente Propre"
@@ -295,7 +295,7 @@ const ClientsSales: React.FC = () => {
         {/* Bloc principal */}
         <div className="flex w-full gap-4 px-4">
           {/* Conteneur principal des onglets et produits */}
-          <div className="flex-1 flex flex-col p-6 rounded-lg">
+          <div className="w-4/5 flex-1 flex flex-col p-6 rounded-lg">
             {/* Onglets */}
               <CustomTabs
               tabs={["Nourriture", "Boisson", "Alcool", "Menu", "Autre"]}
@@ -324,7 +324,7 @@ const ClientsSales: React.FC = () => {
             </div>
 
             {/* Conteneur des totaux */}
-            <div className="w-1/5 flex flex-col w-full bg-gray-700/70 p-6 rounded-lg shadow gap-6 self-start mt-8">
+            <div className="w-1/5 flex flex-col bg-gray-700/70 p-6 rounded-lg shadow gap-6 self-start mt-8">
               <div className="flex flex-col justify-center items-center gap-8">
                 <div className="w-full">
                   <p className="block text-center text-xl font-bold mb-1">Total Employé :</p>
