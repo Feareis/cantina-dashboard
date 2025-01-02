@@ -127,7 +127,7 @@ const ExportSales: React.FC = () => {
                 <ArrowUpNarrowWide size={24} />
               </span>
               <input
-                type="number"
+                type="text"
                 value={expertise}
                 onChange={(e) => setExpertise(Number(e.target.value) || "")}
                 className="w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
@@ -144,7 +144,7 @@ const ExportSales: React.FC = () => {
                 <Salad size={24} />
               </span>
               <input
-                type="number"
+                type="text"
                 value={nbSalade}
                 onChange={(e) => setNbSalade(Number(e.target.value) || "")}
                 min="0"
