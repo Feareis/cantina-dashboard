@@ -9,3 +9,7 @@ export { default as Biere } from "./biere.png";
 export { default as BierePils } from "./biere_pils.png";
 export { default as BiereRed } from "./biere_red.png";
 export { default as BiereTriple } from "./biere_triple.png";
+export { default as MenuXpress } from "./menu_xpress.png";
+export { default as MenuSurvivaliste } from "./menu_survivaliste.png";
+export { default as MenuParadise } from "./menu_paradise.png";
+export { default as MenuElPatron } from "./menu_el_patron.png";

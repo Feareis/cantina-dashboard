@@ -5,7 +5,7 @@ import ProductCard from "../components/ProductCard";
 import CustomTabs from "../components/CustomTabs";
 import { BadgeDollarSign, BadgeCent, RefreshCw, Percent } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
-import { RisottoCayo, PlateauCayo, MontaraCayo, JusDeCerise, Biere, BierePils, BiereRed, BiereTriple } from "../assets/products/indexProducts";
+import { RisottoCayo, PlateauCayo, MontaraCayo, JusDeCerise, Biere, BierePils, BiereRed, BiereTriple, MenuXpress, MenuSurvivaliste, MenuParadise, MenuElPatron } from "../assets/products/indexProducts";
 import ProductsPrice from "../data/ProductsPrice";
 import Discounts from "../data/Discounts";
 
@@ -68,28 +68,28 @@ const items = [
   },
   {
     name: "Menu Xpress",
-    image: "Menu",
+    image: MenuXpress,
     increments: [1],
     decrements: [1],
     category: "Menu",
   },
   {
     name: "Menu Survivaliste",
-    image: "Menu",
+    image: MenuSurvivaliste,
     increments: [1],
     decrements: [1],
     category: "Menu",
   },
   {
     name: "Menu Paradise",
-    image: "Menu",
+    image: MenuParadise,
     increments: [1],
     decrements: [1],
     category: "Menu",
   },
   {
     name: "Menu El Patron's",
-    image: "Menu",
+    image: MenuElPatron,
     increments: [1],
     decrements: [1],
     category: "Menu",
