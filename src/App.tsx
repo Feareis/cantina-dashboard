@@ -5,6 +5,7 @@ import Calculator from './pages/Calculator';
 import ClientsSales from './pages/ClientsSales';
 import ExportSales from './pages/ExportSales';
 import AdminPatron from './pages/AdminPatron';
+import Test from './pages/test';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
               <Route path="/export-sales" element={<ExportSales />} />
               <Route path="/clients-sales" element={<ClientsSales />} />
               <Route path="/admin-patron" element={<AdminPatron />} />
+              <Route path="/test" element={<Test />} />
             </Routes>
           </Layout>
       </Router>

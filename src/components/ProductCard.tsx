@@ -45,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           type="text"
           value={quantity}
           onChange={onInputChange}
-          className="w-20 text-center bg-gray-200 rounded-lg p-1 mx-2 appearance-none"
+          className="w-20 text-center bg-gray-200 rounded-lg p-1.5 mx-2 appearance-none"
         />
         {increments.map((value) => (
           <button
