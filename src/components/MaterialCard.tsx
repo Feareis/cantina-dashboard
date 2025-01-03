@@ -3,11 +3,11 @@ import React from "react";
 
 // Define props interface for the MaterialCard component
 interface MaterialCardProps {
-  name: string; // Material name
-  image: string; // Image URL for the material
-  total: number; // Total count or quantity
+  name: string;       // Material name
+  image: string;      // Image URL for the material
+  total: number;      // Total count or quantity
   textColor?: string; // Optional: custom text color
-  bgColor?: string; // Optional: custom background color
+  bgColor?: string;   // Optional: custom background color
 }
 
 const MaterialCard: React.FC<MaterialCardProps> = ({

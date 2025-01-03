@@ -4,10 +4,10 @@ import { LucideIcon } from "lucide-react";
 
 // Define the interface for the button's props
 interface CustomButtonProps {
-  label: string; // Text displayed on the button
+  label: string;       // Text displayed on the button
   onClick: () => void; // Function executed on button click
-  className?: string; // Additional class names for styling
-  icon: LucideIcon; // Icon component displayed in the button
+  className?: string;  // Additional class names for styling
+  icon: LucideIcon;    // Icon component displayed in the button
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({

@@ -3,16 +3,16 @@ import React from "react";
 
 // Define the props interface for the CustomTabs component
 interface CustomTabsProps {
-  tabs: string[]; // List of tab labels
-  activeTab: string; // Currently active tab
+  tabs: string[];                     // List of tab labels
+  activeTab: string;                  // Currently active tab
   onTabChange: (tab: string) => void; // Callback for tab changes
   tabColors?: {
-    activeTextColor: string; // Text color for the active tab
-    inactiveTextColor: string; // Text color for inactive tabs
-    indicatorColor: string; // Color of the tab indicator
-    backgroundColor: string; // Background color of the tab container
+    activeTextColor: string;          // Text color for the active tab
+    inactiveTextColor: string;        // Text color for inactive tabs
+    indicatorColor: string;           // Color of the tab indicator
+    backgroundColor: string;          // Background color of the tab container
   };
-  className?: string; // Additional class names for customization
+  className?: string;                 // Additional class names for customization
 }
 
 const CustomTabs: React.FC<CustomTabsProps> = ({

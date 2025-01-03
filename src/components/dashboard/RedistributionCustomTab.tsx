@@ -15,7 +15,6 @@ interface RedistributionCustomTabProps {
   dividerColor?: string; // Couleur des diviseurs
 }
 
-// Fonction pour générer un diviseur stylé
 const Divider = ({ color }: { color: string }) => (
   <hr className={`w-[95%] mx-auto border-t ${color} mb-4`} />
 );

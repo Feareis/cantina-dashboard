@@ -4,11 +4,11 @@ import { LucideIcon, ChevronDown, ChevronUp } from 'lucide-react';
 
 // Define props interface for the dropdown
 interface CustomDropdownProps {
-  options: string[]; // List of options to display
-  className?: string; // Additional class names for custom styling
+  options: string[];                    // List of options to display
+  className?: string;                   // Additional class names for custom styling
   onSelect: (selected: string) => void; // Callback function when an option is selected
-  placeholder?: string; // Placeholder text for the dropdown
-  icon?: LucideIcon; // Optional icon component
+  placeholder?: string;                 // Placeholder text for the dropdown
+  icon?: LucideIcon;                    // Optional icon component
 }
 
 const CustomDropdown: React.FC<CustomDropdownProps> = ({
