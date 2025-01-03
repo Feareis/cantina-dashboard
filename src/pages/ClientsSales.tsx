@@ -165,7 +165,7 @@ const ClientsSales: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-7xl mx-auto">
+    <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-8xl mx-auto">
 
       {/* Toast Notifications */}
       <Toaster
@@ -179,7 +179,7 @@ const ClientsSales: React.FC = () => {
       />
 
       {/* Header Section */}
-      <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
+      <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent">
         Vente Client
       </h2>
 

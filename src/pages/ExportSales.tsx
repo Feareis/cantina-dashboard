@@ -103,7 +103,7 @@ const ExportSales: React.FC = () => {
   const currentDate = new Date().toLocaleDateString('fr-FR');
 
   return (
-    <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-7xl mx-auto">
+    <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-8xl mx-auto">
       <Toaster
         position="top-right"
         toastOptions={{

@@ -91,7 +91,7 @@ const Calculator: React.FC = () => {
   }, [quantities]);
 
   return (
-    <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-7xl mx-auto">
+    <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-8xl mx-auto">
       {/* Header */}
       <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
         Calculateur de Matières Premières

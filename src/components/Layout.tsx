@@ -69,17 +69,17 @@ export function Layout({ children }: LayoutProps) {
                 </Link>
               </nav>
             </div>
-            {/* Admin Patron Link */}
+            {/* Admin Page Link */}
             <Link
-              to="/admin-patron"
+              to="/admin"
               className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                location.pathname === '/admin-patron'
+                location.pathname === '/admin'
                   ? 'bg-blue-500/20 text-blue-400'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
               <Users size={18} />
-              Patron
+              Admin
             </Link>
           </div>
         </div>
