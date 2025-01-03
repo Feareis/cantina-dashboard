@@ -36,7 +36,7 @@ const RedistributionCustomTab: React.FC<RedistributionCustomTabProps> = ({
 }) => {
   return (
     <div
-      className={`p-4 rounded-lg shadow-md transition duration-200 hover:scale-105 ${bgColor}`}
+      className={`p-4 rounded-lg transition duration-200 hover:scale-105 ${bgColor}`}
     >
       {/* Main Title */}
       <h3 className={`text-2xl font-bold ${titleColor} mb-4 text-center`}>

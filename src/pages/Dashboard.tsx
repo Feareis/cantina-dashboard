@@ -1,7 +1,8 @@
 import React from "react";
 import QuotaCard from "../components/Dashboard/QuotaCard";
 import RedistributionCustomTab from "../components/Dashboard/RedistributionCustomTab";
-import { DollarSign, Coffee } from "lucide-react";
+import TopSellersCustomTab from "../components/Dashboard/TopSellersCustomTab";
+import { DollarSign, Coffee, Star } from "lucide-react";
 
 const Dashboard: React.FC = () => {
 
@@ -14,9 +15,9 @@ const Dashboard: React.FC = () => {
   const QuotaPlusValue = 63000;
 
   return (
-    <div className="flex flex-col items-center py-3 text-gray-900 mt-6">
+    <div className="flex flex-col items-center py-3 text-gray-900">
       {/* Main Container */}
-      <div className="grid grid-cols-4 gap-6 w-full h-full px-6 bg-gray-800">
+      <div className="grid grid-cols-4 gap-6 w-full h-full items-center">
 
         {/* Left Section (3/4 of the page) */}
         <div className="col-span-3 flex flex-col gap-4">
@@ -28,7 +29,7 @@ const Dashboard: React.FC = () => {
               title="Quota de la Semaine"
               value={formatCurrency(QuotaWeekValue)}
               description="150 Risotto + 300 Plateau"
-              bgColor="bg-gradient-to-r from-blue-600 to-green-500"
+              bgColor="bg-gradient-to-r from-blue-600 to-green-600"
               textColor="text-white"
               valueColor="text-green-500"
               descriptionColor="text-gray-200"
@@ -39,7 +40,7 @@ const Dashboard: React.FC = () => {
               title="Quota Bonus"
               value={formatCurrency(QuotaPlusValue)}
               description="400 Plateau"
-              bgColor="bg-gradient-to-r from-orange-600 to-purple-500"
+              bgColor="bg-gradient-to-r from-green-600 to-purple-600"
               textColor="text-white"
               valueColor="text-red-600"
               descriptionColor="text-gray-300"
@@ -51,99 +52,72 @@ const Dashboard: React.FC = () => {
 
           {/* Row 2: Best Sellers Tables */}
           <div className="grid grid-cols-2 gap-4">
-            {/* Best Sellers - Clean Sales */}
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h3 className="text-xl font-bold text-gray-700 mb-4">
-                Meilleurs Vendeurs - Propre
-              </h3>
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b">
-                    <th className="py-2">Nom</th>
-                    <th className="py-2">Ventes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="py-2">Alice</td>
-                    <td className="py-2">15 ventes</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2">Bob</td>
-                    <td className="py-2">12 ventes</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2">Charlie</td>
-                    <td className="py-2">10 ventes</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            {/* Best Sellers - Export Sales */}
+            <TopSellersCustomTab
+              title="Meilleurs Vendeurs - Exportateur"
+              icon={Star}
+              bgColor="bg-gradient-to-r from-teal-600 to-gray-600"
+              titleColor="text-white"
+              columnTitleColor="text-gray-200"
+              textColor="text-gray-300"
+              dividerColor="border-gray-200"
+              data={[
+                { name: "Alice", sales: 15, total: "$ 1,500" },
+                { name: "Bob", sales: 12, total: "$ 1,200" },
+                { name: "Charlie", sales: 10, total: "$ 1,000" },
+              ]}
+            />
 
-            {/* Best Sellers - Dirty Sales */}
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h3 className="text-xl font-bold text-gray-700 mb-4">
-                Meilleurs Vendeurs - Sale
-              </h3>
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b">
-                    <th className="py-2">Nom</th>
-                    <th className="py-2">Ventes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="py-2">Dave</td>
-                    <td className="py-2">10 ventes</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2">Eve</td>
-                    <td className="py-2">8 ventes</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2">Frank</td>
-                    <td className="py-2">7 ventes</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            {/* Best Sellers - Client Sales */}
+            <TopSellersCustomTab
+              title="Meilleurs Vendeurs - Client"
+              icon={Star}
+              bgColor="bg-gradient-to-r from-gray-600 to-amber-600"
+              titleColor="text-white"
+              columnTitleColor="text-gray-200"
+              textColor="text-gray-300"
+              dividerColor="border-gray-200"
+              data={[
+                { name: "Alice", sales: 15, total: "$1500" },
+                { name: "Bob", sales: 12, total: "$1200" },
+                { name: "Charlie", sales: 10, total: "$1000" },
+              ]}
+            />
           </div>
         </div>
 
         {/* Right Section (1/4 of the page) */}
-        <div className="col-span-1 bg-white bg-opacity-0 rounded-lg shadow-md p-4">
-          {/* Tableau des redistributions */}
-                <RedistributionCustomTab
-                  title="Taux de Redistribution"
-                  bgColor="bg-gradient-to-r from-yellow-600 to-pink-600"
-                  titleColor="text-white"
-                  sectionTitleColor="text-white"
-                  textColor="text-gray-200"
-                  percentageColor="text-gray-200"
-                  dividerColor="border-gray-300"
-                  sections={[
-                    {
-                      sectionTitle: "Propre",
-                      sectionTitleColor: "text-green-600",
-                      sectionBgColor: "bg-gray-200",
-                      data: [
-                        { grade: "Responsable", percentage: "40%" },
-                        { grade: "CDI", percentage: "30%" },
-                        { grade: "CDD", percentage: "25%" },
-                      ],
-                    },
-                    {
-                      sectionTitle: "Sale",
-                      sectionTitleColor: "text-red-600",
-                      sectionBgColor: "bg-gray-200",
-                      data: [
-                        { grade: "Vente Client", percentage: "15%" },
-                        { grade: "Vente Export", percentage: "10%" },
-                      ],
-                    },
-                  ]}
-                />
+        <div className="col-span-1 bg-white bg-opacity-0 rounded-lg p-4">
+          {/* Redistribution Rates */}
+          <RedistributionCustomTab
+            title="Taux de Redistribution"
+            bgColor="bg-gradient-to-r from-amber-600 to-emerald-600"
+            titleColor="text-white"
+            textColor="text-gray-200"
+            percentageColor="text-gray-200"
+            dividerColor="border-blue-400"
+            sections={[
+              {
+                sectionTitle: "Propre",
+                sectionTitleColor: "text-green-600",
+                sectionBgColor: "bg-gray-200",
+                data: [
+                  { grade: "Responsable", percentage: "40%" },
+                  { grade: "CDI", percentage: "30%" },
+                  { grade: "CDD", percentage: "25%" },
+                ],
+              },
+              {
+                sectionTitle: "Sale",
+                sectionTitleColor: "text-red-600",
+                sectionBgColor: "bg-gray-200",
+                data: [
+                  { grade: "Vente Client", percentage: "15%" },
+                  { grade: "Vente Export", percentage: "10%" },
+                ],
+              },
+            ]}
+          />
         </div>
       </div>
     </div>
@@ -151,4 +125,3 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
-
