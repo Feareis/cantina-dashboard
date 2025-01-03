@@ -62,9 +62,9 @@ const Dashboard: React.FC = () => {
               textColor="text-gray-300"
               dividerColor="border-gray-200"
               data={[
-                { name: "Alice", sales: 15, total: "$ 1,500" },
-                { name: "Bob", sales: 12, total: "$ 1,200" },
-                { name: "Charlie", sales: 10, total: "$ 1,000" },
+                { name: "Alice", sales: 15, total: formatCurrency(1500) },
+                { name: "Bob", sales: 12, total: formatCurrency(1200) },
+                { name: "Charlie", sales: 10, total: formatCurrency(1000) },
               ]}
             />
 
@@ -78,9 +78,9 @@ const Dashboard: React.FC = () => {
               textColor="text-gray-300"
               dividerColor="border-gray-200"
               data={[
-                { name: "Alice", sales: 15, total: "$1500" },
-                { name: "Bob", sales: 12, total: "$1200" },
-                { name: "Charlie", sales: 10, total: "$1000" },
+                { name: "Alice", sales: 15, total: formatCurrency(1500) },
+                { name: "Bob", sales: 12, total: formatCurrency(1200) },
+                { name: "Charlie", sales: 10, total: formatCurrency(1000) },
               ]}
             />
           </div>
