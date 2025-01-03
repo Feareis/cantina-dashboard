@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Scrollbar styling for all browsers */
+.scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #4b5563 #d1d5db; /* Couleur de la barre et du fond */
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px; /* Largeur */
+  height: 8px; /* Hauteur pour scroll horizontal */
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #4b5563; /* Couleur de la barre */
+  border-radius: 8px; /* Arrondi */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background-color: #d1d5db; /* Couleur du fond */
+}

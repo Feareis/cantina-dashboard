@@ -6,10 +6,10 @@ import CustomButton from "../components/CustomButton";
 import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo, Poisson, Epices } from "../assets/products/indexProducts";
 
 const items = [
-  { name: "Salade", image: SaladeCayo, increments: [50, 200], decrements: [200, 50] },
-  { name: "Risotto", image: RisottoCayo, increments: [10, 50], decrements: [50, 10] },
-  { name: "Plateau", image: PlateauCayo, increments: [10, 50], decrements: [50, 10] },
-  { name: "Montara", image: MontaraCayo, increments: [10, 50], decrements: [50, 10] },
+  { name: "Salade", image: SaladeCayo, increments: [50], decrements: [50] },
+  { name: "Risotto", image: RisottoCayo, increments: [10], decrements: [10] },
+  { name: "Plateau", image: PlateauCayo, increments: [10], decrements: [10] },
+  { name: "Montara", image: MontaraCayo, increments: [10], decrements: [10] },
 ];
 
 const Calculator: React.FC = () => {
