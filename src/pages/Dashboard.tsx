@@ -1,7 +1,7 @@
 import React from "react";
-import QuotaCard from "../components/Dashboard/QuotaCard";
-import RedistributionCustomTab from "../components/Dashboard/RedistributionCustomTab";
-import TopSellersCustomTab from "../components/Dashboard/TopSellersCustomTab";
+import QuotaCard from "../components/dashboard/QuotaCard";
+import RedistributionCustomTab from "../components/dashboard/RedistributionCustomTab";
+import TopSellersCustomTab from "../components/dashboard/TopSellersCustomTab";
 import { DollarSign, Coffee, Star } from "lucide-react";
 
 const Dashboard: React.FC = () => {
