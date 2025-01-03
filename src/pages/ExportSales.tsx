@@ -96,7 +96,7 @@ const ExportSales: React.FC = () => {
   const currentDate = new Date().toLocaleDateString('fr-FR'); // Format DD/MM/YYYY
 
   return (
-    <div className="flex flex-col items-center py-3 text-gray-900">
+    <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-7xl mx-auto">
       <Toaster
         position="top-right"
         toastOptions={{
@@ -107,34 +107,34 @@ const ExportSales: React.FC = () => {
         }}
       />
 
-      <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
+      <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
         Vente Exportateur
       </h2>
       <div className="flex flex-col w-full md:flex-row items-stretch justify-between p-6 gap-6 text-white">
         {/* Bloc gauche : Entrée des informations */}
         <div className="flex flex-col w-full md:w-1/2 bg-gray-800/70 p-6 rounded-lg shadow gap-8">
           {/* Date et Nom de l'employé */}
-          <div className="text-2xl font-medium text-gray-400">
-            <p>Date : {currentDate}</p>
-            <span>Nom Employé : Oscar Kirk</span>
-          </div>
-
-          {/* Niveau d'expertise */}
-          <label className="block">
-            <p className="text-lg font-bold">Niveau d'expertise :</p>
-            <div className="relative group mt-4">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 group-focus-within:text-gray-300">
-                <ArrowUpNarrowWide size={24} />
-              </span>
-              <input
-                type="text"
-                value={expertise}
-                onChange={(e) => setExpertise(Number(e.target.value) || "")}
-                className="w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                placeholder="Entrez le niveau d'expertise"
-              />
+            <div className="text-xl sm:text-2xl font-medium text-gray-400">
+              <p>Date : {currentDate}</p>
+              <span>Nom Employé : Oscar Kirk</span>
             </div>
-          </label>
+
+            {/* Champs d'entrée */}
+            <label className="block">
+              <p className="text-base sm:text-lg font-bold">Niveau d'expertise :</p>
+              <div className="relative group mt-4">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 group-focus-within:text-gray-300">
+                  <ArrowUpNarrowWide size={24} />
+                </span>
+                <input
+                  type="text"
+                  value={expertise}
+                  onChange={(e) => setExpertise(Number(e.target.value) || "")}
+                  className="w-full sm:w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  placeholder="Entrez le niveau d'expertise"
+                />
+              </div>
+            </label>
 
           {/* Nombre de salade */}
           <label className="block">
@@ -185,21 +185,29 @@ const ExportSales: React.FC = () => {
         {/* Bloc droit : Totaux et Ajouter la vente */}
         <div className="flex flex-col w-full md:w-1/2 bg-gray-800/70 p-6 rounded-lg shadow gap-6">
           <div className="flex flex-col justify-center items-center h-full gap-8">
-            <div className="w-2/3">
-              <p className="block text-center text-xl font-bold mb-1">Total Employé :</p>
-              <p className="text-center text-base text-gray-400 mt-1">- Dans vos poches directement -</p>
-              <div className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${selectedSale === 'propre' ? 'bg-green-600/50 text-white' : 'bg-red-500/50 text-white'}`}>
+            <div className="w-full sm:w-2/3">
+              <p className="block text-center text-lg sm:text-xl font-bold mb-1">Total Employé :</p>
+              <p className="text-center text-sm sm:text-base text-gray-400 mt-1">- Dans vos poches directement -</p>
+              <div
+                className={`text-center text-lg sm:text-xl font-semibold px-4 py-2 rounded mt-5 ${
+                  selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
+                }`}
+              >
                 {formatCurrency(employeesTotal)}
               </div>
             </div>
-            <div className="w-2/3">
-              <p className="block text-center text-xl font-bold mb-1">Total Entreprise :</p>
-              <p className="text-center text-base text-gray-400 mt-1">
-                {selectedSale === 'propre'
+            <div className="w-full sm:w-2/3">
+              <p className="block text-center text-lg sm:text-xl font-bold mb-1">Total Entreprise :</p>
+              <p className="text-center text-sm sm:text-base text-gray-400 mt-1">
+                {selectedSale === "propre"
                   ? "- Séparé de ce que vous gagnez, pas de taxe -"
                   : "- Taxe à donner en fin de semaine -"}
               </p>
-              <div className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${selectedSale === 'propre' ? 'bg-green-600/50 text-white' : 'bg-red-500/50 text-white'}`}>
+              <div
+                className={`text-center text-lg sm:text-xl font-semibold px-4 py-2 rounded mt-5 ${
+                  selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
+                }`}
+              >
                 {formatCurrency(companyTotal)}
               </div>
             </div>
@@ -208,7 +216,7 @@ const ExportSales: React.FC = () => {
             <CustomButton
               label="Ajouter la vente"
               onClick={handleButtonClick}
-              className="w-2/3 bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 mt-auto"
+              className="w-full sm:w-2/3 bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 mt-auto"
               icon={BadgeDollarSign}
             />
           </div>

@@ -238,7 +238,7 @@ const ClientsSales: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center py-3 text-gray-900">
+    <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-7xl mx-auto">
       <Toaster
         position="top-right"
         toastOptions={{
@@ -248,7 +248,7 @@ const ClientsSales: React.FC = () => {
           },
         }}
       />
-      <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent">
+      <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
         Vente Client
       </h2>
       <div className="flex flex-col w-full justify-between p-4 gap-6 text-white">
@@ -259,8 +259,8 @@ const ClientsSales: React.FC = () => {
           <span>Nom Employé : Oscar Kirk</span>
         </div>
 
-        {/* Bloc Bottom : Type de Vente + Remise */}
-        <div className="grid grid-cols-5 gap-4 mt-5 w-full px-8">
+        {/* Bloc Bottom : Boutton + Dropdown */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-5 w-full px-8">
           <CustomButton
             label="Vente Propre"
             onClick={() => handleSaleSelection('propre')}
@@ -293,9 +293,9 @@ const ClientsSales: React.FC = () => {
         </div>
 
         {/* Bloc principal */}
-        <div className="flex w-full gap-4 px-4">
+        <div className="flex flex-col md:flex-row w-full gap-6 px-4">
           {/* Conteneur principal des onglets et produits */}
-          <div className="w-4/5 flex-1 flex flex-col p-6 rounded-lg">
+          <div className="w-4/5 flex-1 flex flex-col p-4 rounded-lg">
             {/* Onglets */}
               <CustomTabs
               tabs={["Nourriture", "Boisson", "Alcool", "Menu", "Autre"]}
@@ -306,25 +306,25 @@ const ClientsSales: React.FC = () => {
             {/* Produits */}
             <div className="text-gray-700 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
               {items
-                  .filter((item) => item.category === activeTab)
-                  .map((item) => (
-                        <ProductCard
-                          key={item.name}
-                          name={item.name}
-                          image={item.image}
-                          quantity={quantities[item.name.toLowerCase() as keyof typeof quantities] || 0}
-                          increments={item.increments}
-                          decrements={item.decrements}
-                          onIncrement={(value) => increment(item.name.toLowerCase(), value)}
-                          onDecrement={(value) => decrement(item.name.toLowerCase(), value)}
-                          onInputChange={(e) => handleInputChange(e, item.name.toLowerCase())}
-                        />
-                  ))}
-              </div>
+                .filter((item) => item.category === activeTab)
+                .map((item) => (
+                  <ProductCard
+                    key={item.name}
+                    name={item.name}
+                    image={item.image}
+                    quantity={quantities[item.name.toLowerCase() as keyof typeof quantities] || 0}
+                    increments={item.increments}
+                    decrements={item.decrements}
+                    onIncrement={(value) => increment(item.name.toLowerCase(), value)}
+                    onDecrement={(value) => decrement(item.name.toLowerCase(), value)}
+                    onInputChange={(e) => handleInputChange(e, item.name.toLowerCase())}
+                  />
+                ))}
             </div>
+          </div>
 
             {/* Conteneur des totaux */}
-            <div className="w-1/5 flex flex-col bg-gray-700/70 p-6 rounded-lg shadow gap-6 self-start mt-8">
+            <div className="w-full md:w-1/4 flex flex-col bg-gray-700/70 p-6 rounded-lg shadow gap-6 self-start mt-8">
               <div className="flex flex-col justify-center items-center gap-8">
                 <div className="w-full">
                   <p className="block text-center text-xl font-bold mb-1">Total Employé :</p>
@@ -334,10 +334,10 @@ const ClientsSales: React.FC = () => {
                       : "Recuperer tout le sale pour vous"}
                   </p>
                   <div
-                        className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${
-                        selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
-                        }`}
-                    >
+                    className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${
+                      selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
+                    }`}
+                  >
                     {formatCurrency(employeesTotal)}
                   </div>
                 </div>
@@ -349,10 +349,10 @@ const ClientsSales: React.FC = () => {
                       : "Taxe à donner en fin de semaine"}
                   </p>
                   <div
-                        className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${
-                        selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
-                        }`}
-                    >
+                    className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${
+                      selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
+                    }`}
+                  >
                     {formatCurrency(companyTotal)}
                   </div>
                 </div>
