@@ -1,3 +1,4 @@
+// Import necessary modules
 import React, { useState } from 'react';
 import CustomButton from "../components/CustomButton";
 import { BadgeDollarSign, BadgeCent, ArrowUpNarrowWide, Salad } from "lucide-react";
@@ -8,14 +9,17 @@ const ExportSales: React.FC = () => {
   const [expertise, setExpertise] = useState<number | "">("");
   const [nbSalade, setNbSalade] = useState<number | "">("");
 
+  // Handle the sale type selection
   const handleSaleSelection = (type: 'propre' | 'sale') => {
     setSelectedSale(type);
   };
 
+  // Format currency values
   const formatCurrency = (value: number): string => {
     return `$ ${value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
   };
 
+  // Calculate totals for employees
   const calculateEmployeesTotal = (): number => {
     if (selectedSale === 'propre') {
       if (!expertise || !nbSalade) {
@@ -28,6 +32,7 @@ const ExportSales: React.FC = () => {
     return 0;
   };
 
+  // Calculate totals for the company
   const calculateCompanyTotal = (): number => {
     const employeesTotal = calculateEmployeesTotal();
     if (selectedSale === 'propre') {
@@ -41,59 +46,61 @@ const ExportSales: React.FC = () => {
   const employeesTotal = calculateEmployeesTotal();
   const companyTotal = calculateCompanyTotal();
 
+  // Handle button click for adding sales
   const handleButtonClick = () => {
     if (employeesTotal > 0 && companyTotal > 0) {
       toast.success(
-            <div className="flex flex-col text-sm">
-              <div className="flex w-full mb-1">
-                <span className="text-white text-base font-semibold">{currentDate}</span>
-                <span className="text-white text-base font-semibold pl-2" > - </span>
-                <span className="text-white text-base font-bold pl-2">Oscar Kirk</span>
-              </div>
-              <div className="w-full border-t border-gray-500 mt-2 mb-2"></div>
-              <div className="flex w-full mb-1">
-                <span className="text-white text-base font-semibold">Total Employé :</span>
-                <span className="text-white text-base font-bold pl-2">{formatCurrency(employeesTotal)}</span>
-              </div>
-              <div className="flex w-full mb-1">
-                <span className="text-white text-base font-semibold">Total Entreprise :</span>
-                <span className="text-white text-base font-bold pl-2">{formatCurrency(companyTotal)}</span>
-              </div>
-            </div>,
-            {
-              duration: 5000,
-              style: {
-                marginTop: '80px', // Position en dessous de la barre de navigation
-                padding: '16px',
-                width: '500px', // Largeur personnalisée
-                borderRadius: '8px',
-                background: '#1f2937', // Couleur de fond sombre
-                color: '#fff', // Texte blanc
-              },
-            }
-          );
+        <div className="flex flex-col text-sm">
+          <div className="flex w-full mb-1">
+            <span className="text-white text-base font-semibold">{currentDate}</span>
+            <span className="text-white text-base font-semibold pl-2"> - </span>
+            <span className="text-white text-base font-bold pl-2">Oscar Kirk</span>
+          </div>
+          <div className="w-full border-t border-gray-500 mt-2 mb-2"></div>
+          <div className="flex w-full mb-1">
+            <span className="text-white text-base font-semibold">Total Employé :</span>
+            <span className="text-white text-base font-bold pl-2">{formatCurrency(employeesTotal)}</span>
+          </div>
+          <div className="flex w-full mb-1">
+            <span className="text-white text-base font-semibold">Total Entreprise :</span>
+            <span className="text-white text-base font-bold pl-2">{formatCurrency(companyTotal)}</span>
+          </div>
+        </div>,
+        {
+          duration: 5000,
+          style: {
+            marginTop: '80px',
+            padding: '16px',
+            width: '500px',
+            borderRadius: '8px',
+            background: '#1f2937',
+            color: '#fff',
+          },
+        }
+      );
 
-          // Reset inputs after successful toast
-          setExpertise("");
-          setNbSalade("");
+      // Reset inputs after successful toast
+      setExpertise("");
+      setNbSalade("");
     } else {
       toast.error(
         <div className="flex flex-col text-sm">
           <span className="text-white text-base font-semibold">Veuillez entrer des informations valides avant d'ajouter une vente.</span>
         </div>,
         {
-        duration: 5000,
-        style: {
-          marginTop: '80px',
-          backgroundColor: '#1f2937',
-          width: '600px',
-          maxWidth: '90%',
-        },
-      });
+          duration: 5000,
+          style: {
+            marginTop: '80px',
+            backgroundColor: '#1f2937',
+            width: '600px',
+            maxWidth: '90%',
+          },
+        }
+      );
     }
   };
 
-  const currentDate = new Date().toLocaleDateString('fr-FR'); // Format DD/MM/YYYY
+  const currentDate = new Date().toLocaleDateString('fr-FR');
 
   return (
     <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-7xl mx-auto">
@@ -107,36 +114,37 @@ const ExportSales: React.FC = () => {
         }}
       />
 
+      {/* Header */}
       <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
         Vente Exportateur
       </h2>
+
+      {/* Left Section */}
       <div className="flex flex-col w-full md:flex-row items-stretch justify-between p-6 gap-6 text-white">
-        {/* Bloc gauche : Entrée des informations */}
         <div className="flex flex-col w-full md:w-1/2 bg-gray-800/70 p-6 rounded-lg shadow gap-8">
-          {/* Date et Nom de l'employé */}
-            <div className="text-xl sm:text-2xl font-medium text-gray-400">
-              <p>Date : {currentDate}</p>
-              <span>Nom Employé : Oscar Kirk</span>
+          <div className="text-xl sm:text-2xl font-medium text-gray-400">
+            <p>Date : {currentDate}</p>
+            <span>Nom Employé : Oscar Kirk</span>
+          </div>
+
+          {/* Expertise Input */}
+          <label className="block">
+            <p className="text-base sm:text-lg font-bold">Niveau d'expertise :</p>
+            <div className="relative group mt-4">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 group-focus-within:text-gray-300">
+                <ArrowUpNarrowWide size={24} />
+              </span>
+              <input
+                type="text"
+                value={expertise}
+                onChange={(e) => setExpertise(Number(e.target.value) || "")}
+                className="w-full sm:w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                placeholder="Entrez le niveau d'expertise"
+              />
             </div>
+          </label>
 
-            {/* Champs d'entrée */}
-            <label className="block">
-              <p className="text-base sm:text-lg font-bold">Niveau d'expertise :</p>
-              <div className="relative group mt-4">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 group-focus-within:text-gray-300">
-                  <ArrowUpNarrowWide size={24} />
-                </span>
-                <input
-                  type="text"
-                  value={expertise}
-                  onChange={(e) => setExpertise(Number(e.target.value) || "")}
-                  className="w-full sm:w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                  placeholder="Entrez le niveau d'expertise"
-                />
-              </div>
-            </label>
-
-          {/* Nombre de salade */}
+          {/* Salad Input */}
           <label className="block">
             <p className="text-lg font-bold">Nombre de salade :</p>
             <div className="relative group mt-4">
@@ -148,13 +156,13 @@ const ExportSales: React.FC = () => {
                 value={nbSalade}
                 onChange={(e) => setNbSalade(Number(e.target.value) || "")}
                 min="0"
-                className="w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="w-full sm:w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 placeholder="Entrez le nombre de salades"
               />
             </div>
           </label>
 
-          {/* Type de vente */}
+          {/* Sale Type Selection */}
           <div>
             <p className="text-lg font-bold">Type de vente :</p>
             <div className="flex gap-4 mt-4">
@@ -182,7 +190,7 @@ const ExportSales: React.FC = () => {
           </div>
         </div>
 
-        {/* Bloc droit : Totaux et Ajouter la vente */}
+        {/* Right Section */}
         <div className="flex flex-col w-full md:w-1/2 bg-gray-800/70 p-6 rounded-lg shadow gap-6">
           <div className="flex flex-col justify-center items-center h-full gap-8">
             <div className="w-full sm:w-2/3">

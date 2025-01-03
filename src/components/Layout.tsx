@@ -1,9 +1,11 @@
+// Import necessary modules
 import React from 'react';
 import { BadgeDollarSign, Calculator, ChartArea, Users } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
+// Define props interface for the Layout component
 interface LayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode; // Content to be displayed inside the layout
 }
 
 export function Layout({ children }: LayoutProps) {
@@ -11,7 +13,7 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-      {/* Navbar fixe */}
+      {/* Fixed Navbar */}
       <header className="fixed top-0 left-0 w-full bg-gradient-to-br from-gray-900 to-gray-800 text-white border-b border-gray-700 z-50">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
@@ -20,6 +22,7 @@ export function Layout({ children }: LayoutProps) {
                 La Cantina
               </h1>
               <nav className="flex items-center gap-4">
+                {/* Navigation links */}
                 <Link
                   to="/"
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
@@ -66,34 +69,23 @@ export function Layout({ children }: LayoutProps) {
                 </Link>
               </nav>
             </div>
+            {/* Admin Patron Link */}
             <Link
               to="/admin-patron"
               className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-              location.pathname === '/admin-patron'
-                ? 'bg-blue-500/20 text-blue-400'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
+                location.pathname === '/admin-patron'
+                  ? 'bg-blue-500/20 text-blue-400'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
               <Users size={18} />
-                Patron
+              Patron
             </Link>
-            {/*
-            <a
-              href="https://github.com/Feareis/cantina-dashboard"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
-              aria-label="View source on GitHub"
-            >
-              <Github size={24} />
-            </a>
-            */}
-
           </div>
         </div>
       </header>
 
-      {/* Contenu principal avec une marge pour compenser la hauteur de la navbar */}
+      {/* Main content with margin to offset navbar height */}
       <main className="flex-grow container mx-auto px-4 py-6 mt-24">
         {children}
       </main>
@@ -101,7 +93,7 @@ export function Layout({ children }: LayoutProps) {
       {/* Footer */}
       <footer className="bg-gradient-to-br from-gray-900 to-gray-800 border-t border-gray-700">
         <div className="container mx-auto px-4 py-6 text-center text-gray-400">
-          <p>Made with ❤️ by Feareis </p>
+          <p>Made with ❤️ by Feareis</p>
         </div>
       </footer>
     </div>

@@ -1,3 +1,4 @@
+// Import necessary modules
 import React, { useState } from 'react';
 import CustomButton from "../components/CustomButton";
 import CustomDropdown from '../components/CustomDropdown';
@@ -10,91 +11,19 @@ import ProductsPrice from "../data/ProductsPrice";
 import Discounts from "../data/Discounts";
 
 const items = [
-  {
-    name: "Risotto",
-    image: RisottoCayo,
-    increments: [5],
-    decrements: [5],
-    category: "Nourriture",
-  },
-  {
-    name: "Plateau",
-    image: PlateauCayo,
-    increments: [5],
-    decrements: [5],
-    category: "Nourriture",
-  },
-  {
-    name: "Montara",
-    image: MontaraCayo,
-    increments: [10],
-    decrements: [10],
-    category: "Nourriture",
-  },
-  {
-    name: "Jus de cerise",
-    image: JusDeCerise,
-    increments: [5],
-    decrements: [5],
-    category: "Boisson",
-  },
-  {
-    name: "Bière",
-    image: Biere,
-    increments: [1],
-    decrements: [1],
-    category: "Alcool",
-  },
-  {
-    name: "Bière Pils",
-    image: BierePils,
-    increments: [1],
-    decrements: [1],
-    category: "Alcool",
-  },
-  {
-    name: "Bière Red",
-    image: BiereRed,
-    increments: [1],
-    decrements: [1],
-    category: "Alcool",
-  },
-  {
-    name: "Bière Triple",
-    image: BiereTriple,
-    increments: [1],
-    decrements: [1],
-    category: "Alcool",
-  },
-  {
-    name: "Menu Xpress",
-    image: MenuXpress,
-    increments: [1],
-    decrements: [1],
-    category: "Menu",
-  },
-  {
-    name: "Menu Survivaliste",
-    image: MenuSurvivaliste,
-    increments: [1],
-    decrements: [1],
-    category: "Menu",
-  },
-  {
-    name: "Menu Paradise",
-    image: MenuParadise,
-    increments: [1],
-    decrements: [1],
-    category: "Menu",
-  },
-  {
-    name: "Menu El Patron's",
-    image: MenuElPatron,
-    increments: [1],
-    decrements: [1],
-    category: "Menu",
-  },
-
+  // Configuration of products
+  { name: "Risotto", image: RisottoCayo, increments: [5], decrements: [5], category: "Nourriture" },
+  { name: "Plateau", image: PlateauCayo, increments: [5], decrements: [5], category: "Nourriture" },
+  { name: "Montara", image: MontaraCayo, increments: [10], decrements: [10], category: "Nourriture" },
+  { name: "Jus de cerise", image: JusDeCerise, increments: [5], decrements: [5], category: "Boisson" },
+  { name: "Bière", image: Biere, increments: [1], decrements: [1], category: "Alcool" },
+  { name: "Bière Pils", image: BierePils, increments: [1], decrements: [1], category: "Alcool" },
+  { name: "Bière Red", image: BiereRed, increments: [1], decrements: [1], category: "Alcool" },
+  { name: "Bière Triple", image: BiereTriple, increments: [1], decrements: [1], category: "Alcool" },
+  { name: "Menu Xpress", image: MenuXpress, increments: [1], decrements: [1], category: "Menu" },
+  { name: "Menu Survivaliste", image: MenuSurvivaliste, increments: [1], decrements: [1], category: "Menu" },
+  { name: "Menu Paradise", image: MenuParadise, increments: [1], decrements: [1], category: "Menu" },
+  { name: "Menu El Patron's", image: MenuElPatron, increments: [1], decrements: [1], category: "Menu" },
 ];
 
 const ClientsSales: React.FC = () => {
@@ -103,23 +32,27 @@ const ClientsSales: React.FC = () => {
   const [selectedDiscount, setSelectedDiscount] = useState<string | null>(null);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
 
+  // Handle the selection of sale type (e.g., 'propre' or 'sale')
   const handleSaleSelection = (type: 'propre' | 'sale') => {
     setSelectedSale(type);
   };
 
+  // Handle the selection of a discount from the dropdown
   const handleDiscountSelect = (selected: string) => {
     setSelectedDiscount(selected);
   };
 
+  // Reset all quantities to their initial state
   const resetAll = () => {
-      setQuantities({ salade: 0, risotto: 0, plateau: 0, montara: 0 });
+    setQuantities({});
   };
 
+  // Format a number as a currency string (e.g., "$123,456")
   const formatCurrency = (value: number): string => {
     return `$ ${value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
   };
 
-  // Calculate total for employee
+  // Calculate totals for employees
   const calculateEmployeesTotal = (): number => {
     if (selectedSale === 'propre') return 0;
 
@@ -130,6 +63,7 @@ const ClientsSales: React.FC = () => {
     }, 0);
   };
 
+  // Calculate totals for the company
   const calculateCompanyTotal = (): number => {
     if (selectedSale === 'sale') {
       return calculateEmployeesTotal() * 0.15;
@@ -151,94 +85,89 @@ const ClientsSales: React.FC = () => {
   const employeesTotal = calculateEmployeesTotal();
   const companyTotal = calculateCompanyTotal();
 
+  // Handle changes in the input field for a specific product
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, product: string) => {
     const value = parseInt(e.target.value, 10);
-    setQuantities((prev) => {
-      const updatedQuantities = {
-        ...prev,
-        [product]: isNaN(value) ? 0 : value,
-      };
-      // console.log("Updated Quantities (Input Change):", updatedQuantities); // Debugging
-      return updatedQuantities;
-    });
+    setQuantities((prev) => ({
+      ...prev,
+      [product]: isNaN(value) ? 0 : value,
+    }));
   };
 
+  // Increment the quantity of a specific product by a given value
   const increment = (product: string, value: number) => {
-    setQuantities((prev) => {
-      const updatedQuantities = {
-        ...prev,
-        [product]: (prev[product] || 0) + value,
-      };
-      // console.log("Updated Quantities (Increment):", updatedQuantities); // Debugging
-      return updatedQuantities;
-    });
+    setQuantities((prev) => ({
+      ...prev,
+      [product]: (prev[product] || 0) + value,
+    }));
   };
 
+  // Decrement the quantity of a specific product by a given value, ensuring no negative values
   const decrement = (product: string, value: number) => {
-    setQuantities((prev) => {
-      const updatedQuantities = {
-        ...prev,
-        [product]: Math.max((prev[product] || 0) - value, 0), // Prevents negative quantities
-      };
-      // console.log("Updated Quantities (Decrement):", updatedQuantities); // Debugging
-      return updatedQuantities;
-    });
+    setQuantities((prev) => ({
+      ...prev,
+      [product]: Math.max((prev[product] || 0) - value, 0),
+    }));
   };
 
-  const currentDate = new Date().toLocaleDateString('fr-FR'); // Format DD/MM/YYYY
+  const currentDate = new Date().toLocaleDateString('fr-FR');
 
+  // Handle the button click to add a sale, showing a toast notification
   const handleButtonClick = () => {
     if (employeesTotal >= 0 && companyTotal > 0) {
       toast.success(
-            <div className="flex flex-col">
-              <div className="flex w-full mb-1">
-                <span className="text-white text-base font-semibold">{currentDate}</span>
-                <span className="text-white text-base font-semibold pl-2" > - </span>
-                <span className="text-white text-base font-bold pl-2">Oscar Kirk</span>
-              </div>
-              <div className="w-full border-t border-gray-500 mt-2 mb-2"></div>
-              <div className="flex w-full mb-1">
-                <span className="text-white text-base font-semibold">Total Employé :</span>
-                <span className="text-white text-base font-bold pl-2">{formatCurrency(employeesTotal)}</span>
-              </div>
-              <div className="flex w-full mb-1">
-                <span className="text-white text-base font-semibold">Total Entreprise :</span>
-                <span className="text-white text-base font-bold pl-2">{formatCurrency(companyTotal)}</span>
-              </div>
-            </div>,
-            {
-              duration: 5000,
-              style: {
-                marginTop: '80px', // Position en dessous de la barre de navigation
-                padding: '16px',
-                width: '500px', // Largeur personnalisée
-                borderRadius: '8px',
-                background: '#1f2937', // Couleur de fond sombre
-                color: '#fff', // Texte blanc
-              },
-            }
-          );
+        <div className="flex flex-col">
+          <div className="flex w-full mb-1">
+            <span className="text-white text-base font-semibold">{currentDate}</span>
+            <span className="text-white text-base font-semibold pl-2"> - </span>
+            <span className="text-white text-base font-bold pl-2">Oscar Kirk</span>
+          </div>
+          <div className="w-full border-t border-gray-500 mt-2 mb-2"></div>
+          <div className="flex w-full mb-1">
+            <span className="text-white text-base font-semibold">Total Employé :</span>
+            <span className="text-white text-base font-bold pl-2">{formatCurrency(employeesTotal)}</span>
+          </div>
+          <div className="flex w-full mb-1">
+            <span className="text-white text-base font-semibold">Total Entreprise :</span>
+            <span className="text-white text-base font-bold pl-2">{formatCurrency(companyTotal)}</span>
+          </div>
+        </div>,
+        {
+          duration: 5000,
+          style: {
+            marginTop: '80px',
+            padding: '16px',
+            width: '500px',
+            borderRadius: '8px',
+            background: '#1f2937',
+            color: '#fff',
+          },
+        }
+      );
 
-          resetAll();
+      resetAll();
     } else {
       toast.error(
         <div className="flex flex-col text-sm">
           <span className="text-white text-base font-semibold">Veuillez entrer des informations valides avant d'ajouter une vente.</span>
         </div>,
         {
-        duration: 5000,
-        style: {
-          marginTop: '80px',
-          backgroundColor: '#1f2937',
-          width: '600px',
-          maxWidth: '90%',
-        },
-      });
+          duration: 5000,
+          style: {
+            marginTop: '80px',
+            backgroundColor: '#1f2937',
+            width: '600px',
+            maxWidth: '90%',
+          },
+        }
+      );
     }
   };
 
   return (
     <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-7xl mx-auto">
+
+      {/* Toast Notifications */}
       <Toaster
         position="top-right"
         toastOptions={{
@@ -248,24 +177,30 @@ const ClientsSales: React.FC = () => {
           },
         }}
       />
+
+      {/* Header Section */}
       <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
         Vente Client
       </h2>
+
+      {/* Main Content */}
       <div className="flex flex-col w-full justify-between p-4 gap-6 text-white">
 
-        {/* Date et Nom de l'employé */}
+        {/* Employee Info */}
         <div className="text-2xl font-medium text-gray-400">
           <p>Date : {currentDate}</p>
           <span>Nom Employé : Oscar Kirk</span>
         </div>
 
-        {/* Bloc Bottom : Boutton + Dropdown */}
+        {/* Sale Selection and Reset Buttons */}
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-5 w-full px-8">
+
+          {/* Buttons for Sale Type Selection and Reset */}
           <CustomButton
             label="Vente Propre"
             onClick={() => handleSaleSelection('propre')}
             className={`w-full ${
-                selectedSale === 'propre'
+              selectedSale === 'propre'
                 ? 'bg-green-500 text-white'
                 : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
             }`}
@@ -275,7 +210,7 @@ const ClientsSales: React.FC = () => {
             label="Vente Sale"
             onClick={() => handleSaleSelection('sale')}
             className={`w-full ${
-                selectedSale === 'sale'
+              selectedSale === 'sale'
                 ? 'bg-red-500 text-white'
                 : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
             }`}
@@ -292,19 +227,23 @@ const ClientsSales: React.FC = () => {
           <CustomButton label="Reset all" onClick={resetAll} className="bg-red-500 text-white hover:bg-red-600" icon={RefreshCw} />
         </div>
 
-        {/* Bloc principal */}
+        {/* Tabs and Product List */}
         <div className="flex flex-col md:flex-row w-full gap-6 px-4">
-          {/* Conteneur principal des onglets et produits */}
+
+          {/* Product Tabs */}
           <div className="w-4/5 flex-1 flex flex-col p-4 rounded-lg">
-            {/* Onglets */}
-              <CustomTabs
+
+            {/* Product Filter Tabs */}
+            <CustomTabs
               tabs={["Nourriture", "Boisson", "Alcool", "Menu", "Autre"]}
               activeTab={activeTab}
               onTabChange={(tab) => setActiveTab(tab)}
             />
 
-            {/* Produits */}
+            {/* Filtered Product List */}
             <div className="text-gray-700 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+
+              {/* Individual Product Cards */}
               {items
                 .filter((item) => item.category === activeTab)
                 .map((item) => (
@@ -323,50 +262,52 @@ const ClientsSales: React.FC = () => {
             </div>
           </div>
 
-            {/* Conteneur des totaux */}
-            <div className="w-full md:w-1/4 flex flex-col bg-gray-700/70 p-6 rounded-lg shadow gap-6 self-start mt-8">
-              <div className="flex flex-col justify-center items-center gap-8">
-                <div className="w-full">
-                  <p className="block text-center text-xl font-bold mb-1">Total Employé :</p>
-                  <p className="text-center text-base text-gray-400 mt-1">
-                    {selectedSale === 'propre'
-                      ? ""
-                      : "Recuperer tout le sale pour vous"}
-                  </p>
-                  <div
-                    className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${
-                      selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
-                    }`}
-                  >
-                    {formatCurrency(employeesTotal)}
-                  </div>
-                </div>
-                <div className="w-full">
-                  <p className="block text-center text-xl font-bold mb-1">Total Entreprise :</p>
-                  <p className="text-center text-base text-gray-400 mt-1">
-                    {selectedSale === 'propre'
-                      ? "Faites une facture avec F6"
-                      : "Taxe à donner en fin de semaine"}
-                  </p>
-                  <div
-                    className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${
-                      selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
-                    }`}
-                  >
-                    {formatCurrency(companyTotal)}
-                  </div>
+          {/* Totals Section */}
+          <div className="w-full md:w-1/4 flex flex-col bg-gray-700/70 p-6 rounded-lg shadow gap-6 self-start mt-8">
+
+            {/* Employee and Company Totals */}
+            <div className="flex flex-col justify-center items-center gap-8">
+              <div className="w-full">
+                <p className="block text-center text-xl font-bold mb-1">Total Employé :</p>
+                <p className="text-center text-base text-gray-400 mt-1">
+                  {selectedSale === 'propre'
+                    ? ""
+                    : "Recuperer tout le sale pour vous"}
+                </p>
+                <div
+                  className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${
+                    selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
+                  }`}
+                >
+                  {formatCurrency(employeesTotal)}
                 </div>
               </div>
-              <div className="flex flex-col items-center gap-8">
-                <CustomButton
-                  label="Ajouter la vente"
-                  onClick={handleButtonClick}
-                  className="w-full bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 mt-10"
-                  icon={BadgeDollarSign}
-                />
+              <div className="w-full">
+                <p className="block text-center text-xl font-bold mb-1">Total Entreprise :</p>
+                <p className="text-center text-base text-gray-400 mt-1">
+                  {selectedSale === 'propre'
+                    ? "Faites une facture avec F6"
+                    : "Taxe à donner en fin de semaine"}
+                </p>
+                <div
+                  className={`text-center text-xl font-semibold px-4 py-2 rounded mt-5 ${
+                    selectedSale === "propre" ? "bg-green-600/50 text-white" : "bg-red-500/50 text-white"
+                  }`}
+                >
+                  {formatCurrency(companyTotal)}
+                </div>
               </div>
             </div>
+            <div className="flex flex-col items-center gap-8">
+              <CustomButton
+                label="Ajouter la vente"
+                onClick={handleButtonClick}
+                className="w-full bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 mt-10"
+                icon={BadgeDollarSign}
+              />
+            </div>
           </div>
+        </div>
       </div>
     </div>
   );

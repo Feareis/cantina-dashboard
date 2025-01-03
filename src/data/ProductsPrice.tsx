@@ -1,9 +1,12 @@
-// This file contains all product prices to be used in the ClientsSales component
+// This file defines the prices for all products used in the ClientsSales component.
+// Each product has two price tiers:
+// - "propre": The price for clean sales
+// - "sale": The price for dirty sales
 
 const ProductPrices: { [key: string]: { propre: number; sale: number } } = {
   "Risotto": {
-    propre: 250,
-    sale: 300,
+    propre: 250, // Clean sale price
+    sale: 300,   // Dirty sale price
   },
   "Plateau": {
     propre: 350,
