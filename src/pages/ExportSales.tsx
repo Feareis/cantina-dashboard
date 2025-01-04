@@ -103,7 +103,7 @@ const ExportSales: React.FC = () => {
   const currentDate = new Date().toLocaleDateString('fr-FR');
 
   return (
-    <div className="flex flex-col items-center py-3 text-gray-900 w-full max-w-8xl mx-auto">
+    <div className="flex flex-col items-center text-gray-900 w-full max-w-8xl mx-auto">
       <Toaster
         position="top-right"
         toastOptions={{
@@ -114,14 +114,9 @@ const ExportSales: React.FC = () => {
         }}
       />
 
-      {/* Header */}
-      <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent mb-6">
-        Vente Exportateur
-      </h2>
-
       {/* Left Section */}
-      <div className="flex flex-col w-full md:flex-row items-stretch justify-between p-6 gap-6 text-white">
-        <div className="flex flex-col w-full md:w-1/2 bg-gray-800/70 p-6 rounded-lg shadow gap-8">
+      <div className="flex flex-col w-full md:flex-row items-stretch justify-between p-4 gap-6 text-white">
+        <div className="flex flex-col w-full md:w-1/2 p-6 rounded-lg gap-8">
           <div className="text-xl sm:text-2xl font-medium text-gray-400">
             <p>Date : {currentDate}</p>
             <span>Nom Employé : Oscar Kirk</span>
@@ -138,7 +133,7 @@ const ExportSales: React.FC = () => {
                 type="text"
                 value={expertise}
                 onChange={(e) => setExpertise(Number(e.target.value) || "")}
-                className="w-full sm:w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="w-full sm:w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-sm sm:text-base placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 placeholder="Entrez le niveau d'expertise"
               />
             </div>
@@ -156,7 +151,7 @@ const ExportSales: React.FC = () => {
                 value={nbSalade}
                 onChange={(e) => setNbSalade(Number(e.target.value) || "")}
                 min="0"
-                className="w-full sm:w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="w-full sm:w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-sm sm:text-base placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 placeholder="Entrez le nombre de salades"
               />
             </div>
@@ -191,7 +186,7 @@ const ExportSales: React.FC = () => {
         </div>
 
         {/* Right Section */}
-        <div className="flex flex-col w-full md:w-1/2 bg-gray-800/70 p-6 rounded-lg shadow gap-6">
+        <div className="flex flex-col w-full md:w-1/2 p-6 rounded-lg gap-6">
           <div className="flex flex-col justify-center items-center h-full gap-8">
             <div className="w-full sm:w-2/3">
               <p className="block text-center text-lg sm:text-xl font-bold mb-1">Total Employé :</p>

@@ -178,11 +178,6 @@ const ClientsSales: React.FC = () => {
         }}
       />
 
-      {/* Header Section */}
-      <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent">
-        Vente Client
-      </h2>
-
       {/* Main Content */}
       <div className="flex flex-col w-full justify-between p-4 gap-6 text-white">
 
@@ -241,7 +236,7 @@ const ClientsSales: React.FC = () => {
             />
 
             {/* Filtered Product List */}
-            <div className="text-gray-700 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            <div className="text-gray-700 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
 
               {/* Individual Product Cards */}
               {items
