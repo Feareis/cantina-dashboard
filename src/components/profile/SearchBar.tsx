@@ -7,7 +7,7 @@ interface SearchBarProps {
   bgColor?: string; // Couleur de fond
   textColor?: string; // Couleur du texte
   border?: boolean; // Affichage ou non de la bordure
-  icon?: LucideIcon;
+  icon?: LucideIcon; // Icône Lucide
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -26,12 +26,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={`flex items-center px-4 py-2 rounded-lg shadow focus-within:ring-2 focus-within:ring-gray-500 ${
-        bgColor
-      } ${border ? "border border-gray-500" : ""}`}
+      className={`flex items-center px-4 py-2 rounded-lg shadow focus-within:ring-2 focus-within:ring-gray-500 ${bgColor} ${
+        border ? "border border-gray-500" : ""
+      }`}
     >
       {/* Icône de recherche */}
-      <Icon size={20} className={`mr-3 ${textColor}`} />
+      {Icon && React.createElement(Icon, { size: 20, className: `mr-3 ${textColor}` })}
 
       {/* Champ de recherche */}
       <input
