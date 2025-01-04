@@ -1,12 +1,6 @@
-import React from "react";
-
-const modules = import.meta.glob<true, string, { default: React.ComponentType<any> }>("./*.tsx");
-
-const pages: { [key: string]: React.LazyExoticComponent<React.ComponentType<any>> } = {};
-
-for (const path in modules) {
-  const pageName = path.replace("./", "").replace(/\.tsx$/, "");
-  pages[pageName] = React.lazy(() => modules[path]());
-}
-
-export default pages;
+export { default as Dashboard } from "./Dashboard";
+export { default as Calculator } from "./Calculator";
+export { default as ExportSales } from "./ExportSales";
+export { default as ClientsSales } from "./ClientsSales";
+export { default as Profile } from "./Profile";
+export { default as Admin } from "./Admin";
