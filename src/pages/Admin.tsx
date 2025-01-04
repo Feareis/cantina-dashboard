@@ -4,9 +4,6 @@ import React, { useState } from "react";
 import {
   Settings,
   User,
-  Lock,
-  CreditCard,
-  Bell,
   Search,
   Users,
   Minus,
