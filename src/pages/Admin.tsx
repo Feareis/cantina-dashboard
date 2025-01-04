@@ -8,32 +8,31 @@ import {
   CreditCard,
   Bell,
   Search,
+  Users,
+  Minus,
+  FileLock,
 } from "lucide-react";
 
 const Profile: React.FC = () => {
   // Onglets de la barre latérale
   const tabs = [
-    { id: "Profile", label: "Profile", icon: User },
-    { id: "security", label: "Security", icon: Lock },
-    { id: "billing", label: "Billing", icon: CreditCard },
-    { id: "notifications", label: "Notifications", icon: Bell },
-    { id: "settings", label: "Settings", icon: Settings },
+    { id: "profile", label: "Profile", icon: User },
+    { id: "nothing", label: "", icon: Minus },
+    { id: "teams-management", label: "Liste employées", icon: Users },
+    { id: "users-management", label: "Accès employées", icon: FileLock },
+    { id: "enterprise-settings", label: "Paramètres entreprise", icon: Settings },
+    { id: "nothing", label: "", icon: Minus },
+    { id: "site-settings", label: "Paramètres du site", icon: Settings },
   ];
 
   // État pour suivre l'onglet actif
-  const [activeTab, setActiveTab] = useState<string>("general");
+  const [activeTab, setActiveTab] = useState<string>("profile");
 
   // Contenu dynamique des onglets
   const renderTabContent = () => {
     switch (activeTab) {
-      case "Profile":
+      case "profile":
         return <div>Informations générales sur l'utilisateur. Tests test</div>;
-      case "security":
-        return <div>Paramètres de sécurité et mots de passe.</div>;
-      case "billing":
-        return <div>Gestion des options de facturation.</div>;
-      case "notifications":
-        return <div>Paramètres des notifications.</div>;
       case "settings":
         return <div>Options avancées pour le profil.</div>;
       default:
@@ -52,7 +51,6 @@ const Profile: React.FC = () => {
         <SearchBar
           icon={Search}
           placeholder="Rechercher..."
-          onSearch=""
           bgColor="bg-gray-900/70"
           textColor="text-gray-400"
           border={true}
@@ -69,7 +67,7 @@ const Profile: React.FC = () => {
                 key={tab.id}
                 className={`flex items-center gap-2 text-left p-2 rounded-lg ${
                   activeTab === tab.id
-                    ? "bg-blue-500 text-white"
+                    ? "bg-gray-500 text-white"
                     : "hover:bg-gray-700 text-gray-400"
                 }`}
                 onClick={() => setActiveTab(tab.id)}
@@ -82,8 +80,8 @@ const Profile: React.FC = () => {
         </aside>
 
         {/* Contenu de l'onglet actif */}
-        <main className="flex-1 p-6 bg-gray-800 border-r border-gray-700 border-b border-gray-700">
-          <div className="bg-gray-900 p-6 rounded-lg shadow">{renderTabContent()}</div>
+        <main className="flex-1 p-6 bg-gray-800 border-r border-b border-gray-700">
+          <div className="p-6 text-xl text-center">{renderTabContent()}</div>
         </main>
       </div>
     </div>
