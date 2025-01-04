@@ -26,7 +26,7 @@ const ExportSales: React.FC = () => {
       if (!expertise || !nbSalade) {
         return 0;
       }
-      return 36 + 36 * ((Number(expertise) || 0) * 0.003) * (Number(nbSalade) || 0);
+      return (36 + 36 * ((Number(expertise) || 0) * 0.003)) * (Number(nbSalade) || 0);
     } else if (selectedSale === 'sale') {
       return (Number(nbSalade) || 0) * 35;
     }

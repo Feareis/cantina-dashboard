@@ -7,6 +7,7 @@ interface SearchBarProps {
   bgColor?: string; // Couleur de fond
   textColor?: string; // Couleur du texte
   border?: boolean; // Affichage ou non de la bordure
+  icon?: LucideIcon;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -15,6 +16,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   bgColor = "bg-gray-700",
   textColor = "text-gray-200",
   border = false,
+  icon: Icon,
 }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onSearch) {
@@ -29,7 +31,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       } ${border ? "border border-gray-500" : ""}`}
     >
       {/* Icône de recherche */}
-      <Search size={20} className={`mr-3 ${textColor}`} />
+      <Icon size={20} className={`mr-3 ${textColor}`} />
 
       {/* Champ de recherche */}
       <input
