@@ -1,9 +1,9 @@
 // Import necessary modules
 import React, { useState } from 'react';
 import CustomButton from "../components/CustomButton";
-import CustomDropdown from '../components/CustomDropdown';
-import ProductCard from "../components/ProductCard";
-import CustomTabs from "../components/CustomTabs";
+import DiscountsDropdown from '../components/clients-sales/DiscountsDropdown';
+import ProductCard from "../components/card/ProductCard";
+import ProductsTabs from "../components/clients-sales/ProductsTabs";
 import { BadgeDollarSign, BadgeCent, RefreshCw, Percent } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
 import { RisottoCayo, PlateauCayo, MontaraCayo, JusDeCerise, Biere, BierePils, BiereRed, BiereTriple, MenuXpress, MenuSurvivaliste, MenuParadise, MenuElPatron } from "../assets/products/indexProducts";
@@ -211,7 +211,7 @@ const ClientsSales: React.FC = () => {
             }`}
             icon={BadgeCent}
           />
-          <CustomDropdown
+          <DiscountsDropdown
             options={Object.keys(Discounts)}
             className="w-full bg-orange-500 hover:bg-orange-500 text-white"
             onSelect={handleDiscountSelect}
@@ -229,7 +229,7 @@ const ClientsSales: React.FC = () => {
           <div className="w-4/5 flex-1 flex flex-col p-4 rounded-lg">
 
             {/* Product Filter Tabs */}
-            <CustomTabs
+            <ProductsTabs
               tabs={["Nourriture", "Boisson", "Alcool", "Menu", "Autre"]}
               activeTab={activeTab}
               onTabChange={(tab) => setActiveTab(tab)}

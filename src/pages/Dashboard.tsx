@@ -34,11 +34,11 @@ const Dashboard: React.FC = () => {
   const QuotaWeekValue = 65000;
   const QuotaPlusValue = 63000;
 
-  const cardBgColor = "bg-gradient-to-br from-indigo-800 from-10% via-sky-800 via-30% to-emerald-800 to-90% border border-gray-500";
-  const cardBgColor2 = "bg-gradient-to-b from-gray-900/30 from-10% via-gray-800 via-30% to-gray-800 to-90% border border-gray-500";
+  // const cardBgColor = "bg-gradient-to-br from-indigo-800 from-10% via-sky-800 via-30% to-emerald-800 to-90% border border-gray-500";
+  const cardBgColor = "bg-gradient-to-b from-gray-900/30 from-10% via-gray-800 via-90% to-gray-700/50 to-95% border border-gray-500";
 
   return (
-    <div className="flex flex-col py-3 text-gray-900">
+    <div className="flex flex-col py-4 px-4 text-gray-900">
 
       {/* Main Container */}
       <div className="grid grid-cols-4 gap-6 w-full h-full">
@@ -127,6 +127,7 @@ const Dashboard: React.FC = () => {
               {
                 sectionTitle: "Propre",
                 sectionTitleColor: "text-green-600",
+                sectionDescription: "Entreprise -> Employees",
                 sectionBgColor: "bg-gray-200",
                 data: [
                   { grade: "Responsable", percentage: "40%" },
@@ -137,6 +138,7 @@ const Dashboard: React.FC = () => {
               {
                 sectionTitle: "Sale",
                 sectionTitleColor: "text-red-600",
+                sectionDescription: "Employees -> Entreprise",
                 sectionBgColor: "bg-gray-200",
                 data: [
                   { grade: "Vente Client", percentage: "15%" },

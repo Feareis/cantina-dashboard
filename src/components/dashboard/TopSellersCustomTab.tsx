@@ -19,7 +19,7 @@ interface TopSellersCustomTabProps {
 
 // Divider component for separating sections
 const Divider = ({ color }: { color: string }) => (
-  <hr className={`w-[95%] mx-auto border-t ${color} my-4`} />
+  <hr className={`w-[95%] mx-auto border-t ${color} my-2`} />
 );
 
 const TopSellersCustomTab: React.FC<TopSellersCustomTabProps> = ({
@@ -37,13 +37,13 @@ const TopSellersCustomTab: React.FC<TopSellersCustomTabProps> = ({
       className={`p-4 rounded-lg shadow-md transition duration-200 hover:scale-105 ${bgColor}`}
     >
       {/* Header Section: Title and Icon */}
-      <div className="flex justify-between items-center mb-4">
-        <h3 className={`text-2xl font-bold ${titleColor}`}>{title}</h3>
-        {Icon && <Icon size={28} className={`${titleColor}`} />}
+      <div className="flex justify-between items-center mb-2">
+        <h3 className={`text-xl font-bold ${titleColor}`}>{title}</h3>
+        {Icon && <Icon size={23} className={`${titleColor}`} />}
       </div>
 
       {/* Table Header */}
-      <div className="grid grid-cols-3 text-center mb-2">
+      <div className="grid grid-cols-3 text-center">
         <span className={`text-lg font-semibold ${columnTitleColor}`}>Nom</span>
         <span className={`text-lg font-semibold ${columnTitleColor}`}>
           Nombre de ventes
@@ -55,7 +55,7 @@ const TopSellersCustomTab: React.FC<TopSellersCustomTabProps> = ({
       <Divider color={dividerColor} />
 
       {/* Employee Data */}
-      <div className="space-y-2">
+      <div className="space-y-1">
         {data.map((item, index) => (
           <div
             key={index}

@@ -10,6 +10,8 @@ interface RedistributionCustomTabProps {
   sections: {
     sectionTitle: string;                          // The title of a section
     sectionTitleColor?: string;                    // Optional custom color for the section title
+    sectionDescription?: string;                   // Optional custom color for the section title
+    sectionDescriptionColor?: string;              // Optional custom color for the section description
     sectionBgColor?: string;                       // Optional background color for the section title
     data: { grade: string; percentage: string }[]; // Data items with grade and percentage
   }[];                                             // List of sections and their data
@@ -48,13 +50,13 @@ const RedistributionCustomTab: React.FC<RedistributionCustomTabProps> = ({
 
       {/* Sections */}
       {sections.map((section, index) => (
-        <div key={index} className="mb-6">
+        <div key={index} className="mb-2">
           {/* Divider before each section except the first */}
           {index > 0 && <Divider color={dividerColor} />}
 
           {/* Section Title */}
           <div
-            className={`flex justify-center items-center mb-4 py-1 px-4 rounded-lg ${
+            className={`flex justify-between items-center mb-4 py-1 px-4 rounded-lg ${
               section.sectionBgColor || "bg-white"
             }`}
           >
@@ -65,6 +67,13 @@ const RedistributionCustomTab: React.FC<RedistributionCustomTabProps> = ({
             >
               {section.sectionTitle}
             </h4>
+            <p
+              className={`text-sm font-semibold ml-4 ${
+                section.sectionDescriptionColor || "text-gray-600"
+              }`}
+            >
+              {section.sectionDescription}
+            </p>
           </div>
 
           {/* Section Data */}

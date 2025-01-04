@@ -30,13 +30,13 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
       className={`p-4 rounded-lg shadow-md ${borderWidth} ${borderColor} ${bgColor}`}
     >
       {/* Ligne Breadcrumb */}
-      <div className={`flex items-center mb-2 ${textColor}`}>
+      <div className={`flex items-center mb-2 text-sm ${textColor}`}>
         {/* Icône cliquable */}
         <button
           onClick={() => navigate(iconPath)}
           className={`flex items-center hover:text-blue-500 transition`}
         >
-          <Icon size={20} />
+          <Icon size={15} />
         </button>
         <span className="mx-2">/</span>
         <span className="font-semibold">{pageName}</span>

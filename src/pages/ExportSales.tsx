@@ -1,6 +1,7 @@
 // Import necessary modules
 import React, { useState } from 'react';
 import CustomButton from "../components/CustomButton";
+import InputCustom from "../components/export-sales/InputCustom";
 import { BadgeDollarSign, BadgeCent, ArrowUpNarrowWide, Salad } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -126,15 +127,14 @@ const ExportSales: React.FC = () => {
           <label className="block">
             <p className="text-base sm:text-lg font-bold">Niveau d'expertise :</p>
             <div className="relative group mt-4">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 group-focus-within:text-gray-300">
-                <ArrowUpNarrowWide size={24} />
-              </span>
-              <input
+              <InputCustom
                 type="text"
+                icon={ArrowUpNarrowWide}
                 value={expertise}
                 onChange={(e) => setExpertise(Number(e.target.value) || "")}
-                className="w-full sm:w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-sm sm:text-base placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 placeholder="Entrez le niveau d'expertise"
+                bgColor="bg-gray-900/70"
+                textColor="text-gray-400"
               />
             </div>
           </label>
@@ -143,16 +143,14 @@ const ExportSales: React.FC = () => {
           <label className="block">
             <p className="text-lg font-bold">Nombre de salade :</p>
             <div className="relative group mt-4">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 group-focus-within:text-gray-300">
-                <Salad size={24} />
-              </span>
-              <input
+              <InputCustom
                 type="text"
+                icon={Salad}
                 value={nbSalade}
                 onChange={(e) => setNbSalade(Number(e.target.value) || "")}
-                min="0"
-                className="w-full sm:w-3/4 bg-gray-900/70 rounded-lg px-6 py-3 pl-12 text-sm sm:text-base placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 placeholder="Entrez le nombre de salades"
+                bgColor="bg-gray-900/70"
+                textColor="text-gray-400"
               />
             </div>
           </label>

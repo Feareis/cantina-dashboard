@@ -67,9 +67,9 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
           {Icon && <Icon className="mr-2 ml-2" />} {/* Icon with spacing */}
           <span>{selectedItem || placeholder}</span>
           {isOpen ? (
-            <ChevronUp className="h-5 w-5 ml-4 text-gray-400 transition-transform duration-250" />
+            <ChevronUp className="h-5 w-5 ml-4 text-white transition-transform duration-250" />
           ) : (
-            <ChevronDown className="h-5 w-5 ml-4 text-gray-400 transition-transform duration-250" />
+            <ChevronDown className="h-5 w-5 ml-4 text-white transition-transform duration-250" />
           )}
         </button>
       </div>
