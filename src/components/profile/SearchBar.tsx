@@ -1,5 +1,5 @@
 import React from "react";
-import { Search } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 interface SearchBarProps {
   placeholder?: string; // Texte du placeholder

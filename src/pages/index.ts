@@ -1,6 +1,6 @@
 import React from "react";
 
-const modules = import.meta.glob("./*.tsx");
+const modules = import.meta.glob<true, string, { default: React.ComponentType<any> }>("./*.tsx");
 
 const pages: { [key: string]: React.LazyExoticComponent<React.ComponentType<any>> } = {};
 
