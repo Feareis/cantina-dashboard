@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Trash, Upload, User, CalendarFold, Phone, Star, Save, KeyRound } from "lucide-react";
+import { Upload, User, CalendarFold, Phone, Save, KeyRound } from "lucide-react";
 import InputCustom from "../components/InputCustom";
 import StaticTextCustom from "../components/StaticTextCustom";
 import CustomButton from "../components/CustomButton";
@@ -7,10 +7,10 @@ import toast, { Toaster } from "react-hot-toast";
 
 const Profile: React.FC = () => {
   const [profileImage, setProfileImage] = useState<string>("https://via.placeholder.com/100");
-  const [fullName, setFullName] = useState<string>("Oscar Kirk");
-  const [phoneNumber, setPhoneNumber] = useState<string>("(408) 996-1010");
-  const [hireDate, setHireDate] = useState<string>("17-12-2024");
-  const [grade, setGrade] = useState<string>("Patron");
+  const [fullName, _setFullName] = useState<string>("Oscar Kirk");
+  const [phoneNumber, _setPhoneNumber] = useState<string>("4089961010");
+  const [hireDate, _setHireDate] = useState<string>("17-12-2024");
+  const [grade, _setGrade] = useState<string>("Patron");
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -20,10 +20,6 @@ const Profile: React.FC = () => {
       };
       reader.readAsDataURL(e.target.files[0]);
     }
-  };
-
-  const handleImageRemove = () => {
-    setProfileImage("https://via.placeholder.com/100");
   };
 
   const formatPhoneNumber = (value: string) => {
@@ -132,7 +128,7 @@ const Profile: React.FC = () => {
             <p className="text-lg font-bold">Téléphone :</p>
             <StaticTextCustom
               icon={Phone}
-              text={phoneNumber}
+              text={formatPhoneNumber(phoneNumber)}
               bgColor="bg-gray-900/30"
               textColor="text-gray-400"
             />
