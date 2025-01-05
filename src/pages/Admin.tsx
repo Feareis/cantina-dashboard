@@ -1,30 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 import SearchBar from "../components/profile/SearchBar";
 import { Settings, Search, Users, FileLock, Album, SlidersHorizontal } from "lucide-react";
+import AdminDashboard from "./admin/AdminDashboard";
+import AdminEnterpriseSettings from "./admin/AdminEnterpriseSettings";
+import AdminTeamsManagement from "./admin/AdminTeamsManagement";
+import AdminUsersManagement from "./admin/AdminUsersManagement";
+import AdminSiteSettings from "./admin/AdminSiteSettings";
 
-const Profile: React.FC = () => {
+const Admin: React.FC = () => {
+  const [activeTab, setActiveTab] = React.useState<string>("dashboard");
+
   const tabs = [
-    { id: "dashboard", label: "Dashboard", icon: Album },
-    { id: "teams-management", label: "Liste Employés", icon: Users },
-    { id: "users-management", label: "Accès Site", icon: FileLock },
-    { id: "enterprise-settings", label: "Paramètres Entreprise", icon: SlidersHorizontal },
-    { id: "site-settings", label: "Paramètres du Site", icon: Settings },
+    { id: "dashboard", label: "Dashboard", icon: Album, type: "tab" },
+    { id: "separator", type: "separator" },
+    { id: "teams-management", label: "Liste Employés", icon: Users, type: "tab" },
+    { id: "users-management", label: "Accès Site", icon: FileLock, type: "tab" },
+    { id: "separator", type: "separator" },
+    { id: "enterprise-settings", label: "Paramètres Entreprise", icon: SlidersHorizontal, type: "tab" },
+    { id: "site-settings", label: "Paramètres du Site", icon: Settings, type: "tab" },
   ];
-
-  const [activeTab, setActiveTab] = useState<string>("dashboard");
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <div>Tableau de bord de l'entreprise.</div>;
+        return <AdminDashboard />;
       case "enterprise-settings":
-        return <div>Gestion des paramètres généraux de l'entreprise.</div>;
+        return <AdminEnterpriseSettings />;
       case "teams-management":
-        return <div>Gestion employées.</div>;
+        return <AdminTeamsManagement />;
       case "users-management":
-        return <div>Gestion accès site.</div>;
+        return <AdminUsersManagement />;
       case "site-settings":
-        return <div>Gestion des paramètres généraux du site.</div>;
+        return <AdminSiteSettings />;
       default:
         return <div>Sélectionnez un onglet pour afficher le contenu.</div>;
     }
@@ -39,7 +46,7 @@ const Profile: React.FC = () => {
 
       {/* Titre de l'onglet */}
       <div className={`flex justify-between ${bgOpacity} p-6 border border-gray-700 rounded-t-xl`}>
-        <h1 className="text-3xl font-bold">{tabs.find(tab => tab.id === activeTab)?.label}</h1>
+        <h1 className="text-2xl font-bold">Gestion Entreprise</h1>
 
         {/* Search Bar avec bordure */}
         <SearchBar
@@ -57,30 +64,36 @@ const Profile: React.FC = () => {
         {/* Barre latérale gauche */}
         <aside className={`w-1/4 h-[90%] ${bgOpacity} border-r border-gray-700 border-l border-gray-700 border-b border-gray-700 rounded-bl-xl p-6`}>
           <nav className="flex flex-col gap-4">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                className={`flex items-center gap-2 text-left p-2 rounded-lg ${
-                  activeTab === tab.id
-                    ? "bg-gray-500 text-white"
-                    : "hover:bg-gray-700 text-gray-400"
-                }`}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                <tab.icon size={20} />
-                {tab.label}
-              </button>
-            ))}
+            {tabs.map((tab) =>
+              tab.type === "tab" ? (
+                <button
+                  key={tab.id}
+                  className={`flex items-center gap-2 text-left p-2 rounded-lg ${
+                    activeTab === tab.id
+                      ? "bg-gray-500 text-white"
+                      : "hover:bg-gray-700 text-gray-400"
+                  }`}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  {tab.icon && <tab.icon size={20} />}
+                  {tab.label}
+                </button>
+              ) : (
+                <hr key={tab.id} className="my-2 border-t border-gray-700" />
+              )
+            )}
           </nav>
         </aside>
 
         {/* Contenu de l'onglet actif */}
         <main className={`flex-1 p-6 ${bgColorMain} border-r border-b border-gray-700`}>
-          <div className="p-6 text-xl text-center">{renderTabContent()}</div>
+          <div className="text-xl text-center">
+            {renderTabContent()}
+          </div>
         </main>
       </div>
     </div>
   );
 };
 
-export default Profile;
+export default Admin;
