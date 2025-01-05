@@ -34,8 +34,8 @@ const Dashboard: React.FC = () => {
   const QuotaWeekValue = 65000;
   const QuotaPlusValue = 63000;
 
-  // const cardBgColor = "bg-gradient-to-br from-indigo-800 from-10% via-sky-800 via-30% to-emerald-800 to-90% border border-gray-500";
-  const cardBgColor = "bg-gradient-to-b from-gray-900/30 from-10% via-gray-800 via-90% to-gray-700/50 to-95% border border-gray-500";
+  const cardBgColor = "bg-gradient-to-br from-indigo-800 from-10% via-sky-800 via-30% to-emerald-800 to-90% border border-gray-500";
+  // const cardBgColor = "bg-gradient-to-b from-gray-900/30 from-10% via-gray-800 via-90% to-gray-700/50 to-95% border border-gray-500";
 
   return (
     <div className="flex flex-col py-4 px-4 text-gray-900">

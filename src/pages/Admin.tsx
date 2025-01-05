@@ -1,47 +1,44 @@
-import SearchBar from "../components/profile/SearchBar";
-
 import React, { useState } from "react";
-import {
-  Settings,
-  User,
-  Search,
-  Users,
-  Minus,
-  FileLock,
-} from "lucide-react";
+import SearchBar from "../components/profile/SearchBar";
+import { Settings, Search, Users, FileLock, Album, SlidersHorizontal } from "lucide-react";
 
 const Profile: React.FC = () => {
-  // Onglets de la barre latérale
   const tabs = [
-    { id: "profile", label: "Profile", icon: User },
-    { id: "nothing", label: "", icon: Minus },
-    { id: "teams-management", label: "Liste employées", icon: Users },
-    { id: "users-management", label: "Accès employées", icon: FileLock },
-    { id: "enterprise-settings", label: "Paramètres entreprise", icon: Settings },
-    { id: "nothing", label: "", icon: Minus },
-    { id: "site-settings", label: "Paramètres du site", icon: Settings },
+    { id: "dashboard", label: "Dashboard", icon: Album },
+    { id: "teams-management", label: "Liste Employés", icon: Users },
+    { id: "users-management", label: "Accès Site", icon: FileLock },
+    { id: "enterprise-settings", label: "Paramètres Entreprise", icon: SlidersHorizontal },
+    { id: "site-settings", label: "Paramètres du Site", icon: Settings },
   ];
 
-  // État pour suivre l'onglet actif
-  const [activeTab, setActiveTab] = useState<string>("profile");
+  const [activeTab, setActiveTab] = useState<string>("dashboard");
 
-  // Contenu dynamique des onglets
   const renderTabContent = () => {
     switch (activeTab) {
-      case "profile":
-        return <div>Informations générales sur l'utilisateur. Tests test</div>;
-      case "settings":
-        return <div>Options avancées pour le profil.</div>;
+      case "dashboard":
+        return <div>Tableau de bord de l'entreprise.</div>;
+      case "enterprise-settings":
+        return <div>Gestion des paramètres généraux de l'entreprise.</div>;
+      case "teams-management":
+        return <div>Gestion employées.</div>;
+      case "users-management":
+        return <div>Gestion accès site.</div>;
+      case "site-settings":
+        return <div>Gestion des paramètres généraux du site.</div>;
       default:
         return <div>Sélectionnez un onglet pour afficher le contenu.</div>;
     }
   };
 
+  const bgColor = "bg-gradient-to-b from-gray-900/30 from-10% via-gray-800 via-90% to-gray-800/80 to-95%"
+  const bgColorMain = "bg-gradient-to-b from-gray-900 from-30% via-gray-900/50 via-90% to-gray-900/30 to-95%"
+  const bgOpacity = "bg-opacity-0"
+
   return (
-    <div className="min-h-screen bg-gray-800 text-gray-400 flex flex-col rounded-xl">
+    <div className={`${bgColor} text-gray-400 flex flex-col rounded-xl`}>
 
       {/* Titre de l'onglet */}
-      <div className="flex justify-between bg-gray-900 p-6 border border-gray-700 rounded-t-xl">
+      <div className={`flex justify-between ${bgOpacity} p-6 border border-gray-700 rounded-t-xl`}>
         <h1 className="text-3xl font-bold">{tabs.find(tab => tab.id === activeTab)?.label}</h1>
 
         {/* Search Bar avec bordure */}
@@ -56,8 +53,9 @@ const Profile: React.FC = () => {
 
       {/* Contenu principal */}
       <div className="flex flex-1">
+
         {/* Barre latérale gauche */}
-        <aside className="w-1/4 bg-gray-900 border-r border-gray-700 border-l border-gray-700 border-b border-gray-700 rounded-bl-xl p-6">
+        <aside className={`w-1/4 h-[90%] ${bgOpacity} border-r border-gray-700 border-l border-gray-700 border-b border-gray-700 rounded-bl-xl p-6`}>
           <nav className="flex flex-col gap-4">
             {tabs.map((tab) => (
               <button
@@ -77,7 +75,7 @@ const Profile: React.FC = () => {
         </aside>
 
         {/* Contenu de l'onglet actif */}
-        <main className="flex-1 p-6 bg-gray-800 border-r border-b border-gray-700">
+        <main className={`flex-1 p-6 ${bgColorMain} border-r border-b border-gray-700`}>
           <div className="p-6 text-xl text-center">{renderTabContent()}</div>
         </main>
       </div>

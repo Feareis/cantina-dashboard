@@ -1,7 +1,7 @@
 // Import necessary modules
 import React, { useState } from 'react';
 import CustomButton from "../components/CustomButton";
-import InputCustom from "../components/export-sales/InputCustom";
+import InputCustom from "../components/InputCustom";
 import { BadgeDollarSign, BadgeCent, ArrowUpNarrowWide, Salad } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -110,7 +110,7 @@ const ExportSales: React.FC = () => {
         toastOptions={{
           duration: 5000,
           style: {
-            marginTop: '80px',
+            marginTop: '150px',
           },
         }}
       />
