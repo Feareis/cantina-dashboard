@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import SearchBar from "../components/profile/SearchBar";
-import { Settings, Search, Users, FileLock, Album, SlidersHorizontal } from "lucide-react";
+import { Settings, Search, Users, FileLock, Album, SlidersHorizontal, Utensils } from "lucide-react";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminEnterpriseSettings from "./admin/AdminEnterpriseSettings";
 import AdminTeamsManagement from "./admin/AdminTeamsManagement";
 import AdminUsersManagement from "./admin/AdminUsersManagement";
 import AdminSiteSettings from "./admin/AdminSiteSettings";
+
+import InputCustom from "../components/InputCustom";
 
 
 const Admin: React.FC = () => {
@@ -63,7 +65,7 @@ const Admin: React.FC = () => {
       <div className="flex flex-1">
 
         {/* Barre latérale gauche */}
-        <aside className={`w-1/4 h-full ${bgOpacity} border-r border-gray-700 border-l border-gray-700 border-b border-gray-700 rounded-bl-xl p-6`}>
+        <aside className={`w-1/5 h-100% ${bgOpacity} border-r border-gray-700 border-l border-gray-700 border-b border-gray-700 rounded-bl-xl p-6`}>
           <nav className="flex flex-col gap-4">
             {tabs.map((tab) =>
               tab.type === "tab" ? (
@@ -88,9 +90,7 @@ const Admin: React.FC = () => {
 
         {/* Contenu de l'onglet actif */}
         <main className={`flex-1 p-6 ${bgColorMain} border-r border-b border-gray-700`}>
-          <div className="text-xl text-center">
-            {renderTabContent()}
-          </div>
+          {renderTabContent()}
         </main>
       </div>
     </div>

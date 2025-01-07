@@ -135,6 +135,7 @@ const ExportSales: React.FC = () => {
                 placeholder="Entrez le niveau d'expertise"
                 bgColor="bg-gray-900/70"
                 textColor="text-gray-400"
+                className="w-1/2"
               />
             </div>
           </label>
@@ -151,6 +152,7 @@ const ExportSales: React.FC = () => {
                 placeholder="Entrez le nombre de salades"
                 bgColor="bg-gray-900/70"
                 textColor="text-gray-400"
+                className="w-1/2"
               />
             </div>
           </label>

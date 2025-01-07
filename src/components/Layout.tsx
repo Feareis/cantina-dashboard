@@ -20,7 +20,7 @@ export function Layout({ children }: LayoutProps) {
     "/export-sales": { pageName: "Vente Exportateur", description: "Saisissez vos ventes exportateurs" },
     "/clients-sales": { pageName: "Vente Clients", description: "Saisissez vos ventes clients" },
     "/profile": { pageName: "Profil utilisateur", description: "Gérez vos paramètres" },
-    "/admin": { pageName: "Gestion Entreprise", description: "Gérez vos paramètres entreprise" },
+    "/admin": { pageName: "Admin panel", description: "Gérez vos paramètres entreprise/all" },
   };
 
   const currentBreadcrumb = breadcrumbs[location.pathname] || {
