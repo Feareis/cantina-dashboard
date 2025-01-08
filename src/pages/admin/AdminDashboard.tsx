@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import InputCustom from "../../components/InputCustom";
 import CustomButton from "../../components/CustomButton";
 import { DollarSign, Utensils, Save } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 
 const AdminDashboard: React.FC = () => {
@@ -15,8 +16,40 @@ const AdminDashboard: React.FC = () => {
   const [bestSellersExportEnabled, setBestSellersExportEnabled] = useState(true);
   const [bestSellersClientsEnabled, setBestSellersClientsEnabled] = useState(true);
 
+  // Toast
+  const saveSettings = () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("OK !");
+      }, 2000);
+    });
+  };
+
+  const handleSave = () => {
+    toast.promise(
+      saveSettings(),
+      {
+        loading: "Sauvegarde en cours...",
+        success: <b>OK !</b>,
+      },
+      {
+        style: {
+          marginTop: "100px",
+          padding: "16px",
+          borderRadius: "8px",
+          background: "#1f2937",
+          color: "#ffffff",
+          border: "1px solid #374151",
+        },
+      }
+    );
+  };
+
   return (
     <div className="p-8">
+
+      {/* Toast */}
+      <Toaster position="top-right" />
 
       {/* Gestion Quotas */}
       <div className="p-6 bg-gray-800/50 border border-gray-700 rounded-lg mb-8">
@@ -230,7 +263,7 @@ const AdminDashboard: React.FC = () => {
       <div className="flex justify-end mt-10">
         <CustomButton
           label="Save"
-          onClick=""
+          onClick={handleSave}
           className="bg-gradient-to-r from-blue-400/70 to-purple-500/70 text-white hover:bg-blue-700 px-6 py-2"
           icon={Save}
         />

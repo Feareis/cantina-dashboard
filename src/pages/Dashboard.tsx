@@ -1,9 +1,8 @@
 import React from "react";
 import QuotaCard from "../components/dashboard/QuotaCard";
 import RedistributionCustomTab from "../components/dashboard/RedistributionCustomTab";
-import TopSellersCustomTab from "../components/dashboard/TopSellersCustomTab";
 import DashboardCustomTable from "../components/dashboard/DashboardCustomTable";
-import { DollarSign, Coffee, Star } from "lucide-react";
+import { DollarSign, Coffee } from "lucide-react";
 
 const employeeData = [
   {

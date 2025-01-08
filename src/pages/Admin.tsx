@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import SearchBar from "../components/profile/SearchBar";
-import { Settings, Search, Users, FileLock, Album, SlidersHorizontal, Utensils } from "lucide-react";
+import { Settings, Search, Users, FileLock, Album, SlidersHorizontal } from "lucide-react";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminEnterpriseSettings from "./admin/AdminEnterpriseSettings";
 import AdminTeamsManagement from "./admin/AdminTeamsManagement";
 import AdminUsersManagement from "./admin/AdminUsersManagement";
 import AdminSiteSettings from "./admin/AdminSiteSettings";
-
-import InputCustom from "../components/InputCustom";
 
 
 const Admin: React.FC = () => {
