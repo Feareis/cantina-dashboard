@@ -76,42 +76,6 @@ const Dashboard: React.FC = () => {
             {/* Empty Space */}
             <div className="bg-transparent" />
           </div>
-
-          {/* Row 2: Best Sellers Tables */}
-          <div className="grid grid-cols-2 gap-4">
-
-            {/* Best Sellers - Export Sales */}
-            <TopSellersCustomTab
-              title="Meilleurs Vendeurs - Exportateur"
-              icon={Star}
-              bgColor={cardBgColor}
-              titleColor="text-white"
-              columnTitleColor="text-gray-200"
-              textColor="text-gray-300"
-              dividerColor="border-gray-200"
-              data={[
-                { name: "Alice", sales: 15, total: formatCurrency(1500) },
-                { name: "Bob", sales: 12, total: formatCurrency(1200) },
-                { name: "Charlie", sales: 10, total: formatCurrency(1000) },
-              ]}
-            />
-
-            {/* Best Sellers - Client Sales */}
-            <TopSellersCustomTab
-              title="Meilleurs Vendeurs - Client"
-              icon={Star}
-              bgColor={cardBgColor}
-              titleColor="text-white"
-              columnTitleColor="text-gray-200"
-              textColor="text-gray-300"
-              dividerColor="border-gray-200"
-              data={[
-                { name: "Alice", sales: 15, total: formatCurrency(1500) },
-                { name: "Bob", sales: 12, total: formatCurrency(1200) },
-                { name: "Charlie", sales: 10, total: formatCurrency(1000) },
-              ]}
-            />
-          </div>
         </div>
 
         {/* Right Section (1/4 of the page) - Redistribution Rates */}

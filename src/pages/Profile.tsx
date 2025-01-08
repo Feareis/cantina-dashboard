@@ -186,7 +186,7 @@ const Profile: React.FC = () => {
           <CustomButton
             label="Update"
             onClick={handleSave}
-            className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2"
+            className="bg-gradient-to-r from-blue-400/70 to-purple-500/70 text-white hover:bg-blue-700 px-6 py-2"
             icon={Save}
           />
         </div>

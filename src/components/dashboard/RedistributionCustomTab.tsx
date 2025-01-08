@@ -24,7 +24,7 @@ interface RedistributionCustomTabProps {
 
 // Divider component for separating sections
 const Divider = ({ color }: { color: string }) => (
-  <hr className={`w-[95%] mx-auto border-t ${color} mb-4`} />
+  <hr className={`w-full mx-auto border-t ${color} mb-4`} />
 );
 
 const RedistributionCustomTab: React.FC<RedistributionCustomTabProps> = ({

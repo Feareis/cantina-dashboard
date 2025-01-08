@@ -45,7 +45,7 @@ const Admin: React.FC = () => {
   const bgOpacity = "bg-opacity-0"
 
   return (
-    <div className={`${bgColor} text-gray-400 flex flex-col rounded-xl`}>
+    <div className={`flex flex-col ${bgColor} text-gray-400 rounded-xl`}>
 
       {/* Onglet avec SearchBar */}
       <div className={`flex justify-between ${bgOpacity} p-6 border border-gray-700 rounded-t-xl`}>
@@ -62,7 +62,7 @@ const Admin: React.FC = () => {
       </div>
 
       {/* Contenu principal */}
-      <div className="flex flex-1">
+      <div className="flex">
 
         {/* Barre latérale gauche */}
         <aside className={`w-1/5 h-100% ${bgOpacity} border-r border-gray-700 border-l border-gray-700 border-b border-gray-700 rounded-bl-xl p-6`}>
@@ -89,7 +89,7 @@ const Admin: React.FC = () => {
         </aside>
 
         {/* Contenu de l'onglet actif */}
-        <main className={`flex-1 p-6 ${bgColorMain} border-r border-b border-gray-700`}>
+        <main className={`flex-1 p-6 min-h-96 ${bgColorMain} border-r border-b border-gray-700`}>
           {renderTabContent()}
         </main>
       </div>
