@@ -77,22 +77,32 @@ const Calculator: React.FC = () => {
   // Apply quotas to quantities
   const applyQuota = () => {
     const updates = parseQuota(quota);
-    setQuantities((prev) =>
-      Object.keys(updates).reduce((acc, key) => {
-        acc[key] = (prev[key] || 0) + updates[key];
-        return acc;
-      }, { ...prev })
-    );
+    setQuantities((prev) => {
+      const updatedQuantities = { ...prev };
+      Object.keys(updates).forEach((key) => {
+        if (key in quantities) {
+          const typedKey = key as keyof typeof quantities;
+          updatedQuantities[typedKey] =
+            (prev[typedKey] || 0) + (updates[typedKey] || 0);
+        }
+      });
+      return updatedQuantities;
+    });
   };
 
   const applyQuotaPlus = () => {
     const updates = parseQuota(quotaPlus);
-    setQuantities((prev) =>
-      Object.keys(updates).reduce((acc, key) => {
-        acc[key] = (prev[key] || 0) + updates[key];
-        return acc;
-      }, { ...prev })
-    );
+    setQuantities((prev) => {
+      const updatedQuantities = { ...prev };
+      Object.keys(updates).forEach((key) => {
+        if (key in quantities) {
+          const typedKey = key as keyof typeof quantities;
+          updatedQuantities[typedKey] =
+            (prev[typedKey] || 0) + (updates[typedKey] || 0);
+        }
+      });
+      return updatedQuantities;
+    });
   };
 
   const applyQuotaFull = () => {
@@ -101,14 +111,13 @@ const Calculator: React.FC = () => {
   };
 
   // Parse quota descriptions
-  const parseQuota = (quotaString: string) => {
-    const updates: { [key: string]: number } = {};
+  const parseQuota = (quotaString: string): Partial<Record<keyof typeof quantities, number>> => {
+    const updates: Partial<Record<keyof typeof quantities, number>> = {};
     const parts = quotaString.split("+").map((part) => part.trim());
     parts.forEach((part) => {
       const [value, key] = part.split(" ");
-      if (value && key) {
-        const lowerKey = key.toLowerCase();
-        updates[lowerKey] = (updates[lowerKey] || 0) + parseInt(value, 10);
+      if (value && key && key.toLowerCase() in quantities) {
+        updates[key.toLowerCase() as keyof typeof quantities] = parseInt(value, 10) || 0;
       }
     });
     return updates;
