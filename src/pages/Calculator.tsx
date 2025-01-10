@@ -8,7 +8,7 @@ import { supabase } from "../api/supabaseClient";
 import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo, Poisson, Epices } from "../assets/products/indexProducts";
 
 // Product configuration
-const items = [
+const items: { name: keyof typeof quantities; image: string; increments: number[]; decrements: number[] }[] = [
   { name: "salade", image: SaladeCayo, increments: [50], decrements: [50] },
   { name: "risotto", image: RisottoCayo, increments: [10], decrements: [10] },
   { name: "plateau", image: PlateauCayo, increments: [10], decrements: [10] },
@@ -52,7 +52,7 @@ const Calculator: React.FC = () => {
   }, []);
 
   // Handle input change for product quantities
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: keyof typeof quantities) => {
     const value = parseInt(e.target.value, 10);
     setQuantities((prev) => ({ ...prev, [key]: isNaN(value) ? 0 : value }));
   };
@@ -147,12 +147,12 @@ const Calculator: React.FC = () => {
             key={item.name}
             name={item.name}
             image={item.image}
-            quantity={quantities[item.name as keyof typeof quantities]}
+            quantity={quantities[item.name]}
             increments={item.increments}
             decrements={item.decrements}
-            onIncrement={(value) => increment(item.name as keyof typeof quantities, value)}
-            onDecrement={(value) => decrement(item.name as keyof typeof quantities, value)}
-            onInputChange={(e) => handleInputChange(e, item.name as keyof typeof quantities)}
+            onIncrement={(value) => increment(item.name, value)}
+            onDecrement={(value) => decrement(item.name, value)}
+            onInputChange={(e) => handleInputChange(e, item.name)}
           />
         ))}
       </div>
