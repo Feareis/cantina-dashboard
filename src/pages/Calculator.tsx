@@ -117,7 +117,8 @@ const Calculator: React.FC = () => {
     parts.forEach((part) => {
       const [value, key] = part.split(" ");
       if (value && key && key.toLowerCase() in quantities) {
-        updates[key.toLowerCase() as keyof typeof quantities] = parseInt(value, 10) || 0;
+        const typedKey = key.toLowerCase() as keyof typeof quantities;
+        updates[typedKey] = (updates[typedKey] || 0) + parseInt(value, 10);
       }
     });
     return updates;
