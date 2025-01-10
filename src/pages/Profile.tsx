@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Upload, User, CalendarFold, Phone, Save, KeyRound } from "lucide-react";
+import { Upload, User, CalendarFold, Phone, Save, KeyRound, ShieldHalf } from "lucide-react";
 import InputCustom from "../components/InputCustom";
 import StaticTextCustom from "../components/StaticTextCustom";
 import CustomButton from "../components/CustomButton";
 import toast, { Toaster } from "react-hot-toast";
 
 const Profile: React.FC = () => {
-  const [profileImage, setProfileImage] = useState<string>("https://via.placeholder.com/100");
+  const [profileImage, setProfileImage] = useState<string>("/static/profile_picture/patron-employes.png");
   const [fullName, _setFullName] = useState<string>("Oscar Kirk");
   const [phoneNumber, _setPhoneNumber] = useState<string>("4089961010");
   const [hireDate, _setHireDate] = useState<string>("17-12-2024");
@@ -111,6 +111,17 @@ const Profile: React.FC = () => {
 
         {/* Informations Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          {/* Grade */}
+          <label className="block">
+            <p className="text-lg font-bold">Grade :</p>
+            <StaticTextCustom
+              icon={ShieldHalf}
+              text={grade}
+              bgColor="bg-gray-900/30"
+              textColor="text-gray-400"
+            />
+          </label>
 
           {/* Prénom Nom */}
           <label className="block">

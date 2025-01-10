@@ -32,7 +32,7 @@ const QuotaCard: React.FC<QuotaCardProps> = ({
 }) => {
   return (
     <div
-      className={`p-4 rounded-lg shadow-md transform transition duration-200 hover:scale-105 ${bgColor}`}
+      className={`my-auto p-4 rounded-lg shadow-md transform transition duration-200 hover:scale-105 ${bgColor}`}
     >
       {/* Header Section: Title and Optional Icon */}
       <div className={`flex justify-between items-center ${textColor}`}>

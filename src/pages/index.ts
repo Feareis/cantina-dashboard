@@ -1,5 +1,4 @@
 export { default as Dashboard } from "./Dashboard";
-export { default as Stats } from "./Stats";
 export { default as Calculator } from "./Calculator";
 export { default as ExportSales } from "./ExportSales";
 export { default as ClientsSales } from "./ClientsSales";

@@ -45,9 +45,6 @@ const RedistributionCustomTab: React.FC<RedistributionCustomTabProps> = ({
         {title}
       </h3>
 
-      {/* Divider */}
-      <Divider color={dividerColor} />
-
       {/* Sections */}
       {sections.map((section, index) => (
         <div key={index} className="mb-2">

@@ -4,6 +4,9 @@ import { Settings, Search, Users, FileLock, Album, SlidersHorizontal } from "luc
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminEnterpriseSettings from "./admin/AdminEnterpriseSettings";
 import AdminTeamsManagement from "./admin/AdminTeamsManagement";
+
+import AdminTeamsManagementTest from "./admin/AdminTeamsManagementTest";
+
 import AdminUsersManagement from "./admin/AdminUsersManagement";
 import AdminSiteSettings from "./admin/AdminSiteSettings";
 
@@ -15,6 +18,7 @@ const Admin: React.FC = () => {
     { id: "dashboard", label: "Dashboard", icon: Album, type: "tab" },
     { id: "separator-1", type: "separator" },
     { id: "teams-management", label: "Liste Employés", icon: Users, type: "tab" },
+    { id: "teams-management-test", label: "Liste Employés test", icon: Users, type: "tab" },
     { id: "users-management", label: "Accès Site", icon: FileLock, type: "tab" },
     { id: "separator-2", type: "separator" },
     { id: "enterprise-settings", label: "Paramètres Entreprise", icon: SlidersHorizontal, type: "tab" },
@@ -29,6 +33,8 @@ const Admin: React.FC = () => {
         return <AdminEnterpriseSettings />;
       case "teams-management":
         return <AdminTeamsManagement />;
+      case "teams-management-test":
+        return <AdminTeamsManagementTest />;
       case "users-management":
         return <AdminUsersManagement />;
       case "site-settings":
@@ -43,7 +49,7 @@ const Admin: React.FC = () => {
   const bgOpacity = "bg-opacity-0"
 
   return (
-    <div className={`flex flex-col ${bgColor} text-gray-400 rounded-xl`}>
+    <div className={`mx-auto flex flex-col ${bgColor} text-gray-400 rounded-xl`}>
 
       {/* Onglet avec SearchBar */}
       <div className={`flex justify-between ${bgOpacity} p-6 border border-gray-700 rounded-t-xl`}>
@@ -87,7 +93,7 @@ const Admin: React.FC = () => {
         </aside>
 
         {/* Contenu de l'onglet actif */}
-        <main className={`flex-1 p-6 min-h-96 ${bgColorMain} border-r border-b border-gray-700`}>
+        <main className={`h-50 flex-1 p-6 min-h-96 ${bgColorMain} border-r border-b border-gray-700`}>
           {renderTabContent()}
         </main>
       </div>

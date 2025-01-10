@@ -16,7 +16,6 @@ export function Layout({ children }: LayoutProps) {
   // Configuration des breadcrumbs dynamiques
   const breadcrumbs: { [key: string]: { pageName: string; description?: string } } = {
     "/": { pageName: "Dashboard", description: "Retrouvez toutes les informations générales de l'entreprise" },
-    "/stats": { pageName: "Stats", description: "Retrouvez tout les classements des utilisateurs" },
     "/calculator": { pageName: "Calculateur de matières premières", description: "Effectuez des calculs rapides sur le nombre de matières premières dont vous avez besoins" },
     "/export-sales": { pageName: "Vente Exportateur", description: "Saisissez vos ventes exportateurs" },
     "/clients-sales": { pageName: "Vente Clients", description: "Saisissez vos ventes clients" },
@@ -88,18 +87,6 @@ export function Layout({ children }: LayoutProps) {
               >
                 <ChartArea size={18} />
                 Dashboard
-              </Link>
-              <Link
-                to="/stats"
-                state={{ from: location.pathname }}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                  location.pathname === "/stats"
-                    ? "bg-blue-500/20 text-blue-400"
-                    : "hover:text-white hover:bg-white/5"
-                }`}
-              >
-                <ChartBarBig size={18} />
-                Stats
               </Link>
               <Link
                 to="/calculator"
