@@ -11,7 +11,7 @@ const WeeklyDashboardTable: React.FC = () => {
     first_name: string;
     last_name: string;
     phone: string;
-    grade: "Responsable" | "CDI" | "CDD";
+    grade: "Responsable" | "CDI" | "CDD" | "Patron" | "Co-Patron";
     hire_date: string;
     vcp: number; // Vente Client Propre
     vcs: number; // Vente Client Sale
@@ -27,11 +27,6 @@ const WeeklyDashboardTable: React.FC = () => {
     CDD: 3,
   };
 
-  // Fonction pour trier les employés selon les rôles
-  const sortEmployees = (data: Employee[]) => {
-    return data.sort((a, b) => rolePriority[a.grade] - rolePriority[b.grade]);
-  };
-
   // Fonction pour récupérer les données depuis Supabase
   const fetchEmployeeData = async () => {
     setLoading(true);
@@ -42,9 +37,9 @@ const WeeklyDashboardTable: React.FC = () => {
         return;
       }
 
-      // Trier les employés selon leur grade
+      // Filtrer et trier
       const sortedData = (data as Employee[])
-        .filter((employee) => employee.grade !== "Patron" && employee.grade !== "Co-Patron")
+        .filter((employee) => ["Responsable", "CDI", "CDD"].includes(employee.grade))
         .sort((a, b) => rolePriority[a.grade] - rolePriority[b.grade]);
 
       setEmployeeData(sortedData);
