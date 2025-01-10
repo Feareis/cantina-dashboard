@@ -9,15 +9,15 @@ import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo, Poisson, Epices } fr
 
 // Product configuration
 const items = [
-  { name: "Salade", image: SaladeCayo, increments: [50], decrements: [50] },
-  { name: "Risotto", image: RisottoCayo, increments: [10], decrements: [10] },
-  { name: "Plateau", image: PlateauCayo, increments: [10], decrements: [10] },
-  { name: "Montara", image: MontaraCayo, increments: [10], decrements: [10] },
+  { name: "salade", image: SaladeCayo, increments: [50], decrements: [50] },
+  { name: "risotto", image: RisottoCayo, increments: [10], decrements: [10] },
+  { name: "plateau", image: PlateauCayo, increments: [10], decrements: [10] },
+  { name: "montara", image: MontaraCayo, increments: [10], decrements: [10] },
 ];
 
 const Calculator: React.FC = () => {
   // State management
-  const [quantities, setQuantities] = useState({
+  const [quantities, setQuantities] = useState<Record<"salade" | "risotto" | "plateau" | "montara", number>>({
     salade: 0,
     risotto: 0,
     plateau: 0,
@@ -58,13 +58,14 @@ const Calculator: React.FC = () => {
   };
 
   // Increment or decrement product quantities
-  const increment = (key: string, value: number) => {
-    setQuantities((prev) => ({ ...prev, [key]: (prev[key as keyof typeof quantities] || 0) + value }));
+  const increment = (key: keyof typeof quantities, value: number) => {
+    setQuantities((prev) => ({ ...prev, [key]: prev[key] + value }));
   };
-  const decrement = (key: string, value: number) => {
+
+  const decrement = (key: keyof typeof quantities, value: number) => {
     setQuantities((prev) => ({
       ...prev,
-      [key]: Math.max((prev[key as keyof typeof quantities] || 0) - value, 0),
+      [key]: Math.max(prev[key] - value, 0),
     }));
   };
 
@@ -146,12 +147,12 @@ const Calculator: React.FC = () => {
             key={item.name}
             name={item.name}
             image={item.image}
-            quantity={quantities[item.name.toLowerCase() as keyof typeof quantities] || 0}
+            quantity={quantities[item.name as keyof typeof quantities]}
             increments={item.increments}
             decrements={item.decrements}
-            onIncrement={(value) => increment(item.name.toLowerCase(), value)}
-            onDecrement={(value) => decrement(item.name.toLowerCase(), value)}
-            onInputChange={(e) => handleInputChange(e, item.name.toLowerCase())}
+            onIncrement={(value) => increment(item.name as keyof typeof quantities, value)}
+            onDecrement={(value) => decrement(item.name as keyof typeof quantities, value)}
+            onInputChange={(e) => handleInputChange(e, item.name as keyof typeof quantities)}
           />
         ))}
       </div>
