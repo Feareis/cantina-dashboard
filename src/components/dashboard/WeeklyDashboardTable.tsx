@@ -22,9 +22,11 @@ const WeeklyDashboardTable: React.FC = () => {
   }
 
   const rolePriority: { [key in Employee["grade"]]: number } = {
-    Responsable: 1,
-    CDI: 2,
-    CDD: 3,
+    Patron: 0, // Priorité pour "Patron"
+    "Co-Patron": 0, // Priorité pour "Co-Patron"
+    Responsable: 1, // Priorité pour "Responsable"
+    CDI: 2, // Priorité pour "CDI"
+    CDD: 3, // Priorité pour "CDD"
   };
 
   // Fonction pour récupérer les données depuis Supabase
@@ -39,7 +41,7 @@ const WeeklyDashboardTable: React.FC = () => {
 
       // Filtrer et trier
       const sortedData = (data as Employee[])
-        .filter((employee) => ["Responsable", "CDI", "CDD"].includes(employee.grade))
+        .filter((employee) => employee.grade !== "Patron" && employee.grade !== "Co-Patron")
         .sort((a, b) => rolePriority[a.grade] - rolePriority[b.grade]);
 
       setEmployeeData(sortedData);
