@@ -7,16 +7,8 @@ import CustomButton from "../components/CustomButton";
 import { supabase } from "../api/supabaseClient";
 import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo, Poisson, Epices } from "../assets/products/indexProducts";
 
-// Product configuration
-const items: { name: keyof typeof quantities; image: string; increments: number[]; decrements: number[] }[] = [
-  { name: "salade", image: SaladeCayo, increments: [50], decrements: [50] },
-  { name: "risotto", image: RisottoCayo, increments: [10], decrements: [10] },
-  { name: "plateau", image: PlateauCayo, increments: [10], decrements: [10] },
-  { name: "montara", image: MontaraCayo, increments: [10], decrements: [10] },
-];
-
 const Calculator: React.FC = () => {
-  // State management
+  // State for quantities
   const [quantities, setQuantities] = useState<Record<"salade" | "risotto" | "plateau" | "montara", number>>({
     salade: 0,
     risotto: 0,
@@ -24,11 +16,18 @@ const Calculator: React.FC = () => {
     montara: 0,
   });
 
+  // Product configuration
+  const items: { name: keyof typeof quantities; image: string; increments: number[]; decrements: number[] }[] = [
+    { name: "salade", image: SaladeCayo, increments: [50], decrements: [50] },
+    { name: "risotto", image: RisottoCayo, increments: [10], decrements: [10] },
+    { name: "plateau", image: PlateauCayo, increments: [10], decrements: [10] },
+    { name: "montara", image: MontaraCayo, increments: [10], decrements: [10] },
+  ];
+
   const [total, setTotal] = useState({ poisson: 0, epices: 0 });
   const [quota, setQuota] = useState<string>("");
   const [quotaPlus, setQuotaPlus] = useState<string>("");
 
-  // Fetch quotas from Supabase
   const fetchQuotas = async () => {
     const { data, error } = await supabase
       .from("data")
@@ -40,7 +39,6 @@ const Calculator: React.FC = () => {
       return;
     }
 
-    // Parse and set quota descriptions
     const quotaDescription = data?.find((item) => item.key === "quota_description")?.value || "";
     const quotaPlusDescription = data?.find((item) => item.key === "quota-plus_description")?.value || "";
     setQuota(quotaDescription);
@@ -48,69 +46,26 @@ const Calculator: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchQuotas(); // Fetch quotas on component mount
+    fetchQuotas();
   }, []);
 
-  // Handle input change for product quantities
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: keyof typeof quantities) => {
     const value = parseInt(e.target.value, 10);
     setQuantities((prev) => ({ ...prev, [key]: isNaN(value) ? 0 : value }));
   };
 
-  // Increment or decrement product quantities
   const increment = (key: keyof typeof quantities, value: number) => {
     setQuantities((prev) => ({ ...prev, [key]: prev[key] + value }));
   };
 
   const decrement = (key: keyof typeof quantities, value: number) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [key]: Math.max(prev[key] - value, 0),
-    }));
+    setQuantities((prev) => ({ ...prev, [key]: Math.max(prev[key] - value, 0) }));
   };
 
-  // Reset all quantities
   const resetAll = () => {
     setQuantities({ salade: 0, risotto: 0, plateau: 0, montara: 0 });
   };
 
-  // Apply quotas to quantities
-  const applyQuota = () => {
-    const updates = parseQuota(quota);
-    setQuantities((prev) => {
-      const updatedQuantities = { ...prev };
-      Object.keys(updates).forEach((key) => {
-        if (key in quantities) {
-          const typedKey = key as keyof typeof quantities;
-          updatedQuantities[typedKey] =
-            (prev[typedKey] || 0) + (updates[typedKey] || 0);
-        }
-      });
-      return updatedQuantities;
-    });
-  };
-
-  const applyQuotaPlus = () => {
-    const updates = parseQuota(quotaPlus);
-    setQuantities((prev) => {
-      const updatedQuantities = { ...prev };
-      Object.keys(updates).forEach((key) => {
-        if (key in quantities) {
-          const typedKey = key as keyof typeof quantities;
-          updatedQuantities[typedKey] =
-            (prev[typedKey] || 0) + (updates[typedKey] || 0);
-        }
-      });
-      return updatedQuantities;
-    });
-  };
-
-  const applyQuotaFull = () => {
-    applyQuota();
-    applyQuotaPlus();
-  };
-
-  // Parse quota descriptions
   const parseQuota = (quotaString: string): Partial<Record<keyof typeof quantities, number>> => {
     const updates: Partial<Record<keyof typeof quantities, number>> = {};
     const parts = quotaString.split("+").map((part) => part.trim());
@@ -124,7 +79,39 @@ const Calculator: React.FC = () => {
     return updates;
   };
 
-  // Update total calculations based on quantities
+  const applyQuota = () => {
+    const updates = parseQuota(quota);
+    setQuantities((prev) => {
+      const updatedQuantities = { ...prev };
+      Object.keys(updates).forEach((key) => {
+        if (key in quantities) {
+          const typedKey = key as keyof typeof quantities;
+          updatedQuantities[typedKey] = (prev[typedKey] || 0) + (updates[typedKey] || 0);
+        }
+      });
+      return updatedQuantities;
+    });
+  };
+
+  const applyQuotaPlus = () => {
+    const updates = parseQuota(quotaPlus);
+    setQuantities((prev) => {
+      const updatedQuantities = { ...prev };
+      Object.keys(updates).forEach((key) => {
+        if (key in quantities) {
+          const typedKey = key as keyof typeof quantities;
+          updatedQuantities[typedKey] = (prev[typedKey] || 0) + (updates[typedKey] || 0);
+        }
+      });
+      return updatedQuantities;
+    });
+  };
+
+  const applyQuotaFull = () => {
+    applyQuota();
+    applyQuotaPlus();
+  };
+
   useEffect(() => {
     const poisson =
       quantities.salade * 2 +
@@ -141,7 +128,6 @@ const Calculator: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center text-gray-900 w-full max-w-8xl mx-auto">
-      {/* Buttons for quota actions */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-5 mb-10 w-full px-4">
         <CustomButton label="Quota" onClick={applyQuota} className="bg-green-500 text-gray-700 hover:bg-green-600" icon={CheckCircle} />
         <CustomButton label="Quota+" onClick={applyQuotaPlus} className="bg-yellow-500 text-gray-700 hover:bg-yellow-600" icon={PlusCircle} />
@@ -150,11 +136,10 @@ const Calculator: React.FC = () => {
         <CustomButton label="Reset all" onClick={resetAll} className="bg-red-500 text-white hover:bg-red-600" icon={RefreshCw} />
       </div>
 
-      {/* Product cards for quantity management */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full px-4">
         {items.map((item) => (
           <ProductCard
-            key={item.name}
+            key={String(item.name)}
             name={item.name}
             image={item.image}
             quantity={quantities[item.name]}
@@ -167,7 +152,6 @@ const Calculator: React.FC = () => {
         ))}
       </div>
 
-      {/* Totals display */}
       <div className="w-full border-t border-gray-500 mt-10"></div>
       <div className="w-3/4 items-center p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full px-8 mt-5">
