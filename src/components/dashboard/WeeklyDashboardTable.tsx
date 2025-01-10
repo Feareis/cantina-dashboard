@@ -11,7 +11,7 @@ const WeeklyDashboardTable: React.FC = () => {
     first_name: string;
     last_name: string;
     phone: string;
-    grade: "Responsable" | "CDI" | "CDD" | "Patron" | "Co-Patron";
+    grade: "Patron" | "Co-Patron" | "Responsable" | "CDI" | "CDD";
     hire_date: string;
     vcp: number; // Vente Client Propre
     vcs: number; // Vente Client Sale
