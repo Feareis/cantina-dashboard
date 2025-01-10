@@ -2,70 +2,34 @@ import React, { useEffect, useState } from "react";
 import { CheckCircle, XCircle } from "lucide-react";
 import { supabase } from "../../api/supabaseClient";
 
-const employeeData = [
-  {
-    role: "Patron",
-    name: "Jean Dupont",
-    alias: "Jean.D",
-    sales: {
-      clientPropre: 500,
-      clientSale: 300,
-      exportPropre: 400,
-      exportSale: 200,
-    },
-    total: {
-      quota: true,
-      quotaPlus: true,
-      prime: 1000,
-      taxe: 1000,
-    },
-  },
-  {
-    role: "Responsable",
-    name: "Marie Curie",
-    alias: "Marie.C",
-    sales: {
-      clientPropre: 600,
-      clientSale: 400,
-      exportPropre: 500,
-      exportSale: 300,
-    },
-    total: {
-      quota: true,
-      quotaPlus: false,
-      prime: 1000,
-      taxe: 1000,
-    },
-  },
-  {
-    role: "CDD",
-    name: "Diana Ramirez-Garcia-Diaz",
-    alias: "Diana.RGD",
-    sales: {
-      clientPropre: 600,
-      clientSale: 400,
-      exportPropre: 500,
-      exportSale: 300,
-    },
-    total: {
-      quota: true,
-      quotaPlus: false,
-      prime: 1000,
-      taxe: 1000,
-    },
-  },
-];
-
-const ComplexDivTable: React.FC = () => {
+const WeeklyDashboardTable: React.FC = () => {
   const [employeeData, setEmployeeData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  interface Employee {
+    id: string;
+    first_name: string;
+    last_name: string;
+    phone: string;
+    grade: "Responsable" | "CDI" | "CDD";
+    hire_date: string;
+    vcp: number; // Vente Client Propre
+    vcs: number; // Vente Client Sale
+    vep: number; // Vente Export Propre
+    ves: number; // Vente Export Sale
+    quota: boolean;
+    quota_plus: boolean;
+  }
+
+  const rolePriority: { [key in Employee["grade"]]: number } = {
+    Responsable: 1,
+    CDI: 2,
+    CDD: 3,
+  };
+
   // Fonction pour trier les employés selon les rôles
-  const sortEmployees = (data: any[]) => {
-    const rolePriority = { Responsable: 1, CDI: 2, CDD: 3 }; // Priorité des rôles
-    return data.sort((a, b) => {
-      return rolePriority[a.role] - rolePriority[b.role];
-    });
+  const sortEmployees = (data: Employee[]) => {
+    return data.sort((a, b) => rolePriority[a.grade] - rolePriority[b.grade]);
   };
 
   // Fonction pour récupérer les données depuis Supabase
@@ -77,7 +41,7 @@ const ComplexDivTable: React.FC = () => {
         console.error("Erreur lors de la récupération des données : ", error);
         return;
       }
-      const sortedData = sortEmployees(data || []);
+      const sortedData = sortEmployees(data as Employee[]); // Typecast explicite
       setEmployeeData(sortedData);
     } catch (error) {
       console.error("Erreur inconnue : ", error);
@@ -248,4 +212,4 @@ const ComplexDivTable: React.FC = () => {
   );
 };
 
-export default ComplexDivTable;
+export default WeeklyDashboardTable;
