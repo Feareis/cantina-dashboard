@@ -1,9 +1,10 @@
-// Import necessary modules
+// Import necessary modules and assets
 import React, { useState, useEffect } from "react";
 import { CheckCircle, PlusCircle, ShieldCheck, RefreshCw } from "lucide-react";
 import ProductCard from "../components/card/ProductCard";
 import MaterialCard from "../components/card/MaterialCard";
 import CustomButton from "../components/CustomButton";
+import { supabase } from "../api/supabaseClient";
 import { SaladeCayo, RisottoCayo, PlateauCayo, MontaraCayo, Poisson, Epices } from "../assets/products/indexProducts";
 
 // Product configuration
@@ -15,7 +16,7 @@ const items = [
 ];
 
 const Calculator: React.FC = () => {
-  // State for quantities of products
+  // State management
   const [quantities, setQuantities] = useState({
     salade: 0,
     risotto: 0,
@@ -23,24 +24,43 @@ const Calculator: React.FC = () => {
     montara: 0,
   });
 
-  // State for total calculations
-  const [total, setTotal] = useState({
-    poisson: 0,
-    epices: 0,
-  });
+  const [total, setTotal] = useState({ poisson: 0, epices: 0 });
+  const [quota, setQuota] = useState<string>("");
+  const [quotaPlus, setQuotaPlus] = useState<string>("");
 
-  // Handle input change for quantity
+  // Fetch quotas from Supabase
+  const fetchQuotas = async () => {
+    const { data, error } = await supabase
+      .from("data")
+      .select("key, value")
+      .in("key", ["quota_description", "quota-plus_description"]);
+
+    if (error) {
+      console.error("Error fetching quotas:", error);
+      return;
+    }
+
+    // Parse and set quota descriptions
+    const quotaDescription = data?.find((item) => item.key === "quota_description")?.value || "";
+    const quotaPlusDescription = data?.find((item) => item.key === "quota-plus_description")?.value || "";
+    setQuota(quotaDescription);
+    setQuotaPlus(quotaPlusDescription);
+  };
+
+  useEffect(() => {
+    fetchQuotas(); // Fetch quotas on component mount
+  }, []);
+
+  // Handle input change for product quantities
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
-    const value = parseInt(e.target.value);
+    const value = parseInt(e.target.value, 10);
     setQuantities((prev) => ({ ...prev, [key]: isNaN(value) ? 0 : value }));
   };
 
-  // Increment quantity by a specific value
+  // Increment or decrement product quantities
   const increment = (key: string, value: number) => {
     setQuantities((prev) => ({ ...prev, [key]: (prev[key as keyof typeof quantities] || 0) + value }));
   };
-
-  // Decrement quantity by a specific value
   const decrement = (key: string, value: number) => {
     setQuantities((prev) => ({
       ...prev,
@@ -53,20 +73,25 @@ const Calculator: React.FC = () => {
     setQuantities({ salade: 0, risotto: 0, plateau: 0, montara: 0 });
   };
 
-  // Apply specific quotas
+  // Apply quotas to quantities
   const applyQuota = () => {
-    setQuantities((prev) => ({
-      ...prev,
-      risotto: (prev.risotto || 0) + 200,
-      plateau: (prev.plateau || 0) + 200,
-    }));
+    const updates = parseQuota(quota);
+    setQuantities((prev) =>
+      Object.keys(updates).reduce((acc, key) => {
+        acc[key] = (prev[key] || 0) + updates[key];
+        return acc;
+      }, { ...prev })
+    );
   };
 
   const applyQuotaPlus = () => {
-    setQuantities((prev) => ({
-      ...prev,
-      plateau: (prev.plateau || 0) + 400,
-    }));
+    const updates = parseQuota(quotaPlus);
+    setQuantities((prev) =>
+      Object.keys(updates).reduce((acc, key) => {
+        acc[key] = (prev[key] || 0) + updates[key];
+        return acc;
+      }, { ...prev })
+    );
   };
 
   const applyQuotaFull = () => {
@@ -74,7 +99,21 @@ const Calculator: React.FC = () => {
     applyQuotaPlus();
   };
 
-  // Update totals whenever quantities change
+  // Parse quota descriptions
+  const parseQuota = (quotaString: string) => {
+    const updates: { [key: string]: number } = {};
+    const parts = quotaString.split("+").map((part) => part.trim());
+    parts.forEach((part) => {
+      const [value, key] = part.split(" ");
+      if (value && key) {
+        const lowerKey = key.toLowerCase();
+        updates[lowerKey] = (updates[lowerKey] || 0) + parseInt(value, 10);
+      }
+    });
+    return updates;
+  };
+
+  // Update total calculations based on quantities
   useEffect(() => {
     const poisson =
       quantities.salade * 2 +
@@ -86,14 +125,12 @@ const Calculator: React.FC = () => {
       quantities.risotto * 5 +
       quantities.plateau * 10 +
       quantities.montara * 5;
-
     setTotal({ poisson, epices });
   }, [quantities]);
 
   return (
     <div className="flex flex-col items-center text-gray-900 w-full max-w-8xl mx-auto">
-
-      {/* Buttons */}
+      {/* Buttons for quota actions */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-5 mb-10 w-full px-4">
         <CustomButton label="Quota" onClick={applyQuota} className="bg-green-500 text-gray-700 hover:bg-green-600" icon={CheckCircle} />
         <CustomButton label="Quota+" onClick={applyQuotaPlus} className="bg-yellow-500 text-gray-700 hover:bg-yellow-600" icon={PlusCircle} />
@@ -102,29 +139,25 @@ const Calculator: React.FC = () => {
         <CustomButton label="Reset all" onClick={resetAll} className="bg-red-500 text-white hover:bg-red-600" icon={RefreshCw} />
       </div>
 
-      {/* Product Cards */}
+      {/* Product cards for quantity management */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full px-4">
         {items.map((item) => (
-          <div key={item.name}>
-            <ProductCard
-              key={item.name}
-              name={item.name}
-              image={item.image}
-              quantity={quantities[item.name.toLowerCase() as keyof typeof quantities] || 0}
-              increments={item.increments}
-              decrements={item.decrements}
-              onIncrement={(value) => increment(item.name.toLowerCase(), value)}
-              onDecrement={(value) => decrement(item.name.toLowerCase(), value)}
-              onInputChange={(e) => handleInputChange(e, item.name.toLowerCase())}
-            />
-          </div>
+          <ProductCard
+            key={item.name}
+            name={item.name}
+            image={item.image}
+            quantity={quantities[item.name.toLowerCase() as keyof typeof quantities] || 0}
+            increments={item.increments}
+            decrements={item.decrements}
+            onIncrement={(value) => increment(item.name.toLowerCase(), value)}
+            onDecrement={(value) => decrement(item.name.toLowerCase(), value)}
+            onInputChange={(e) => handleInputChange(e, item.name.toLowerCase())}
+          />
         ))}
       </div>
 
-      {/* Divider */}
+      {/* Totals display */}
       <div className="w-full border-t border-gray-500 mt-10"></div>
-
-      {/* Totals */}
       <div className="w-3/4 items-center p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full px-8 mt-5">
           <div></div>
