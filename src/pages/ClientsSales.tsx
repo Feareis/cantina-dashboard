@@ -9,6 +9,35 @@ import toast, { Toaster } from 'react-hot-toast';
 import { RisottoCayo, PlateauCayo, MontaraCayo, JusDeCerise, Biere, BierePils, BiereRed, BiereTriple, MenuXpress, MenuSurvivaliste, MenuParadise, MenuElPatron } from "../assets/products/indexProducts";
 import ProductsPrice from "../data/ProductsPrice";
 import Discounts from "../data/Discounts";
+import { supabase } from "../api/supabaseClient";
+
+
+const logSale = async (
+  firstName: string,
+  lastName: string,
+  type: "client" | "export",
+  saleType: "propre" | "sale",
+  employeeShare: number,
+  companyShare: number
+) => {
+  const { error } = await supabase.from("sales_logs").insert([
+    {
+      first_name: firstName,
+      last_name: lastName,
+      type,
+      sale_type: saleType,
+      employee_share: employeeShare,
+      company_share: companyShare,
+      date: new Date().toISOString(),
+    },
+  ]);
+
+  if (error) {
+    console.error("Erreur lors de l'ajout de la vente : ", error.message);
+  } else {
+    console.log("Vente ajoutée avec succès !");
+  }
+};
 
 const items = [
   // Configuration of products
@@ -115,6 +144,16 @@ const ClientsSales: React.FC = () => {
   // Handle the button click to add a sale, showing a toast notification
   const handleButtonClick = () => {
     if (employeesTotal >= 0 && companyTotal > 0) {
+
+        logSale(
+          "Caleb", // Replace first_name
+          "Davis",  // Replace last_name
+          "client",
+          selectedSale,
+          employeesTotal,
+          companyTotal
+        );
+
       toast.success(
         <div className="flex flex-col">
           <div className="flex w-full mb-1">

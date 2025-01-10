@@ -41,7 +41,12 @@ const WeeklyDashboardTable: React.FC = () => {
         console.error("Erreur lors de la récupération des données : ", error);
         return;
       }
-      const sortedData = sortEmployees(data as Employee[]); // Typecast explicite
+
+      // Trier les employés selon leur grade
+      const sortedData = (data as Employee[])
+        .filter((employee) => employee.grade !== "Patron" && employee.grade !== "Co-Patron")
+        .sort((a, b) => rolePriority[a.grade] - rolePriority[b.grade]);
+
       setEmployeeData(sortedData);
     } catch (error) {
       console.error("Erreur inconnue : ", error);

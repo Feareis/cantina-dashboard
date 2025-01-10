@@ -4,6 +4,35 @@ import CustomButton from "../components/CustomButton";
 import InputCustom from "../components/InputCustom";
 import { BadgeDollarSign, BadgeCent, ArrowUpNarrowWide, Salad } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
+import { supabase } from "../api/supabaseClient";
+
+
+const logSale = async (
+  firstName: string,
+  lastName: string,
+  type: "client" | "export",
+  saleType: "propre" | "sale",
+  employeeShare: number,
+  companyShare: number
+) => {
+  const { error } = await supabase.from("sales_logs").insert([
+    {
+      first_name: firstName,
+      last_name: lastName,
+      type,
+      sale_type: saleType,
+      employee_share: employeeShare,
+      company_share: companyShare,
+      date: new Date().toISOString(),
+    },
+  ]);
+
+  if (error) {
+    console.error("Erreur lors de l'ajout de la vente : ", error.message);
+  } else {
+    console.log("Vente ajoutée avec succès !");
+  }
+};
 
 const ExportSales: React.FC = () => {
   const [selectedSale, setSelectedSale] = useState<'propre' | 'sale'>('propre');
@@ -50,6 +79,14 @@ const ExportSales: React.FC = () => {
   // Handle button click for adding sales
   const handleButtonClick = () => {
     if (employeesTotal > 0 && companyTotal > 0) {
+      logSale(
+        "Caleb",
+        "Davis",
+        "export",
+        selectedSale,
+        employeesTotal,
+        companyTotal
+      );
       toast.success(
         <div className="flex flex-col text-sm">
           <div className="flex w-full mb-1">
