@@ -53,7 +53,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Tab Content */}
-      <div className="w-full text-white rounded-lg shadow p-6">{renderTabContent()}</div>
+      <div className="w-full text-white rounded-lg p-6">{renderTabContent()}</div>
     </div>
   );
 };
