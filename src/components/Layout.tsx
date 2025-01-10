@@ -1,5 +1,5 @@
 import React from "react";
-import { BadgeDollarSign, Calculator, ChartArea, Users, ChartBarBig } from "lucide-react";
+import { BadgeDollarSign, Calculator, ChartArea, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import Breadcrumb from "./Breadcrumb";
 import ProfileDropdown from "./profile/ProfileDropdown";

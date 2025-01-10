@@ -1,6 +1,5 @@
 import React from "react";
 import QuotaCard from "./QuotaCard";
-import RedistributionCustomTab from "./RedistributionCustomTab";
 import { DollarSign, Coffee } from "lucide-react";
 
 const Dashboard: React.FC = () => {

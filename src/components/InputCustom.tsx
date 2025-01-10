@@ -8,7 +8,7 @@ interface InputCustomProps {
   bgColor?: string; // Couleur de fond
   textColor?: string; // Couleur du texte
   icon?: LucideIcon; // Icône à gauche de l'input
-  type?: "text" | "number" | "search"; // Type d'input (texte, nombre ou recherche)
+  type?: "text" | "number" | "search" | "date"; // Type d'input (texte, nombre ou recherche)
   className?: string; // Classes supplémentaires
 }
 

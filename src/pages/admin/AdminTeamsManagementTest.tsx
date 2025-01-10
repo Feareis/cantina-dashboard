@@ -41,7 +41,7 @@ const EmployeeTable: React.FC = () => {
     fetchEmployees();
   }, []);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: number, newPage: number) => {
     setPage(newPage);
   };
 
