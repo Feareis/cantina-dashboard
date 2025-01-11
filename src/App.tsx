@@ -1,21 +1,37 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Layout } from './components/Layout';
-import { Dashboard, Calculator, ExportSales, ClientsSales, Profile, Admin } from "./pages";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Dashboard, Calculator, ExportSales, ClientsSales, Profile, Admin, Login } from "./pages";
+import { AuthProvider } from "./api/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { Layout } from "./components/Layout"; // Import du Layout
 
 function App() {
   return (
+    <AuthProvider>
       <Router>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/calculator" element={<Calculator />} />
-              <Route path="/export-sales" element={<ExportSales />} />
-              <Route path="/clients-sales" element={<ClientsSales />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/admin" element={<Admin />} />
-            </Routes>
-          </Layout>
+        <Routes>
+          {/* Route publique */}
+          <Route path="/login" element={<Login />} />
+
+          {/* Routes protégées avec Layout */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
+            {/* Déclaration des sous-routes */}
+            <Route index element={<Dashboard />} />
+            <Route path="calculator" element={<Calculator />} />
+            <Route path="export-sales" element={<ExportSales />} />
+            <Route path="clients-sales" element={<ClientsSales />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="admin" element={<Admin />} />
+          </Route>
+        </Routes>
       </Router>
+    </AuthProvider>
   );
 }
 

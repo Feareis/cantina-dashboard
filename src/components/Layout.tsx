@@ -1,16 +1,12 @@
 import React from "react";
 import { BadgeDollarSign, Calculator, ChartArea, Users } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, Outlet } from "react-router-dom";
 import Breadcrumb from "./Breadcrumb";
 import ProfileDropdown from "./profile/ProfileDropdown";
 import { Home } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export function Layout({ children }: LayoutProps) {
+export function Layout() {
   const location = useLocation();
 
   // Configuration des breadcrumbs dynamiques
@@ -132,7 +128,6 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Main content with margin to offset navbar height */}
       <main className="flex-grow container mx-auto px-4 py-6 mt-24">
-        {/* Breadcrumb intégré dans le contenu principal avec toutes les props */}
         <div className="mb-6">
           <Breadcrumb
             icon={Home}
@@ -156,7 +151,7 @@ export function Layout({ children }: LayoutProps) {
             variants={pageVariants}
             className="relative"
           >
-            {children}
+            <Outlet /> {/* Remplace children par Outlet */}
           </motion.div>
         </AnimatePresence>
       </main>

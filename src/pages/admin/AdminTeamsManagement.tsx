@@ -113,16 +113,6 @@ const EmployeeManagement: React.FC = () => {
 
       const employeeId = employeeData[0].id;
 
-      // Créer un utilisateur associé
-      const { error: userError } = await supabase.from("users").insert([
-        {
-          employee_id: employeeId,
-          username: username,
-          password: generatedPassword, // Stocker le mot de passe en clair (uniquement pour test)
-          role: role,
-        },
-      ]);
-
       alert(`Utilisateur créé avec succès !\nNom d'utilisateur : ${username}\nMot de passe : ${generatedPassword}`);
       fetchEmployees();
       closeModal();
