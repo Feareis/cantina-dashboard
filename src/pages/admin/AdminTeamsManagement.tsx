@@ -30,8 +30,32 @@ const EmployeeManagement: React.FC = () => {
     fetchEmployees();
   }, []);
 
-  const generateUsername = (firstName: string, lastName: string): string => {
-    return `${firstName.toLowerCase()}.${lastName.charAt(0).toLowerCase()}`;
+  const generateUsername = async (firstName: string, lastName: string): Promise<string> => {
+    let baseUsername = `${firstName.toLowerCase()}.${lastName.charAt(0).toLowerCase()}`;
+    let username = baseUsername;
+    let counter = 1;
+
+    while (true) {
+      // Vérifiez si le nom d'utilisateur existe
+      const { data, error } = await supabase
+        .from("users")
+        .select("username")
+        .eq("username", username);
+
+      if (error) {
+        console.error("Erreur lors de la vérification du nom d'utilisateur :", error.message);
+        throw error;
+      }
+
+      if (!data || data.length === 0) {
+        // Si le nom d'utilisateur est unique, retournez-le
+        return username;
+      }
+
+      // Sinon, ajoutez un compteur et essayez à nouveau
+      username = `${baseUsername}${counter}`;
+      counter++;
+    }
   };
 
   const generatePassword = (): string => {
@@ -45,47 +69,51 @@ const EmployeeManagement: React.FC = () => {
 
   const handleAddEmployee = async () => {
     const generatedPassword = generatePassword();
-    const username = generateUsername(newEmployee.firstName, newEmployee.lastName);
+    try {
+      const username = await generateUsername(newEmployee.first_name, newEmployee.last_name);
 
-    const newEmployeeData = {
-      first_name: newEmployee.firstName,
-      last_name: newEmployee.lastName,
-      phone: newEmployee.phone,
-      grade: newEmployee.grade,
-      hire_date: newEmployee.hireDate,
-    };
+      const newEmployeeData = {
+        first_name: newEmployee.first_name,
+        last_name: newEmployee.last_name,
+        phone: newEmployee.phone,
+        grade: newEmployee.grade,
+        hire_date: newEmployee.hire_date,
+      };
 
-    // Insérer l'employé dans la table `employees`
-    const { data: employeeData, error: employeeError } = await supabase
-      .from("employees")
-      .insert([newEmployeeData])
-      .select();
+      // Insérer l'employé dans la table `employees`
+      const { data: employeeData, error: employeeError } = await supabase
+        .from("employees")
+        .insert([newEmployeeData])
+        .select();
 
-    if (employeeError || !employeeData || employeeData.length === 0) {
-      console.error("Erreur lors de l'ajout de l'employé :", employeeError?.message);
-      return;
+      if (employeeError || !employeeData || employeeData.length === 0) {
+        console.error("Erreur lors de l'ajout de l'employé :", employeeError?.message);
+        return;
+      }
+
+      const employeeId = employeeData[0].id;
+
+      // Créer un utilisateur associé
+      const { error: userError } = await supabase.from("users").insert([
+        {
+          employee_id: employeeId,
+          username: username,
+          password: generatedPassword, // Stocker le mot de passe en clair (pour test uniquement)
+          role: newEmployee.grade.toLowerCase(),
+        },
+      ]);
+
+      if (userError) {
+        console.error("Erreur lors de la création de l'utilisateur :", userError.message);
+        return;
+      }
+
+      alert(`Utilisateur créé avec succès !\nNom d'utilisateur : ${username}\nMot de passe : ${generatedPassword}`);
+      fetchEmployees();
+      closeModal();
+    } catch (error) {
+      console.error("Erreur lors de la création de l'utilisateur ou de l'employé :", error.message);
     }
-
-    const employeeId = employeeData[0].id;
-
-    // Créer un utilisateur associé
-    const { error: userError } = await supabase.from("users").insert([
-      {
-        employee_id: employeeId,
-        username: username,
-        password: generatedPassword, // Stocker le mot de passe en clair
-        role: newEmployee.grade.toLowerCase(),
-      },
-    ]);
-
-    if (userError) {
-      console.error("Erreur lors de la création de l'utilisateur :", userError.message);
-      return;
-    }
-
-    alert(`Utilisateur créé avec succès !\nNom d'utilisateur : ${username}\nMot de passe : ${generatedPassword}`);
-    fetchEmployees();
-    closeModal();
   };
 
   const handleUpdateEmployee = async () => {
@@ -93,11 +121,11 @@ const EmployeeManagement: React.FC = () => {
       const { error } = await supabase
         .from("employees")
         .update({
-          first_name: editingEmployee.firstName,
-          last_name: editingEmployee.lastName,
+          first_name: editingEmployee.first_name,
+          last_name: editingEmployee.last_name,
           phone: editingEmployee.phone,
           grade: editingEmployee.grade,
-          hire_date: editingEmployee.hireDate,
+          hire_date: editingEmployee.hire_date,
         })
         .eq("id", editingEmployee.id);
 
@@ -136,11 +164,11 @@ const EmployeeManagement: React.FC = () => {
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [newEmployee, setNewEmployee] = useState<Employee>({
     id: "",
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     phone: "",
     grade: "",
-    hireDate: "",
+    hire_date: "",
   });
 
   // Gérer l'ouverture de la modal
@@ -158,11 +186,11 @@ const EmployeeManagement: React.FC = () => {
     } else {
       // Mode ajout : Initialise un nouvel employé vide
       setNewEmployee({
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         phone: "",
         grade: "",
-        hireDate: getCurrentDate(),
+        hire_date: getCurrentDate(),
       });
     }
     setModalOpen(true); // Ouvre la modale
@@ -287,11 +315,11 @@ const EmployeeManagement: React.FC = () => {
             type="text"
             icon={User}
             placeholder="Prénom"
-            value={editingEmployee?.firstName || newEmployee.firstName}
+            value={editingEmployee?.first_name || newEmployee.first_name}
             onChange={(e) =>
               editingEmployee
-                ? setEditingEmployee({ ...editingEmployee, firstName: e.target.value })
-                : setNewEmployee({ ...newEmployee, firstName: e.target.value })
+                ? setEditingEmployee({ ...editingEmployee, first_name: e.target.value })
+                : setNewEmployee({ ...newEmployee, first_name: e.target.value })
             }
             bgColor="bg-gray-900/70"
             textColor="text-gray-400"
@@ -300,11 +328,11 @@ const EmployeeManagement: React.FC = () => {
             type="text"
             icon={User}
             placeholder="Nom"
-            value={editingEmployee?.lastName || newEmployee.lastName}
+            value={editingEmployee?.last_name || newEmployee.last_name}
             onChange={(e) =>
               editingEmployee
-                ? setEditingEmployee({ ...editingEmployee, lastName: e.target.value })
-                : setNewEmployee({ ...newEmployee, lastName: e.target.value })
+                ? setEditingEmployee({ ...editingEmployee, last_name: e.target.value })
+                : setNewEmployee({ ...newEmployee, last_name: e.target.value })
             }
             bgColor="bg-gray-900/70"
             textColor="text-gray-400"
@@ -326,11 +354,11 @@ const EmployeeManagement: React.FC = () => {
             type="date"
             icon={Calendar}
             placeholder="Date"
-            value={editingEmployee?.hireDate || newEmployee.hireDate}
+            value={editingEmployee?.hire_date || newEmployee.hire_date}
             onChange={(e) =>
               editingEmployee
-                ? setEditingEmployee({ ...editingEmployee, hireDate: e.target.value })
-                : setNewEmployee({ ...newEmployee, hireDate: e.target.value })
+                ? setEditingEmployee({ ...editingEmployee, hire_date: e.target.value })
+                : setNewEmployee({ ...newEmployee, hire_date: e.target.value })
             }
             bgColor="bg-gray-900/70"
             textColor="text-gray-400"

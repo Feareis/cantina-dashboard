@@ -21,7 +21,19 @@ const WeeklyDashboardTable: React.FC = () => {
     quota_plus: boolean;
   }
 
-  const rolePriority: { [key: string]: number } = { Responsable: 1, CDI: 2, CDD: 3 };
+  const rolePriority: { [key in Employee["grade"]]: number } = {
+    Patron: 0,
+    "Co-Patron": 0,
+    Responsable: 1,
+    CDI: 2,
+    CDD: 3,
+  };
+
+  const sortEmployees = (employees: Employee[]) => {
+    return employees.sort(
+      (a, b) => rolePriority[a.grade as keyof typeof rolePriority] - rolePriority[b.grade as keyof typeof rolePriority]
+    );
+  };
 
   const parseNumericValue = (value: string | null | undefined): number => {
     return value ? parseFloat(value) || 0 : 0;
