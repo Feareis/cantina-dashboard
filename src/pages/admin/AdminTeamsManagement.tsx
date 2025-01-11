@@ -30,7 +30,7 @@ const EmployeeManagement: React.FC = () => {
     fetchEmployees();
   }, []);
 
-  const generateUsername = async (firstName: string, lastName: string): Promise<string> => {
+  const generateUniqueUsername = async (firstName: string, lastName: string): Promise<string> => {
     let baseUsername = `${firstName.toLowerCase()}.${lastName.charAt(0).toLowerCase()}`;
     let username = baseUsername;
     let counter = 1;
@@ -67,10 +67,28 @@ const EmployeeManagement: React.FC = () => {
     return password;
   };
 
+  const mapGradeToRole = (grade: string): string => {
+    switch (grade) {
+      case "Patron":
+      case "Co-Patron":
+        return "admin";
+      case "Responsable":
+        return "limited_admin";
+      case "CDI":
+      case "CDD":
+        return "user";
+      default:
+        throw new Error(`Grade non reconnu : ${grade}`);
+    }
+  };
+
   const handleAddEmployee = async () => {
     const generatedPassword = generatePassword();
     try {
-      const username = await generateUsername(newEmployee.first_name, newEmployee.last_name);
+      const username = await generateUniqueUsername(newEmployee.first_name, newEmployee.last_name);
+
+      // Mapper le grade en rôle
+      const role = mapGradeToRole(newEmployee.grade);
 
       const newEmployeeData = {
         first_name: newEmployee.first_name,
@@ -98,8 +116,8 @@ const EmployeeManagement: React.FC = () => {
         {
           employee_id: employeeId,
           username: username,
-          password: generatedPassword, // Stocker le mot de passe en clair (pour test uniquement)
-          role: newEmployee.grade.toLowerCase(),
+          password: generatedPassword, // Stocker le mot de passe en clair (uniquement pour test)
+          role: role,
         },
       ]);
 
@@ -112,7 +130,7 @@ const EmployeeManagement: React.FC = () => {
       fetchEmployees();
       closeModal();
     } catch (error) {
-      console.error("Erreur lors de la création de l'utilisateur ou de l'employé :", error.message);
+      console.error("Erreur lors de l'ajout de l'employé ou de l'utilisateur :", (error as Error).message);
     }
   };
 
@@ -138,13 +156,15 @@ const EmployeeManagement: React.FC = () => {
     }
   };
 
-  const handleDeleteEmployee = async (id: string) => {
-    const { error } = await supabase.from("employees").delete().eq("id", id);
+  const handleDeleteEmployee = async (id: string | undefined) => {
+    if (!id) {
+      console.error("ID manquant pour supprimer l'employé.");
+      return;
+    }
 
+    const { error } = await supabase.from("employees").delete().eq("id", id);
     if (error) {
-      console.error("Erreur lors de la suppression de l'employé :", error.message);
-    } else {
-      fetchEmployees();
+      console.error("Erreur lors de la suppression :", error.message);
     }
   };
 

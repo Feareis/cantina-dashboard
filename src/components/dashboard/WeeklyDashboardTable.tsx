@@ -29,12 +29,6 @@ const WeeklyDashboardTable: React.FC = () => {
     CDD: 3,
   };
 
-  const sortEmployees = (employees: Employee[]) => {
-    return employees.sort(
-      (a, b) => rolePriority[a.grade as keyof typeof rolePriority] - rolePriority[b.grade as keyof typeof rolePriority]
-    );
-  };
-
   const parseNumericValue = (value: string | null | undefined): number => {
     return value ? parseFloat(value) || 0 : 0;
   };
