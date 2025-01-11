@@ -5,6 +5,9 @@ import ProfileDropdown from "./profile/ProfileDropdown";
 import { Home } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const firstName = localStorage.getItem("firstName");
+const lastName = localStorage.getItem("lastName");
+
 export function Layout() {
   const location = useLocation();
 

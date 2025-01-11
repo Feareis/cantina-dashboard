@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, LogOut, User, ShieldMinus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+const firstName = localStorage.getItem("firstName");
+const lastName = localStorage.getItem("lastName");
+
 const ProfileDropdown: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref pour le conteneur du dropdown
@@ -34,7 +37,7 @@ const ProfileDropdown: React.FC = () => {
         className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-700 transition"
       >
         {/* Nom complet */}
-        <span className="text-gray-400">Oscar Kirk</span>
+        <span className="text-gray-400">{firstName} {lastName}</span>
 
         {/* Photo de profil */}
         <img

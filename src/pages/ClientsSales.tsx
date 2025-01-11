@@ -11,6 +11,8 @@ import ProductsPrice from "../data/ProductsPrice";
 import Discounts from "../data/Discounts";
 import { supabase } from "../api/supabaseClient";
 
+const firstName = localStorage.getItem("firstName");
+const lastName = localStorage.getItem("lastName");
 
 const logSale = async (
   firstName: string,
@@ -146,8 +148,8 @@ const ClientsSales: React.FC = () => {
     if (employeesTotal >= 0 && companyTotal > 0) {
 
         logSale(
-          "Caleb", // Replace first_name
-          "Davis",  // Replace last_name
+          firstName,
+          lastName,
           "client",
           selectedSale,
           employeesTotal,
@@ -159,7 +161,7 @@ const ClientsSales: React.FC = () => {
           <div className="flex w-full mb-1">
             <span className="text-white text-base font-semibold">{currentDate}</span>
             <span className="text-white text-base font-semibold pl-2"> - </span>
-            <span className="text-white text-base font-bold pl-2">Oscar Kirk</span>
+            <span className="text-white text-base font-bold pl-2">{firstName} {lastName}</span>
           </div>
           <div className="w-full border-t border-gray-500 mt-2 mb-2"></div>
           <div className="flex w-full mb-1">
@@ -174,9 +176,9 @@ const ClientsSales: React.FC = () => {
         {
           duration: 5000,
           style: {
-            marginTop: '80px',
+            marginTop: '100px',
             padding: '16px',
-            width: '500px',
+            width: '450px',
             borderRadius: '8px',
             background: '#1f2937',
             color: '#fff',
@@ -193,9 +195,9 @@ const ClientsSales: React.FC = () => {
         {
           duration: 5000,
           style: {
-            marginTop: '80px',
+            marginTop: '100px',
             backgroundColor: '#1f2937',
-            width: '600px',
+            width: '450px',
             maxWidth: '90%',
           },
         }
@@ -223,7 +225,7 @@ const ClientsSales: React.FC = () => {
         {/* Employee Info */}
         <div className="text-2xl font-medium text-gray-400">
           <p>Date : {currentDate}</p>
-          <span>Nom Employé : Oscar Kirk</span>
+          <span>Nom Employé : {firstName} {lastName}</span>
         </div>
 
         {/* Sale Selection and Reset Buttons */}

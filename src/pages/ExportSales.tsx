@@ -6,6 +6,8 @@ import { BadgeDollarSign, BadgeCent, ArrowUpNarrowWide, Salad } from "lucide-rea
 import toast, { Toaster } from 'react-hot-toast';
 import { supabase } from "../api/supabaseClient";
 
+const firstName = localStorage.getItem("firstName");
+const lastName = localStorage.getItem("lastName");
 
 const logSale = async (
   firstName: string,
@@ -35,10 +37,6 @@ const logSale = async (
 };
 
 const ExportSales: React.FC = () => {
-  const firstName = localStorage.getItem("firstName");
-  const lastName = localStorage.getItem("lastName");
-  const grade = localStorage.getItem("grade");
-
   const [selectedSale, setSelectedSale] = useState<'propre' | 'sale'>('propre');
   const [expertise, setExpertise] = useState<number | "">("");
   const [nbSalade, setNbSalade] = useState<number | "">("");
@@ -111,9 +109,9 @@ const ExportSales: React.FC = () => {
         {
           duration: 5000,
           style: {
-            marginTop: '80px',
+            marginTop: '100px',
             padding: '16px',
-            width: '500px',
+            width: '450px',
             borderRadius: '8px',
             background: '#1f2937',
             color: '#fff',
@@ -132,10 +130,9 @@ const ExportSales: React.FC = () => {
         {
           duration: 5000,
           style: {
-            marginTop: '80px',
+            marginTop: '100px',
             backgroundColor: '#1f2937',
-            width: '600px',
-            maxWidth: '90%',
+            width: '450px',
           },
         }
       );
