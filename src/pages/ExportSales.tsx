@@ -6,10 +6,9 @@ import { BadgeDollarSign, BadgeCent, ArrowUpNarrowWide, Salad } from "lucide-rea
 import toast, { Toaster } from 'react-hot-toast';
 import { supabase } from "../api/supabaseClient";
 
-const firstName = localStorage.getItem("firstName") || "";
-const fn = { firstName: localStorage.getItem("firstName") || "" };
-const lastName = localStorage.getItem("lastName") || "";
-const ln = { firstName: localStorage.getItem("firstName") || "" };
+
+const firstName = { firstName: localStorage.getItem("firstName") || "" };
+const lastName = { firstName: localStorage.getItem("firstName") || "" };
 const fullName = `${localStorage.getItem("firstName") || ""} ${localStorage.getItem("lastName") || ""}`.trim();
 
 const logSale = async (
@@ -85,8 +84,8 @@ const ExportSales: React.FC = () => {
   const handleButtonClick = () => {
     if (employeesTotal > 0 && companyTotal > 0) {
       logSale(
-        fn.firstName,
-        ln.lastName,
+        firstName.firstName,
+        lastName.lastName,
         "export",
         selectedSale,
         employeesTotal,
