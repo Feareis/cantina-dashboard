@@ -37,7 +37,10 @@ const WeeklyDashboardTable: React.FC = () => {
   const fetchEmployeeData = async () => {
     setLoading(true);
     try {
-      const { data: employees, error: employeeError } = await supabase.from("employees").select("*");
+      const { data: employees, error: employeeError } = await supabase
+        .from("employees")
+        .select("*") as { data: Employee[]; error: any }; // Explicitly type the response
+
       if (employeeError) throw employeeError;
 
       const { data: rates, error: rateError } = await supabase.from("data").select("*");
@@ -48,38 +51,39 @@ const WeeklyDashboardTable: React.FC = () => {
         CDI: parseNumericValue(rates?.find((rate) => rate.key === "tred_cdi")?.value),
         CDD: parseNumericValue(rates?.find((rate) => rate.key === "tred_cdd")?.value),
       };
+
       const quotaValue = parseNumericValue(rates?.find((rate) => rate.key === "quota_value")?.value);
       const quotaPlusValue = parseNumericValue(rates?.find((rate) => rate.key === "quotaplus_value")?.value);
       const trevVc = parseNumericValue(rates?.find((rate) => rate.key === "trev_vc")?.value);
       const trevVe = parseNumericValue(rates?.find((rate) => rate.key === "trev_ve")?.value);
-
+  
       const calculatedData = employees.map((employee) => {
-          const gradeRate = tred[employee.grade] ?? 0;
+        const gradeRate = tred[employee.grade as keyof typeof tred] ?? 0; // Explicitly type the key access
 
-          // Calcul de la prime
-          const primeBase = employee.quota
-            ? (employee.vcp + employee.vep) * gradeRate + quotaValue
-            : 0;
-          const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
+        // Calcul de la prime
+        const primeBase = employee.quota
+          ? (employee.vcp + employee.vep) * gradeRate + quotaValue
+          : 0;
+        const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
 
-          // Calcul de la taxe
-          const taxe = employee.vcs * trevVc + employee.ves * trevVe;
+        // Calcul de la taxe
+        const taxe = employee.vcs * trevVc + employee.ves * trevVe;
 
-          console.log(`Calcul pour ${employee.first_name} ${employee.last_name}:`, {
-            grade: employee.grade,
-            vcp: employee.vcp,
-            vep: employee.vep,
-            vcs: employee.vcs,
-            ves: employee.ves,
-            prime,
-            taxe,
-          });
+        console.log(`Calcul pour ${employee.first_name} ${employee.last_name}:`, {
+          grade: employee.grade,
+          vcp: employee.vcp,
+          vep: employee.vep,
+          vcs: employee.vcs,
+          ves: employee.ves,
+          prime,
+          taxe,
+        });
 
-          return {
-            ...employee,
-            prime,
-            taxe,
-          };
+        return {
+          ...employee,
+          prime,
+          taxe,
+        };
       });
 
       // Trier et filtrer les données
