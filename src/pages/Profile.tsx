@@ -48,15 +48,6 @@ const Profile: React.FC = () => {
     return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
   };
 
-  // Toast
-  const saveSettings = () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("OK !");
-      }, 1000);
-    });
-  };
-
   const handlePasswordChange = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
       toast.error("Tous les champs doivent être remplis.");
@@ -76,38 +67,38 @@ const Profile: React.FC = () => {
     }
 
     // Utilisation de toast.promise
-    const passwordChangePromise = supabase
-      .from("users")
-      .select("id, password")
-      .eq("username", username)
-      .single()
-      .then(({ data: user, error: userError }) => {
-        if (userError || !user) {
-          throw new Error("Utilisateur introuvable.");
-        }
+    const passwordChangePromise = async () => {
+      const { data: user, error: userError } = await supabase
+        .from("users")
+        .select("id, password")
+        .eq("username", username)
+        .single();
 
-        if (user.password !== currentPassword) {
-          throw new Error("L'ancien mot de passe est incorrect.");
-        }
+      if (userError || !user) {
+        throw new Error("Utilisateur introuvable.");
+      }
 
-        return supabase
-          .from("users")
-          .update({ password: newPassword })
-          .eq("id", user.id);
-      })
-      .then(({ error: updateError }) => {
-        if (updateError) {
-          throw new Error("Erreur lors de la mise à jour du mot de passe.");
-        }
+      if (user.password !== currentPassword) {
+        throw new Error("L'ancien mot de passe est incorrect.");
+      }
 
-        // Réinitialisation des champs après succès
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
-      });
+      const { error: updateError } = await supabase
+        .from("users")
+        .update({ password: newPassword })
+        .eq("id", user.id);
+
+      if (updateError) {
+        throw new Error("Erreur lors de la mise à jour du mot de passe.");
+      }
+
+      // Réinitialisation des champs après succès
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    };
 
     // Gérer les différents états du toast
-    toast.promise(passwordChangePromise, {
+    toast.promise(passwordChangePromise(), {
       loading: "Mise à jour du mot de passe...",
       success: "Mot de passe mis à jour avec succès !",
       error: (err) => err.message || "Une erreur est survenue.",
