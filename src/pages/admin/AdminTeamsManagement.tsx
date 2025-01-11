@@ -21,9 +21,9 @@ const EmployeeManagement: React.FC = () => {
     const { data, error } = await supabase.from("employees").select("*");
     if (error) {
       console.error("Erreur lors de la récupération des employés :", error.message);
-    } else {
-      setEmployees(data || []);
+      return;
     }
+    setEmployees(data || []);
   };
 
   useEffect(() => {

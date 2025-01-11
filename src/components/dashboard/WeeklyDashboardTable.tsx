@@ -43,7 +43,7 @@ const WeeklyDashboardTable: React.FC = () => {
       const { data: rates, error: rateError } = await supabase.from("data").select("*");
       if (rateError) throw rateError;
 
-      const tred = {
+      const tred: Partial<Record<Employee["grade"], number>> = {
         Responsable: parseNumericValue(rates?.find((rate) => rate.key === "tred_responsable")?.value),
         CDI: parseNumericValue(rates?.find((rate) => rate.key === "tred_cdi")?.value),
         CDD: parseNumericValue(rates?.find((rate) => rate.key === "tred_cdd")?.value),
@@ -54,7 +54,7 @@ const WeeklyDashboardTable: React.FC = () => {
       const trevVe = parseNumericValue(rates?.find((rate) => rate.key === "trev_ve")?.value);
 
       const calculatedData = employees.map((employee) => {
-          const gradeRate = tred[employee.grade] || 0;
+          const gradeRate = tred[employee.grade] ?? 0;
 
           // Calcul de la prime
           const primeBase = employee.quota
