@@ -8,7 +8,7 @@ import { supabase } from "../api/supabaseClient";
 
 
 const firstName = { firstName: localStorage.getItem("firstName") || "" };
-const lastName = { firstName: localStorage.getItem("firstName") || "" };
+const lastName = { lastName: localStorage.getItem("lastName") || "" };
 const fullName = `${localStorage.getItem("firstName") || ""} ${localStorage.getItem("lastName") || ""}`.trim();
 
 const logSale = async (
