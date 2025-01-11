@@ -52,8 +52,29 @@ const WeeklyDashboardTable: React.FC = () => {
     }
   };
 
+  const listenToChanges = () => {
+    const subscription = supabase
+      .channel("table-changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "sales_logs" },
+        (payload) => {
+          console.log("Changement détecté :", payload);
+          // Rafraîchir les données lors d'un changement
+          fetchEmployeeData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
+  };
+
   useEffect(() => {
     fetchEmployeeData();
+    const cleanup = listenToChanges();
+    return cleanup;
   }, []);
 
   // Format currency values

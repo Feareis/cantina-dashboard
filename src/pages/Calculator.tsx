@@ -45,6 +45,12 @@ const Calculator: React.FC = () => {
     setQuotaPlus(quotaPlusDescription);
   };
 
+  const [buttonClicks, setButtonClicks] = useState({
+    quota: 0,
+    quotaPlus: 0,
+    quotaFull: 0,
+  });
+
   useEffect(() => {
     fetchQuotas();
   }, []);
@@ -64,6 +70,7 @@ const Calculator: React.FC = () => {
 
   const resetAll = () => {
     setQuantities({ salade: 0, risotto: 0, plateau: 0, montara: 0 });
+    setButtonClicks({quota: 0, quotaPlus: 0, quotaFull: 0});
   };
 
   const parseQuota = (quotaString: string): Partial<Record<keyof typeof quantities, number>> => {
@@ -79,7 +86,14 @@ const Calculator: React.FC = () => {
     return updates;
   };
 
-  const applyQuota = () => {
+  const applyQuota = (incrementClick = true) => {
+    if (incrementClick) {
+      setButtonClicks((prev) => ({
+        ...prev,
+        quota: prev.quota + 1,
+      }));
+    }
+
     const updates = parseQuota(quota);
     setQuantities((prev) => {
       const updatedQuantities = { ...prev };
@@ -93,7 +107,14 @@ const Calculator: React.FC = () => {
     });
   };
 
-  const applyQuotaPlus = () => {
+  const applyQuotaPlus = (incrementClick = true) => {
+    if (incrementClick) {
+      setButtonClicks((prev) => ({
+        ...prev,
+        quotaPlus: prev.quotaPlus + 1,
+      }));
+    }
+
     const updates = parseQuota(quotaPlus);
     setQuantities((prev) => {
       const updatedQuantities = { ...prev };
@@ -108,8 +129,14 @@ const Calculator: React.FC = () => {
   };
 
   const applyQuotaFull = () => {
-    applyQuota();
-    applyQuotaPlus();
+    setButtonClicks((prev) => ({
+      ...prev,
+      quotaFull: prev.quotaFull + 1,
+    }));
+
+    // Appelle les fonctions sans incrémenter leurs compteurs
+    applyQuota(false);
+    applyQuotaPlus(false);
   };
 
   useEffect(() => {
@@ -128,12 +155,19 @@ const Calculator: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center text-gray-900 w-full max-w-8xl mx-auto">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-5 mb-10 w-full px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-4 mb-1 w-full px-4">
         <CustomButton label="Quota" onClick={applyQuota} className="bg-green-500 text-gray-700 hover:bg-green-600" icon={CheckCircle} />
         <CustomButton label="Quota+" onClick={applyQuotaPlus} className="bg-yellow-500 text-gray-700 hover:bg-yellow-600" icon={PlusCircle} />
         <CustomButton label="Quota Full" onClick={applyQuotaFull} className="bg-orange-500 text-gray-700 hover:bg-orange-600" icon={ShieldCheck} />
         <div></div>
         <CustomButton label="Reset all" onClick={resetAll} className="bg-red-500 text-white hover:bg-red-600" icon={RefreshCw} />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8 w-full px-4 text-white text-center text-base">
+        <p className="text-green-500">{buttonClicks.quota}</p>
+        <p className="text-yellow-500">{buttonClicks.quotaPlus}</p>
+        <p className="text-orange-500">{buttonClicks.quotaFull}</p>
+        <div></div>
+        <div></div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full px-4">
