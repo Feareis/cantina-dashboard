@@ -35,6 +35,10 @@ const logSale = async (
 };
 
 const ExportSales: React.FC = () => {
+  const firstName = localStorage.getItem("firstName");
+  const lastName = localStorage.getItem("lastName");
+  const grade = localStorage.getItem("grade");
+
   const [selectedSale, setSelectedSale] = useState<'propre' | 'sale'>('propre');
   const [expertise, setExpertise] = useState<number | "">("");
   const [nbSalade, setNbSalade] = useState<number | "">("");
@@ -80,8 +84,8 @@ const ExportSales: React.FC = () => {
   const handleButtonClick = () => {
     if (employeesTotal > 0 && companyTotal > 0) {
       logSale(
-        "Caleb",
-        "Davis",
+        firstName,
+        lastName,
         "export",
         selectedSale,
         employeesTotal,
@@ -92,7 +96,7 @@ const ExportSales: React.FC = () => {
           <div className="flex w-full mb-1">
             <span className="text-white text-base font-semibold">{currentDate}</span>
             <span className="text-white text-base font-semibold pl-2"> - </span>
-            <span className="text-white text-base font-bold pl-2">Oscar Kirk</span>
+            <span className="text-white text-base font-bold pl-2">{firstName} {lastName}</span>
           </div>
           <div className="w-full border-t border-gray-500 mt-2 mb-2"></div>
           <div className="flex w-full mb-1">
@@ -157,7 +161,7 @@ const ExportSales: React.FC = () => {
         <div className="flex flex-col w-full md:w-1/2 p-6 rounded-lg gap-8">
           <div className="text-xl sm:text-2xl font-medium text-gray-400">
             <p>Date : {currentDate}</p>
-            <span>Nom Employé : Oscar Kirk</span>
+            <span>Nom Employé : {firstName} {lastName}</span>
           </div>
 
           {/* Expertise Input */}

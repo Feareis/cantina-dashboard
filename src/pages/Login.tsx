@@ -15,7 +15,7 @@ const Login: React.FC = () => {
     try {
       const { data, error } = await supabase
         .from("users")
-        .select("id, password, role, is_active")
+        .select("id, employee_id, password, role, is_active")
         .eq("username", username)
         .single();
 
@@ -32,8 +32,9 @@ const Login: React.FC = () => {
       }
 
       return data;
+
     } catch (error: any) {
-      console.error("Erreur lors de l'authentification :", error.message);
+      // console.error("Erreur lors de l'authentification :", error.message);
       throw error;
     }
   };
@@ -45,10 +46,26 @@ const Login: React.FC = () => {
       const user = await authenticateUser(username, password);
 
       if (user) {
-        console.log("Utilisateur authentifié :", user);
 
-        localStorage.setItem("username", username);
-        localStorage.setItem("role", user.role);
+        // Requête pour récupérer les informations de l'employé
+        const { data: employee, error: employeeError } = await supabase
+          .from("employees")
+          .select("first_name, last_name, grade, phone, hire_date")
+          .eq("id", user.employee_id)
+          .single();
+
+        if (employeeError) {
+          throw new Error("Impossible de récupérer les informations de l'employé.");
+        }
+
+        // console.log("Informations de l'employé :", employee);
+
+        // Stocker les informations dans localStorage
+        localStorage.setItem("firstName", employee.first_name);
+        localStorage.setItem("lastName", employee.last_name);
+        localStorage.setItem("grade", employee.grade);
+        localStorage.setItem("phone", employee.phone);
+        localStorage.setItem("hireDate", employee.hire_date);
         localStorage.setItem("isAuthenticated", "true");
 
         login(); // Active l'authentification via AuthContext
