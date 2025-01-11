@@ -69,21 +69,6 @@ const EmployeeManagement: React.FC = () => {
     return password;
   };
 
-  const mapGradeToRole = (grade: string): string => {
-    switch (grade) {
-      case "Patron":
-      case "Co-Patron":
-        return "admin";
-      case "Responsable":
-        return "limited_admin";
-      case "CDI":
-      case "CDD":
-        return "user";
-      default:
-        throw new Error(`Grade non reconnu : ${grade}`);
-    }
-  };
-
   const handleAddEmployee = async () => {
     const generatedPassword = generatePassword();
     try {
