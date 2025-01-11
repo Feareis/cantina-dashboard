@@ -5,13 +5,25 @@ import StaticTextCustom from "../components/StaticTextCustom";
 import CustomButton from "../components/CustomButton";
 import toast, { Toaster } from "react-hot-toast";
 
-const Profile: React.FC = () => {
-  const [profileImage, setProfileImage] = useState<string>("/static/profile_picture/patron-employes.png");
-  const [fullName, _setFullName] = useState<string>("Oscar Kirk");
-  const [phoneNumber, _setPhoneNumber] = useState<string>("4089961010");
-  const [hireDate, _setHireDate] = useState<string>("17-12-2024");
-  const [grade, _setGrade] = useState<string>("Patron");
+const fullName = `${localStorage.getItem("firstName") || ""} ${localStorage.getItem("lastName") || ""}`.trim();
+const grade = localStorage.getItem("grade") || "";
+const phoneNumber = localStorage.getItem("phone") || "";
+const hireDate = localStorage.getItem("hireDate") || "";
 
+const Profile: React.FC = () => {
+  // const [profileImage, setProfileImage] = useState<string>("/static/profile_picture/patron.png");
+
+  const profilePictureMapping: { [key: string]: string } = {
+    Patron: "/static/profile_picture/patron.png",
+    "Co-Patron": "/static/profile_picture/patron.png",
+    Responsable: "/static/profile_picture/responsable.png",
+    CDI: "/static/profile_picture/cdi.png",
+    CDD: "/static/profile_picture/cdd.png",
+  };
+
+  const profilePicture = profilePictureMapping[grade] || "/static/profile_picture/default.png";
+
+  {/*
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
@@ -21,6 +33,7 @@ const Profile: React.FC = () => {
       reader.readAsDataURL(e.target.files[0]);
     }
   };
+  */}
 
   const formatPhoneNumber = (value: string) => {
     const phone = value.replace(/\D/g, "").slice(0, 10);
@@ -32,7 +45,7 @@ const Profile: React.FC = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve("OK !");
-      }, 2000);
+      }, 1000);
     });
   };
 
@@ -65,7 +78,8 @@ const Profile: React.FC = () => {
       {/* Section gauche */}
       <div className="w-full md:w-1/3 bg-gray-800 p-6 border border-gray-700 rounded-lg shadow-md flex flex-col items-center gap-4">
         <div className="relative">
-          <img src={profileImage} alt="Profile" className="h-24 w-24 rounded-full object-cover" />
+          <img src={profilePicture} alt={`Profile picture pour ${grade}`} className="h-24 w-24 rounded-full object-cover" />
+          {/*
           <label
             htmlFor="upload-button"
             className="absolute bottom-0 right-0 bg-blue-600 p-2 rounded-full text-white cursor-pointer hover:bg-blue-500"
@@ -79,12 +93,17 @@ const Profile: React.FC = () => {
             className="hidden"
             onChange={handleImageUpload}
           />
+          */}
         </div>
         <h2 className="text-2xl font-bold">{fullName}</h2>
         <p className="text-lg text-gray-400">{grade}</p>
+
         <div className="w-full border-t border-gray-700 my-4"></div>
+
         <div className="flex flex-col w-full gap-2">
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-center text-sm">
+            <span className="text-base text-gray-400">Stats Soon...</span>
+            {/*
             <span className="text-base text-gray-400">Total d'argent propre gagné</span>
             <span className="text-green-400 font-bold">$ 3,456,789</span>
           </div>
@@ -93,15 +112,19 @@ const Profile: React.FC = () => {
             <span className="text-red-400 font-bold">$ 1,234,567</span>
           </div>
         </div>
+
         <div className="w-2/3 border-t border-gray-700 my-4"></div>
+
         <div className="flex flex-col w-full gap-2">
           <div className="flex justify-between text-sm">
             <span className="text-base text-gray-400">Total de vente exports</span>
             <span className="text-orange-400 font-bold">361</span>
           </div>
+
           <div className="flex justify-between text-sm">
             <span className="text-base text-gray-400">Total de vente clients</span>
             <span className="text-blue-400 font-bold">123</span>
+            */}
           </div>
         </div>
       </div>

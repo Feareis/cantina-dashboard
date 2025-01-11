@@ -8,6 +8,7 @@ import { supabase } from "../api/supabaseClient";
 
 const firstName = localStorage.getItem("firstName");
 const lastName = localStorage.getItem("lastName");
+const fullName = `${localStorage.getItem("firstName") || ""} ${localStorage.getItem("lastName") || ""}`.trim();
 
 const logSale = async (
   firstName: string,
@@ -82,8 +83,8 @@ const ExportSales: React.FC = () => {
   const handleButtonClick = () => {
     if (employeesTotal > 0 && companyTotal > 0) {
       logSale(
-        {firstName},
-        {lastName},
+        firstName,
+        lastName,
         "export",
         selectedSale,
         employeesTotal,
@@ -94,7 +95,7 @@ const ExportSales: React.FC = () => {
           <div className="flex w-full mb-1">
             <span className="text-white text-base font-semibold">{currentDate}</span>
             <span className="text-white text-base font-semibold pl-2"> - </span>
-            <span className="text-white text-base font-bold pl-2">{firstName} {lastName}</span>
+            <span className="text-white text-base font-bold pl-2">{fullName}</span>
           </div>
           <div className="w-full border-t border-gray-500 mt-2 mb-2"></div>
           <div className="flex w-full mb-1">
@@ -158,7 +159,7 @@ const ExportSales: React.FC = () => {
         <div className="flex flex-col w-full md:w-1/2 p-6 rounded-lg gap-8">
           <div className="text-xl sm:text-2xl font-medium text-gray-400">
             <p>Date : {currentDate}</p>
-            <span>Nom Employé : {firstName} {lastName}</span>
+            <span>Nom Employé : {fullName}</span>
           </div>
 
           {/* Expertise Input */}

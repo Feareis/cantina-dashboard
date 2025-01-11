@@ -2,13 +2,24 @@ import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, LogOut, User, ShieldMinus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const firstName = localStorage.getItem("firstName");
-const lastName = localStorage.getItem("lastName");
+const firstName = localStorage.getItem("firstName") || "";
+const lastName = localStorage.getItem("lastName") || "";
+const grade = localStorage.getItem("grade") || "";
 
 const ProfileDropdown: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref pour le conteneur du dropdown
   const navigate = useNavigate();
+
+  const profilePictureMapping: { [key: string]: string } = {
+    Patron: "/static/profile_picture/patron.png",
+    "Co-Patron": "/static/profile_picture/patron.png",
+    Responsable: "/static/profile_picture/responsable.png",
+    CDI: "/static/profile_picture/cdi.png",
+    CDD: "/static/profile_picture/cdd.png",
+  };
+
+  const profilePicture = profilePictureMapping[grade] || "/static/profile_picture/default.png";
 
   // Gestion de l'ouverture/fermeture du dropdown
   const toggleDropdown = () => {
@@ -41,7 +52,7 @@ const ProfileDropdown: React.FC = () => {
 
         {/* Photo de profil */}
         <img
-          src="https://via.placeholder.com/40"
+          src={profilePicture}
           alt="Profile"
           className="h-8 w-8 rounded-full object-cover"
         />

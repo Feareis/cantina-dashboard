@@ -6,6 +6,10 @@ const WeeklyDashboardTable: React.FC = () => {
   const [employeeData, setEmployeeData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // Récupérer les informations de l'utilisateur connecté depuis localStorage
+  const loggedInFirstName = localStorage.getItem("firstName");
+  const loggedInLastName = localStorage.getItem("lastName");
+
   interface Employee {
     id: string;
     first_name: string;
@@ -200,12 +204,18 @@ const WeeklyDashboardTable: React.FC = () => {
       </div>
 
       {/* Lignes de données dynamiques */}
-      {employeeData.map((employee, index) => (
+      {employeeData.map((employee, index) => {
+        const isLoggedInUser =
+          employee.first_name === loggedInFirstName && employee.last_name === loggedInLastName;
+
+        return (
           <div
             key={index}
-            className="flex flex-wrap items-center justify-between text-lg border-b border-gray-600 text-center p-2"
+            className={`flex flex-wrap items-center justify-between text-lg border-b border-gray-600 text-center p-2 ${
+              isLoggedInUser ? "bg-gray-700/50" : ""
+            }`}
           >
-          {/* Grade Employee */}
+            {/* Grade Employee */}
             <div
               className={`rounded-lg font-bold border-r border-gray-800 flex-1 px-4 py-2 ${
                 employee.grade === "Responsable"
@@ -221,61 +231,62 @@ const WeeklyDashboardTable: React.FC = () => {
               {employee.grade}
             </div>
 
-          {/* Alias Prénom.N + Prénom Nom */}
-          <div className="font-bold text-gray-400 border-r border-gray-600 flex-1 px-4 py-2">
-            {`${employee.first_name}.${employee.last_name.charAt(0)}`}
-            <p className="text-xs text-gray-600">{`${employee.first_name} ${employee.last_name}`}</p>
-          </div>
+            {/* Alias Prénom.N + Prénom Nom */}
+            <div className="font-bold text-gray-400 border-r border-gray-600 flex-1 px-4 py-2">
+              {`${employee.first_name}`}
+              <p className="text-xs text-gray-600">{`${employee.first_name} ${employee.last_name}`}</p>
+            </div>
 
-          {/* Vente Client Propre */}
-          <div className="font-bold text-green-600 border-x border-gray-800 flex-1 px-4 py-2">
-            {formatCurrency(employee.vcp)}
-          </div>
+            {/* Vente Client Propre */}
+            <div className="font-bold text-green-600 border-x border-gray-800 flex-1 px-4 py-2">
+              {formatCurrency(employee.vcp)}
+            </div>
 
-          {/* Vente Client Sale */}
-          <div className="font-bold text-red-600 border-x border-gray-800 flex-1 px-4 py-2">
-            {formatCurrency(employee.vcs)}
-          </div>
+            {/* Vente Client Sale */}
+            <div className="font-bold text-red-600 border-x border-gray-800 flex-1 px-4 py-2">
+              {formatCurrency(employee.vcs)}
+            </div>
 
-          {/* Vente Export Propre */}
-          <div className="font-bold text-green-600 border-x border-gray-800 flex-1 px-4 py-2">
-            {formatCurrency(employee.vep)}
-          </div>
+            {/* Vente Export Propre */}
+            <div className="font-bold text-green-600 border-x border-gray-800 flex-1 px-4 py-2">
+              {formatCurrency(employee.vep)}
+            </div>
 
-          {/* Vente Export Sale */}
-          <div className="font-bold text-red-600 border-r border-gray-600 flex-1 px-4 py-2">
-            {formatCurrency(employee.ves)}
-          </div>
+            {/* Vente Export Sale */}
+            <div className="font-bold text-red-600 border-r border-gray-600 flex-1 px-4 py-2">
+              {formatCurrency(employee.ves)}
+            </div>
 
-          {/* Quota */}
-          <div className="flex-1 px-4 py-2 border-x border-gray-800 flex justify-center items-center">
-            {employee.quota ? (
-              <CheckCircle className="text-center text-green-500" size={20} />
-            ) : (
-              <XCircle className="text-red-500" size={20} />
-            )}
-          </div>
+            {/* Quota */}
+            <div className="flex-1 px-4 py-2 border-x border-gray-800 flex justify-center items-center">
+              {employee.quota ? (
+                <CheckCircle className="text-center text-green-500" size={20} />
+              ) : (
+                <XCircle className="text-red-500" size={20} />
+              )}
+            </div>
 
-          {/* Quota+ */}
-          <div className="flex-1 px-4 py-2 border-r border-gray-600 flex justify-center items-center">
-            {employee.quota_plus ? (
-              <CheckCircle className="text-green-500" size={20} />
-            ) : (
-              <XCircle className="text-red-500" size={20} />
-            )}
-          </div>
+            {/* Quota+ */}
+            <div className="flex-1 px-4 py-2 border-r border-gray-600 flex justify-center items-center">
+              {employee.quota_plus ? (
+                <CheckCircle className="text-green-500" size={20} />
+              ) : (
+                <XCircle className="text-red-500" size={20} />
+              )}
+            </div>
 
-          {/* Prime */}
-          <div className="font-bold text-green-600 border-x border-gray-800 flex-1 px-4 py-2">
-            {formatCurrency(employee.prime)}
-          </div>
+            {/* Prime */}
+            <div className="font-bold text-green-600 border-x border-gray-800 flex-1 px-4 py-2">
+              {formatCurrency(employee.prime)}
+            </div>
 
-          {/* Taxe */}
-          <div className="font-bold text-red-600 border-l border-gray-800 flex-1 px-4 py-2">
-            {formatCurrency(employee.taxe)}
+            {/* Taxe */}
+            <div className="font-bold text-red-600 border-l border-gray-800 flex-1 px-4 py-2">
+              {formatCurrency(employee.taxe)}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
