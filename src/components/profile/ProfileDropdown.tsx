@@ -78,7 +78,6 @@ const ProfileDropdown: React.FC = () => {
           {role === "admin" || role === "limited_admin" ? (
             <button
               onClick={() => {
-                localStorage.
                 navigate("/admin");
                 setDropdownOpen(false);
               }}
