@@ -29,24 +29,67 @@ const WeeklyDashboardTable: React.FC = () => {
     CDD: 3, // Priorité pour "CDD"
   };
 
+  const parseNumericValue = (value: string | null | undefined): number => {
+    return value ? parseFloat(value) || 0 : 0;
+  };
+
   // Fonction pour récupérer les données depuis Supabase
   const fetchEmployeeData = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.from("employees").select("*");
-      if (error) {
-        console.error("Erreur lors de la récupération des données : ", error);
-        return;
-      }
+      const { data: employees, error: employeeError } = await supabase.from("employees").select("*");
+      if (employeeError) throw employeeError;
 
-      // Filtrer et trier
-      const sortedData = (data as Employee[])
+      const { data: rates, error: rateError } = await supabase.from("data").select("*");
+      if (rateError) throw rateError;
+
+      const tred = {
+        Responsable: parseNumericValue(rates?.find((rate) => rate.key === "tred_responsable")?.value),
+        CDI: parseNumericValue(rates?.find((rate) => rate.key === "tred_cdi")?.value),
+        CDD: parseNumericValue(rates?.find((rate) => rate.key === "tred_cdd")?.value),
+      };
+      const quotaValue = parseNumericValue(rates?.find((rate) => rate.key === "quota_value")?.value);
+      const quotaPlusValue = parseNumericValue(rates?.find((rate) => rate.key === "quotaplus_value")?.value);
+      const trevVc = parseNumericValue(rates?.find((rate) => rate.key === "trev_vc")?.value);
+      const trevVe = parseNumericValue(rates?.find((rate) => rate.key === "trev_ve")?.value);
+
+      const calculatedData = employees.map((employee) => {
+          const gradeRate = tred[employee.grade] || 0;
+
+          // Calcul de la prime
+          const primeBase = employee.quota
+            ? (employee.vcp + employee.vep) * gradeRate + quotaValue
+            : 0;
+          const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
+
+          // Calcul de la taxe
+          const taxe = employee.vcs * trevVc + employee.ves * trevVe;
+
+          console.log(`Calcul pour ${employee.first_name} ${employee.last_name}:`, {
+            grade: employee.grade,
+            vcp: employee.vcp,
+            vep: employee.vep,
+            vcs: employee.vcs,
+            ves: employee.ves,
+            prime,
+            taxe,
+          });
+
+          return {
+            ...employee,
+            prime,
+            taxe,
+          };
+      });
+
+      // Trier et filtrer les données
+      const sortedData = (calculatedData as Employee[])
         .filter((employee) => employee.grade !== "Patron" && employee.grade !== "Co-Patron")
         .sort((a, b) => rolePriority[a.grade] - rolePriority[b.grade]);
 
       setEmployeeData(sortedData);
     } catch (error) {
-      console.error("Erreur inconnue : ", error);
+      console.error("Erreur lors de la récupération des données du dashboard :", error);
     } finally {
       setLoading(false);
     }
@@ -173,8 +216,8 @@ const WeeklyDashboardTable: React.FC = () => {
               }`}
               style={{ transform: "rotate(-2deg)" }}
             >
-            {employee.grade}
-          </div>
+              {employee.grade}
+            </div>
 
           {/* Alias Prénom.N + Prénom Nom */}
           <div className="font-bold text-gray-400 border-r border-gray-600 flex-1 px-4 py-2">
@@ -222,12 +265,12 @@ const WeeklyDashboardTable: React.FC = () => {
 
           {/* Prime */}
           <div className="font-bold text-green-600 border-x border-gray-800 flex-1 px-4 py-2">
-            {formatCurrency((employee.vcp+employee.vep)*0.4)}
+            {formatCurrency(employee.prime)}
           </div>
 
           {/* Taxe */}
           <div className="font-bold text-red-600 border-l border-gray-800 flex-1 px-4 py-2">
-            {formatCurrency((employee.vcs+employee.ves)*0.4)}
+            {formatCurrency(employee.taxe)}
           </div>
         </div>
       ))}

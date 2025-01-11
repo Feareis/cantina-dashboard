@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import SearchBar from "../components/profile/SearchBar";
-import { Settings, Search, Users, FileLock, Album, SlidersHorizontal } from "lucide-react";
+import { Settings, Search, Users, FileLock, Album, SlidersHorizontal, Logs, TicketCheck } from "lucide-react";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminEnterpriseSettings from "./admin/AdminEnterpriseSettings";
 import AdminTeamsManagement from "./admin/AdminTeamsManagement";
-
-import AdminTeamsManagementTest from "./admin/AdminTeamsManagementTest";
-
 import AdminUsersManagement from "./admin/AdminUsersManagement";
 import AdminSiteSettings from "./admin/AdminSiteSettings";
 
@@ -16,11 +13,13 @@ const Admin: React.FC = () => {
 
   const tabs = [
     { id: "dashboard", label: "Dashboard", icon: Album, type: "tab" },
+    { id: "teams-validation", label: "Validation", icon: TicketCheck, type: "tab" },
     { id: "separator-1", type: "separator" },
     { id: "teams-management", label: "Liste Employés", icon: Users, type: "tab" },
-    { id: "teams-management-test", label: "Liste Employés test", icon: Users, type: "tab" },
     { id: "users-management", label: "Accès Site", icon: FileLock, type: "tab" },
     { id: "separator-2", type: "separator" },
+    { id: "logs", label: "Logs", icon: Logs, type: "tab" },
+    { id: "separator-3", type: "separator" },
     { id: "enterprise-settings", label: "Paramètres Entreprise", icon: SlidersHorizontal, type: "tab" },
     { id: "site-settings", label: "Paramètres du Site", icon: Settings, type: "tab" },
   ];
@@ -33,8 +32,6 @@ const Admin: React.FC = () => {
         return <AdminEnterpriseSettings />;
       case "teams-management":
         return <AdminTeamsManagement />;
-      case "teams-management-test":
-        return <AdminTeamsManagementTest />;
       case "users-management":
         return <AdminUsersManagement />;
       case "site-settings":

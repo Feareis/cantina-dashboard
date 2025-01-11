@@ -43,7 +43,7 @@ const items = [
   // Configuration of products
   { name: "Risotto", image: RisottoCayo, increments: [5], decrements: [5], category: "Nourriture" },
   { name: "Plateau", image: PlateauCayo, increments: [5], decrements: [5], category: "Nourriture" },
-  { name: "Montara", image: MontaraCayo, increments: [10], decrements: [10], category: "Nourriture" },
+  { name: "Montara", image: MontaraCayo, increments: [10], decrements: [10], category: "Boisson" },
   { name: "Jus de cerise", image: JusDeCerise, increments: [5], decrements: [5], category: "Boisson" },
   { name: "Bière", image: Biere, increments: [1], decrements: [1], category: "Alcool" },
   { name: "Bière Pils", image: BierePils, increments: [1], decrements: [1], category: "Alcool" },
