@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Upload, User, CalendarFold, Phone, Save, KeyRound, ShieldHalf } from "lucide-react";
+import React from "react";
+import { User, CalendarFold, Phone, Save, KeyRound, ShieldHalf } from "lucide-react";
 import InputCustom from "../components/InputCustom";
 import StaticTextCustom from "../components/StaticTextCustom";
 import CustomButton from "../components/CustomButton";
