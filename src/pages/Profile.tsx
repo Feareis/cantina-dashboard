@@ -8,11 +8,6 @@ import { supabase } from "../api/supabaseClient";
 import { useAuth } from "../api/AuthContext";
 
 
-const fullName = `${localStorage.getItem("firstName") || ""} ${localStorage.getItem("lastName") || ""}`.trim();
-const grade = localStorage.getItem("grade") || "";
-const phoneNumber = localStorage.getItem("phone") || "";
-const hireDate = localStorage.getItem("hireDate") || "";
-
 const Profile: React.FC = () => {
   const { user } = useAuth();
   const [currentPassword, setCurrentPassword] = useState("");
@@ -229,7 +224,7 @@ const Profile: React.FC = () => {
           <label className="block w-3/4">
             <p className="text-lg font-bold">Mot de passe actuel :</p>
             <InputCustom
-              type="password"
+              type="text"
               icon={KeyRound}
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
@@ -243,7 +238,7 @@ const Profile: React.FC = () => {
           <label className="block w-3/4">
             <p className="text-lg font-bold">Nouveau mot de passe :</p>
             <InputCustom
-              type="password"
+              type="text"
               icon={KeyRound}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
@@ -256,7 +251,7 @@ const Profile: React.FC = () => {
           <label className="block w-3/4">
             <p className="text-lg font-bold">Confirmer le mot de passe :</p>
             <InputCustom
-              type="password"
+              type="text"
               icon={KeyRound}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
