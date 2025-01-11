@@ -11,8 +11,8 @@ import ProductsPrice from "../data/ProductsPrice";
 import Discounts from "../data/Discounts";
 import { supabase } from "../api/supabaseClient";
 
-const firstName = localStorage.getItem("firstName");
-const lastName = localStorage.getItem("lastName");
+const firstName = localStorage.getItem("firstName") || "";
+const lastName = localStorage.getItem("lastName") || "";
 const fullName = `${localStorage.getItem("firstName") || ""} ${localStorage.getItem("lastName") || ""}`.trim();
 
 const logSale = async (

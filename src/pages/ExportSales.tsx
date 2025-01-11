@@ -6,8 +6,8 @@ import { BadgeDollarSign, BadgeCent, ArrowUpNarrowWide, Salad } from "lucide-rea
 import toast, { Toaster } from 'react-hot-toast';
 import { supabase } from "../api/supabaseClient";
 
-const firstName = localStorage.getItem("firstName");
-const lastName = localStorage.getItem("lastName");
+const firstName = localStorage.getItem("firstName") || "";
+const lastName = localStorage.getItem("lastName") || "";
 const fullName = `${localStorage.getItem("firstName") || ""} ${localStorage.getItem("lastName") || ""}`.trim();
 
 const logSale = async (
