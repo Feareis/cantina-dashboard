@@ -21,13 +21,7 @@ const WeeklyDashboardTable: React.FC = () => {
     quota_plus: boolean;
   }
 
-  const rolePriority: { [key in Employee["grade"]]: number } = {
-    Patron: 0, // Priorité pour "Patron"
-    "Co-Patron": 0, // Priorité pour "Co-Patron"
-    Responsable: 1, // Priorité pour "Responsable"
-    CDI: 2, // Priorité pour "CDI"
-    CDD: 3, // Priorité pour "CDD"
-  };
+  const rolePriority: { [key: string]: number } = { Responsable: 1, CDI: 2, CDD: 3 };
 
   const parseNumericValue = (value: string | null | undefined): number => {
     return value ? parseFloat(value) || 0 : 0;
@@ -196,9 +190,7 @@ const WeeklyDashboardTable: React.FC = () => {
       </div>
 
       {/* Lignes de données dynamiques */}
-      {employeeData
-        .filter((employee) => employee.grade !== "Patron" && employee.grade !== "Co-Patron")
-        .map((employee, index) => (
+      {employeeData.map((employee, index) => (
           <div
             key={index}
             className="flex flex-wrap items-center justify-between text-lg border-b border-gray-600 text-center p-2"

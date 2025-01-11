@@ -6,12 +6,12 @@ import SelectCustom from "../../components/SelectCustom";
 import { User, Phone, Calendar, ShieldHalf } from "lucide-react";
 
 type Employee = {
-  id: string;
-  firstName: string;
-  lastName: string;
+  id?: string;
+  first_name: string;
+  last_name: string;
   phone: string;
   grade: string;
-  hireDate: string;
+  hire_date: string;
 };
 
 const EmployeeManagement: React.FC = () => {
@@ -148,12 +148,12 @@ const EmployeeManagement: React.FC = () => {
     if (employee) {
       // Mode édition : Pré-remplit les champs avec les données de l'employé sélectionné
       setEditingEmployee({
-        id: employee.id,
-        firstName: employee.first_name,
-        lastName: employee.last_name,
+        id: employee.id || "",
+        first_name: employee.first_name,
+        last_name: employee.last_name,
         phone: employee.phone,
         grade: employee.grade,
-        hireDate: employee.hire_date,
+        hire_date: employee.hire_date,
       });
     } else {
       // Mode ajout : Initialise un nouvel employé vide

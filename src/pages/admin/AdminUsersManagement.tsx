@@ -17,7 +17,7 @@ const AdminUsersManagement: React.FC = () => {
     if (error) {
       console.error("Erreur lors de la récupération des utilisateurs :", error.message);
     } else {
-      const rolePriority = { admin: 1, limited_admin: 2, user: 3 };
+      const rolePriority: { [key: string]: number } = { admin: 1, limited_admin: 2, user: 3 };
 
       const sortedUsers = (data || []).sort(
         (a, b) => rolePriority[a.role] - rolePriority[b.role]
