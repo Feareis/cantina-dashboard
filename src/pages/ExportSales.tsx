@@ -86,8 +86,8 @@ const ExportSales: React.FC = () => {
   const handleButtonClick = () => {
     if (employeesTotal > 0 && companyTotal > 0) {
       logSale(
-        firstName.firstName,
-        lastName.lastName,
+        firstName,
+        lastName,
         "export",
         selectedSale,
         employeesTotal,

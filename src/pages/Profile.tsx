@@ -57,26 +57,6 @@ const Profile: React.FC = () => {
     });
   };
 
-  const handleSave = () => {
-    toast.promise(
-      saveSettings(),
-      {
-        loading: "Sauvegarde en cours...",
-        success: <b>OK !</b>,
-      },
-      {
-        style: {
-          marginTop: "100px",
-          padding: "16px",
-          borderRadius: "8px",
-          background: "#1f2937",
-          color: "#ffffff",
-          border: "1px solid #374151",
-        },
-      }
-    );
-  };
-
   const handlePasswordChange = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
       toast.error("Tous les champs doivent être remplis.");
