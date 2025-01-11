@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { CheckCircle, XCircle } from "lucide-react";
 import { supabase } from "../../api/supabaseClient";
+import { useAuth } from "../../api/AuthContext";
 
 const WeeklyDashboardTable: React.FC = () => {
+  const { user } = useAuth();
   const [employeeData, setEmployeeData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   // Récupérer les informations de l'utilisateur connecté depuis localStorage
-  const loggedInFirstName = localStorage.getItem("firstName");
-  const loggedInLastName = localStorage.getItem("lastName");
+  const loggedInFirstName = user?.firstName || "Inconnu";
+  const loggedInLastName = user?.lastName || "Inconnu";
 
   interface Employee {
     id: string;

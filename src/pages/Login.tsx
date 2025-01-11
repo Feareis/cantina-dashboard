@@ -60,15 +60,17 @@ const Login: React.FC = () => {
 
         // console.log("Informations de l'employé :", employee);
 
-        // Stocker les informations dans localStorage
-        localStorage.setItem("firstName", employee.first_name);
-        localStorage.setItem("lastName", employee.last_name);
-        localStorage.setItem("grade", employee.grade);
-        localStorage.setItem("phone", employee.phone);
-        localStorage.setItem("hireDate", employee.hire_date);
-        localStorage.setItem("isAuthenticated", "true");
+        const userData = {
+          username,
+          role: user.role,
+          firstName: employee.first_name,
+          lastName: employee.last_name,
+          grade: employee.grade,
+          phone: employee.phone,
+          hireDate: employee.hire_date,
+        };
 
-        login(); // Active l'authentification via AuthContext
+        login(userData); // Active l'authentification via AuthContext
         navigate("/"); // Redirige après une connexion réussie
       }
     } catch (error: any) {

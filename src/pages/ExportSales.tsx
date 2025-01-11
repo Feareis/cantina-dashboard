@@ -5,43 +5,45 @@ import InputCustom from "../components/InputCustom";
 import { BadgeDollarSign, BadgeCent, ArrowUpNarrowWide, Salad } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
 import { supabase } from "../api/supabaseClient";
+import { useAuth } from "../api/AuthContext";
 
-
-const firstName = { firstName: localStorage.getItem("firstName") || "" };
-const lastName = { lastName: localStorage.getItem("lastName") || "" };
-const fullName = `${localStorage.getItem("firstName") || ""} ${localStorage.getItem("lastName") || ""}`.trim();
-
-const logSale = async (
-  firstName: string,
-  lastName: string,
-  type: "client" | "export",
-  saleType: "propre" | "sale",
-  employeeShare: number,
-  companyShare: number
-) => {
-  const { error } = await supabase.from("sales_logs").insert([
-    {
-      first_name: firstName,
-      last_name: lastName,
-      type,
-      sale_type: saleType,
-      employee_share: employeeShare,
-      company_share: companyShare,
-      date: new Date().toISOString(),
-    },
-  ]);
-
-  if (error) {
-    console.error("Erreur lors de l'ajout de la vente : ", error.message);
-  } else {
-    console.log("Vente ajoutée avec succès !");
-  }
-};
 
 const ExportSales: React.FC = () => {
+  const { user } = useAuth();
   const [selectedSale, setSelectedSale] = useState<'propre' | 'sale'>('propre');
   const [expertise, setExpertise] = useState<number | "">("");
   const [nbSalade, setNbSalade] = useState<number | "">("");
+
+  const firstName = user?.firstName || "Inconnu";
+  const lastName = user?.lastName || "Inconnu";
+  const fullName = `${firstName} ${lastName}`.trim();
+
+  const logSale = async (
+    firstName: string,
+    lastName: string,
+    type: "client" | "export",
+    saleType: "propre" | "sale",
+    employeeShare: number,
+    companyShare: number
+  ) => {
+    const { error } = await supabase.from("sales_logs").insert([
+      {
+        firstName,
+        lastName,
+        type,
+        sale_type: saleType,
+        employee_share: employeeShare,
+        company_share: companyShare,
+        date: new Date().toISOString(),
+      },
+    ]);
+
+    if (error) {
+      console.error("Erreur lors de l'ajout de la vente : ", error.message);
+    } else {
+      console.log("Vente ajoutée avec succès !");
+    }
+  };
 
   // Handle the sale type selection
   const handleSaleSelection = (type: 'propre' | 'sale') => {

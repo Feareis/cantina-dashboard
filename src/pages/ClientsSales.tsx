@@ -10,37 +10,8 @@ import { RisottoCayo, PlateauCayo, MontaraCayo, JusDeCerise, Biere, BierePils, B
 import ProductsPrice from "../data/ProductsPrice";
 import Discounts from "../data/Discounts";
 import { supabase } from "../api/supabaseClient";
+import { useAuth } from "../api/AuthContext";
 
-const firstName = localStorage.getItem("firstName") || "";
-const lastName = localStorage.getItem("lastName") || "";
-const fullName = `${localStorage.getItem("firstName") || ""} ${localStorage.getItem("lastName") || ""}`.trim();
-
-const logSale = async (
-  firstName: string,
-  lastName: string,
-  type: "client" | "export",
-  saleType: "propre" | "sale",
-  employeeShare: number,
-  companyShare: number
-) => {
-  const { error } = await supabase.from("sales_logs").insert([
-    {
-      first_name: firstName,
-      last_name: lastName,
-      type,
-      sale_type: saleType,
-      employee_share: employeeShare,
-      company_share: companyShare,
-      date: new Date().toISOString(),
-    },
-  ]);
-
-  if (error) {
-    console.error("Erreur lors de l'ajout de la vente : ", error.message);
-  } else {
-    console.log("Vente ajoutée avec succès !");
-  }
-};
 
 const items = [
   // Configuration of products
@@ -59,10 +30,42 @@ const items = [
 ];
 
 const ClientsSales: React.FC = () => {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<string>("Nourriture");
   const [selectedSale, setSelectedSale] = useState<'propre' | 'sale'>('propre');
   const [selectedDiscount, setSelectedDiscount] = useState<string | null>(null);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+
+  const firstName = user?.firstName || "Inconnu";
+  const lastName = user?.lastName || "Inconnu";
+  const fullName = `${firstName} ${lastName}`.trim();
+
+  const logSale = async (
+    firstName: string,
+    lastName: string,
+    type: "client" | "export",
+    saleType: "propre" | "sale",
+    employeeShare: number,
+    companyShare: number
+  ) => {
+    const { error } = await supabase.from("sales_logs").insert([
+      {
+        firstName,
+        lastName,
+        type,
+        sale_type: saleType,
+        employee_share: employeeShare,
+        company_share: companyShare,
+        date: new Date().toISOString(),
+      },
+    ]);
+
+    if (error) {
+      console.error("Erreur lors de l'ajout de la vente : ", error.message);
+    } else {
+      console.log("Vente ajoutée avec succès !");
+    }
+  };
 
   // Handle the selection of sale type (e.g., 'propre' or 'sale')
   const handleSaleSelection = (type: 'propre' | 'sale') => {

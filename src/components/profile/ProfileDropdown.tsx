@@ -1,15 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, LogOut, User, ShieldMinus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../api/AuthContext";
 
-const firstName = localStorage.getItem("firstName") || "";
-const lastName = localStorage.getItem("lastName") || "";
-const grade = localStorage.getItem("grade") || "";
 
 const ProfileDropdown: React.FC = () => {
+  const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref pour le conteneur du dropdown
   const navigate = useNavigate();
+
+  const firstName = user?.firstName || "Inconnu";
+  const lastName = user?.lastName || "Inconnu";
+  const grade = user?.grade || "Inconnu";
+  const role = user?.role || "Inconnu";
+
+  const handleLogout = () => {
+    logout(); // Déconnectez l'utilisateur via le contexte
+    navigate("/login"); // Redirigez vers la page de connexion
+  };
 
   const profilePictureMapping: { [key: string]: string } = {
     Patron: "/static/profile_picture/patron.png",
@@ -66,16 +75,19 @@ const ProfileDropdown: React.FC = () => {
         <div className="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-10">
 
           {/* Option Admin */}
-          <button
-            onClick={() => {
-              navigate("/admin");
-              setDropdownOpen(false);
-            }}
-            className="w-full text-left px-4 py-2 text-gray-400 hover:bg-gray-700 hover:text-white transition"
-          >
-            <ShieldMinus size={18} className="inline-block mr-2" />
-            Admin
-          </button>
+          {role === "admin" || role === "limited_admin" ? (
+            <button
+              onClick={() => {
+                localStorage.
+                navigate("/admin");
+                setDropdownOpen(false);
+              }}
+              className="w-full text-left px-4 py-2 text-gray-400 hover:bg-gray-700 hover:text-white transition"
+            >
+              <ShieldMinus size={18} className="inline-block mr-2" />
+              Admin
+            </button>
+          ) : null}
 
           {/* Option Profile */}
           <button
@@ -91,10 +103,7 @@ const ProfileDropdown: React.FC = () => {
 
           {/* Option Déconnexion */}
           <button
-            onClick={() => {
-              navigate("/");
-              setDropdownOpen(false);
-            }}
+            onClick={handleLogout}
             className="w-full text-left px-4 py-2 text-gray-400 hover:bg-gray-700 hover:text-white transition"
           >
             <LogOut size={18} className="inline-block mr-2" />
