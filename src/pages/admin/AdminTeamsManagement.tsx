@@ -16,6 +16,8 @@ type Employee = {
 
 const EmployeeManagement: React.FC = () => {
   const gradeOrder = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"];
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState<Employee | null>(null);
 
   const fetchEmployees = async () => {
     const { data, error } = await supabase.from("employees").select("*");
@@ -121,11 +123,6 @@ const EmployeeManagement: React.FC = () => {
         },
       ]);
 
-      if (userError) {
-        console.error("Erreur lors de la création de l'utilisateur :", userError.message);
-        return;
-      }
-
       alert(`Utilisateur créé avec succès !\nNom d'utilisateur : ${username}\nMot de passe : ${generatedPassword}`);
       fetchEmployees();
       closeModal();
@@ -165,6 +162,9 @@ const EmployeeManagement: React.FC = () => {
     const { error } = await supabase.from("employees").delete().eq("id", id);
     if (error) {
       console.error("Erreur lors de la suppression :", error.message);
+    } else {
+      fetchEmployees();
+      closeDeleteModal(); // Fermer la modale
     }
   };
 
@@ -245,6 +245,23 @@ const EmployeeManagement: React.FC = () => {
     }
   };
 
+  const openDeleteModal = (employee: Employee) => {
+    setEmployeeToDelete(employee);
+    setDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setEmployeeToDelete(null);
+    setDeleteModalOpen(false);
+  };
+
+  const confirmDeleteEmployee = async () => {
+    if (employeeToDelete && employeeToDelete.id) {
+      await handleDeleteEmployee(employeeToDelete.id);
+      closeDeleteModal();
+    }
+  };
+
   const sortedEmployees = sortEmployeesByGrade(employees);
 
   return (
@@ -286,7 +303,7 @@ const EmployeeManagement: React.FC = () => {
                 </button>
                 <button
                   className="bg-red-500 text-white px-2 py-1 rounded"
-                  onClick={() => handleDeleteEmployee(employee.id)}
+                  onClick={() => openDeleteModal(employee)}
                 >
                   Supprimer
                 </button>
@@ -384,6 +401,35 @@ const EmployeeManagement: React.FC = () => {
             textColor="text-gray-400"
           />
         </div>
+      </CustomModal>
+
+      <CustomModal
+        isOpen={isDeleteModalOpen}
+        title="Confirmer la Suppression"
+        onClose={closeDeleteModal}
+        actions={
+          <>
+            <button
+              className="bg-gray-400 text-white px-4 py-2 rounded"
+              onClick={closeDeleteModal}
+            >
+              Annuler
+            </button>
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded"
+              onClick={confirmDeleteEmployee}
+            >
+              Confirmer
+            </button>
+          </>
+        }
+      >
+        <p>Êtes-vous sûr de vouloir supprimer cet employé ?</p>
+        {employeeToDelete && (
+          <p className="mt-2 text-gray-400">
+            {employeeToDelete.first_name} {employeeToDelete.last_name}
+          </p>
+        )}
       </CustomModal>
     </div>
   );
