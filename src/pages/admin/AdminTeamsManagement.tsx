@@ -89,9 +89,6 @@ const EmployeeManagement: React.FC = () => {
     try {
       const username = await generateUniqueUsername(newEmployee.first_name, newEmployee.last_name);
 
-      // Mapper le grade en rôle
-      const role = mapGradeToRole(newEmployee.grade);
-
       const newEmployeeData = {
         first_name: newEmployee.first_name,
         last_name: newEmployee.last_name,
@@ -110,8 +107,6 @@ const EmployeeManagement: React.FC = () => {
         console.error("Erreur lors de l'ajout de l'employé :", employeeError?.message);
         return;
       }
-
-      const employeeId = employeeData[0].id;
 
       alert(`Utilisateur créé avec succès !\nNom d'utilisateur : ${username}\nMot de passe : ${generatedPassword}`);
       fetchEmployees();

@@ -1,4 +1,3 @@
-import React from "react";
 import { BadgeDollarSign, Calculator, ChartArea, Users } from "lucide-react";
 import { Link, useLocation, Outlet } from "react-router-dom";
 import Breadcrumb from "./Breadcrumb";
