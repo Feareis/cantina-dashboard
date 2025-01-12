@@ -66,30 +66,27 @@ const WeeklyDashboardTable: React.FC = () => {
   // Parse numeric values safely
   const parseNumericValue = (value: string | null | undefined): number => parseFloat(value || "0");
 
+  const gradeToKeyMap: Record<Employee["grade"], keyof typeof fetchedRates> = {
+    Responsable: "tred_responsable",
+    CDI: "tred_cdi",
+    CDD: "tred_cdd",
+  };
+
   // Fetch employee and rate data from Supabase
   const fetchEmployees = async () => {
     setLoading(true);
     try {
       const { data: employees } = await supabase.from("employees").select("*");
-      const { data: rates } = await supabase.from("data").select("*");
-
-      const tred = {
-        Responsable: parseNumericValue(rates?.find((r) => r.key === "tred_responsable")?.value),
-        CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
-        CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
-      };
-      const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value);
-      const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value);
-      const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value);
-      const trevVe = parseNumericValue(rates?.find((r) => r.key === "trev_ve")?.value);
 
       const calculatedData = employees.map((employee) => {
-        const gradeRate = tred[employee.grade] || 0;
-        const primeBase = employee.quota
-          ? (employee.vcp + employee.vep) * gradeRate + quotaValue
+        const gradeRate = gradeToKeyMap[employee.grade]
+          ? rates[gradeToKeyMap[employee.grade]]
           : 0;
-        const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
-        const taxe = employee.vcs * trevVc + employee.ves * trevVe;
+        const primeBase = employee.quota
+          ? (employee.vcp + employee.vep) * gradeRate + rates.quota_value
+          : 0;
+        const prime = employee.quota_plus ? primeBase + rates.quotaplus_value : primeBase;
+        const taxe = employee.vcs * rates.trev_vc + employee.ves * rates.trev_ve;
 
         return { ...employee, prime, taxe };
       });
