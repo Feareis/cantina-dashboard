@@ -12,7 +12,7 @@ interface Employee {
   first_name: string;
   last_name: string;
   phone: string;
-  grade: "Responsable" | "CDI" | "CDD";
+  grade: "Patron" | "Co-Patron" | "Responsable" | "CDI" | "CDD";
   hire_date: string;
   vcp: number; // Sales to customers (clean)
   vcs: number; // Sales to customers (dirty)
@@ -20,8 +20,6 @@ interface Employee {
   ves: number; // Export sales (dirty)
   quota: boolean;
   quota_plus: boolean;
-  prime?: number;
-  taxe?: number;
 }
 
 const WeeklyDashboardTable: React.FC = () => {
@@ -30,7 +28,7 @@ const WeeklyDashboardTable: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   // Helper for role priority sorting
-  const rolePriority: Record<Employee["grade"], number> = {
+  const rolePriority = {
     Responsable: 1,
     CDI: 2,
     CDD: 3,
@@ -38,7 +36,7 @@ const WeeklyDashboardTable: React.FC = () => {
 
   // Parse numeric values safely
   const parseNumericValue = (value: string | null | undefined): number => {
-    return parseFloat(value || "0");
+    return value ? parseFloat(value) || 0 : 0;
   };
 
   // Fetch employee and rate data from Supabase
@@ -56,12 +54,11 @@ const WeeklyDashboardTable: React.FC = () => {
       if (rateError) throw rateError;
 
       // Extract rates for calculations
-      const tred: Record<Employee["grade"], number> = {
+      const tred = {
         Responsable: parseNumericValue(rates?.find((r) => r.key === "tred_responsable")?.value),
         CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
         CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
       };
-
       const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value);
       const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value);
       const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value);
@@ -69,18 +66,10 @@ const WeeklyDashboardTable: React.FC = () => {
 
       // Calculate primes and taxes for employees
       const calculatedData = employees.map((employee) => {
-        const gradeRate = tred[employee.grade];
-
-        const primeBase = employee.quota
-          ? (employee.vcp + employee.vep) * gradeRate + quotaValue
-          : 0;
-
-        const prime = employee.quota_plus
-          ? primeBase + quotaPlusValue
-          : primeBase;
-
+        const gradeRate = tred[employee.grade] || 0;
+        const primeBase = employee.quota ? (employee.vcp + employee.vep) * gradeRate + quotaValue : 0;
+        const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
         const taxe = employee.vcs * trevVc + employee.ves * trevVe;
-
         return { ...employee, prime, taxe };
       });
 
@@ -143,6 +132,13 @@ const WeeklyDashboardTable: React.FC = () => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     })}`;
+  };
+
+  // Config for grade styles
+  const gradeStyles: Record<string, string> = {
+    Responsable: "bg-yellow-700 text-yellow-100",
+    CDI: "bg-blue-700 text-blue-100",
+    CDD: "bg-cyan-700 text-cyan-100",
   };
 
   if (loading) return <div className="text-center text-white">Loading data...</div>;
