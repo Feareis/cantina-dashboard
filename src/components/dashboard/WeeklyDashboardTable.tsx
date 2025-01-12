@@ -43,16 +43,6 @@ const WeeklyDashboardTable: React.FC = () => {
     return parseFloat(value || "0");
   };
 
-  function isValidGrade(
-    grade: string
-  ): grade is "Patron" | "Co-Patron" | "Responsable" | "CDI" | "CDD" {
-    return ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"].includes(grade);
-  }
-
-  function getRateValue(key: string, rates: any[]): number {
-    return parseNumericValue(rates?.find((r) => r.key === key)?.value) || 0;
-  }
-
   // Fetch employee and rate data from Supabase
   const fetchEmployees = async () => {
     setLoading(true);
@@ -71,19 +61,19 @@ const WeeklyDashboardTable: React.FC = () => {
       const tred: Record<Employee["grade"], number> = {
         Patron: 0,
         "Co-Patron": 0,
-        Responsable: getRateValue("tred_responsable", rates),
-        CDI: getRateValue("tred_cdi", rates),
-        CDD: getRateValue("tred_cdd", rates),
+        Responsable: parseNumericValue(rates?.find((r) => r.key === "tred_responsable")?.value),
+        CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
+        CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
       };
 
-      const quotaValue = getRateValue("quota_value", rates);
-      const quotaPlusValue = getRateValue("quotaplus_value", rates);
-      const trevVc = getRateValue("trev_vc", rates);
-      const trevVe = getRateValue("trev_ve", rates);
+      const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value);
+      const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value);
+      const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value);
+      const trevVe = parseNumericValue(rates?.find((r) => r.key === "trev_ve")?.value);
 
       // Calculate primes and taxes for employees
       const calculatedData = employees.map((employee) => {
-        const gradeRate = isValidGrade(employee.grade) ? tred[employee.grade] : 0;
+        const gradeRate = tred[employee.grade];
 
         const primeBase = employee.quota
           ? (employee.vcp + employee.vep) * gradeRate + quotaValue
