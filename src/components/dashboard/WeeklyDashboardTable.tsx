@@ -20,8 +20,8 @@ interface Employee {
   ves: number; // Export sales (dirty)
   quota: boolean;
   quota_plus: boolean;
-  prime?;
-  taxe?;
+  prime?: number;
+  taxe?: number;
 }
 
 const WeeklyDashboardTable: React.FC = () => {
@@ -59,6 +59,8 @@ const WeeklyDashboardTable: React.FC = () => {
 
       // Extract rates for calculations
       const tred: Record<Employee["grade"], number> = {
+        Patron: 0,
+        "Co-Patron": 0,
         Responsable: parseNumericValue(rates?.find((r) => r.key === "tred_responsable")?.value),
         CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
         CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
