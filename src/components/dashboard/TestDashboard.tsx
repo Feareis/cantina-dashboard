@@ -1,20 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../api/supabaseClient";
 
-interface Employee {
-  id: string;
-  first_name: string;
-  last_name: string;
-  phone: string;
-  grade: "Patron" | "Co-Patron" | "Responsable" | "CDI" | "CDD";
-  hire_date: string;
-  vcp: number; // Vente Client Propre
-  vcs: number; // Vente Client Sale
-  vep: number; // Vente Export Propre
-  ves: number; // Vente Export Sale
-  quota: boolean;
-  quota_plus: boolean;
-}
 
 const WeeklyDashboardTable: React.FC = () => {
   const [rates, setRates] = useState({
