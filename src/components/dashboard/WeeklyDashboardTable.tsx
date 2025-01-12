@@ -40,7 +40,7 @@ const WeeklyDashboardTable: React.FC = () => {
 
   // Parse numeric values safely
   const parseNumericValue = (value: string | null | undefined): number => {
-    return parseFloat(value || "0");
+    return value ? parseFloat(value) || 0 : 0;
   };
 
   // Fetch employee and rate data from Supabase
@@ -72,8 +72,10 @@ const WeeklyDashboardTable: React.FC = () => {
 
       // Calculate primes and taxes for employees
       const calculatedData = employees.map((employee) => {
-        const gradeRate = tred[employee.grade as keyof typeof tred] || 0;
-        const primeBase = employee.quota ? (employee.vcp + employee.vep) * gradeRate + (quotaValue ?? 0) : 0;
+        const gradeRate = tred[employee.grade as keyof typeof tred] ?? 0;
+        const primeBase = employee.quota
+          ? (employee.vcp + employee.vep) * gradeRate + (quotaValue ?? 0)
+          : 0;
         const prime = employee.quota_plus ? primeBase + (quotaPlusValue ?? 0) : primeBase;
         const taxe = employee.vcs * (trevVc ?? 0) + employee.ves * (trevVe ?? 0);
         return { ...employee, prime, taxe };
