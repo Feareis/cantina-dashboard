@@ -58,7 +58,7 @@ const WeeklyDashboardTable: React.FC = () => {
       const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value);
       const trevVe = parseNumericValue(rates?.find((r) => r.key === "trev_ve")?.value);
 
-      const calculatedData = employees.map((employee) => {
+      const calculatedData = (employees ?? []).map((employee) => {
         const gradeRate = tred[employee.grade as keyof typeof tred] ?? 0;
         const primeBase = employee.quota
           ? (employee.vcp + employee.vep) * gradeRate + quotaValue
