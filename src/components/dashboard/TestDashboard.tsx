@@ -26,7 +26,6 @@ const WeeklyDashboardTable: React.FC = () => {
     quota_value: 0,
     quotaplus_value: 0,
   });
-  const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Récupération des taux depuis la table "data"
@@ -51,22 +50,10 @@ const WeeklyDashboardTable: React.FC = () => {
     }
   };
 
-  // Récupération des employés depuis la table "employees"
-  const fetchEmployees = async () => {
-    try {
-      const { data: employeesData, error } = await supabase.from("employees").select("*");
-      if (error) throw error;
-
-      setEmployees(employeesData || []);
-    } catch (error) {
-      console.error("Erreur lors de la récupération des employés :", error);
-    }
-  };
-
   // Récupération des deux tables
   const fetchData = async () => {
     setLoading(true);
-    await Promise.all([fetchRates(), fetchEmployees()]);
+    await Promise.all([fetchRates()]);
     setLoading(false);
   };
 
