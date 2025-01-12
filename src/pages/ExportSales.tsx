@@ -60,7 +60,11 @@ const ExportSales: React.FC = () => {
       if (!expertise || !nbSalade) {
         return 0;
       }
-      return (36 + 36 * ((Number(expertise) || 0) * 0.003)) * (Number(nbSalade) || 0);
+
+      // Clamp expertise to [1, 100]
+      const adjustedExpertise = Math.min(Math.max(Number(expertise), 1), 100);
+
+      return (36 + 36 * ((Number(adjustedExpertise) || 0) * 0.003)) * (Number(nbSalade) || 0);
     } else if (selectedSale === 'sale') {
       return (Number(nbSalade) || 0) * 35;
     }
