@@ -8,12 +8,9 @@ import { useAuth } from "../../api/AuthContext";
 
 // Employee interface definition
 interface Employee {
-  id: string;
   first_name: string;
   last_name: string;
-  phone: string;
   grade: string;
-  hire_date: string;
   vcp: number; // Sales to customers (clean)
   vcs: number; // Sales to customers (dirty)
   vep: number; // Export sales (clean)
@@ -57,14 +54,10 @@ const WeeklyDashboardTable: React.FC = () => {
       };
 
       setRates(fetchedRates);
-      console.log("récupération des taux", fetchedRates)
     } catch (error) {
       console.error("Erreur lors de la récupération des taux :", error);
     }
   };
-
-  // Parse numeric values safely
-  const parseNumericValue = (value: string | null | undefined): number => parseFloat(value || "0");
 
   const gradeToKeyMap: Record<Employee["grade"], keyof typeof fetchedRates> = {
     Responsable: "tred_responsable",
@@ -74,7 +67,6 @@ const WeeklyDashboardTable: React.FC = () => {
 
   // Fetch employee and rate data from Supabase
   const fetchEmployees = async () => {
-    setLoading(true);
     try {
       const { data: employees } = await supabase.from("employees").select("*");
 
@@ -96,11 +88,9 @@ const WeeklyDashboardTable: React.FC = () => {
         .sort((a, b) => gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade)
       );
 
-      setEmployeeData(sortedData);
+      setEmployeeData(sortedData || []);
     } catch (error) {
       console.error("Erreur :", error);
-    } finally {
-      setLoading(false);
     }
   };
 

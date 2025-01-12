@@ -80,7 +80,6 @@ const WeeklyDashboardTable: React.FC = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Taux et Employés</h2>
 
       {/* Section des taux */}
       <div className="mb-8">
@@ -107,35 +106,6 @@ const WeeklyDashboardTable: React.FC = () => {
           <div className="p-4 bg-gray-800 rounded-lg text-white">
             <p>Quota+ : {rates.quotaplus_value}</p>
           </div>
-        </div>
-      </div>
-
-      {/* Section des employés */}
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Liste des employés</h3>
-        <div className="overflow-x-auto">
-          <table className="table-auto w-full text-white">
-            <thead>
-              <tr className="bg-gray-700">
-                <th className="px-4 py-2">Nom</th>
-                <th className="px-4 py-2">Grade</th>
-                <th className="px-4 py-2">Vente Client Propre</th>
-                <th className="px-4 py-2">Vente Client Sale</th>
-                <th className="px-4 py-2">Quota</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employees.map((employee) => (
-                <tr key={employee.id} className="bg-gray-800">
-                  <td className="px-4 py-2">{`${employee.first_name} ${employee.last_name}`}</td>
-                  <td className="px-4 py-2">{employee.grade}</td>
-                  <td className="px-4 py-2">{employee.vcp}</td>
-                  <td className="px-4 py-2">{employee.vcs}</td>
-                  <td className="px-4 py-2">{employee.quota ? "Oui" : "Non"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
