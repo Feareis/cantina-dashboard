@@ -10,11 +10,6 @@ const AdminDashboard: React.FC = () => {
   const [quotaDescription, setQuotaDescription] = useState<string>(""); // Description du quota
   const [quotaPlusValue, setQuotaPlusValue] = useState<number | string>(""); // Quota+ en argent
   const [quotaPlusDescription, setQuotaPlusDescription] = useState<string>(""); // Description du quota+
-  const [quotaEnabled, setQuotaEnabled] = useState(true);
-  const [quotaPlusEnabled, setQuotaPlusEnabled] = useState(true);
-  const [redistributionTableEnabled, setRedistributionTableEnabled] = useState(true);
-  const [bestSellersExportEnabled, setBestSellersExportEnabled] = useState(true);
-  const [bestSellersClientsEnabled, setBestSellersClientsEnabled] = useState(true);
 
   // Toast
   const saveSettings = () => {
