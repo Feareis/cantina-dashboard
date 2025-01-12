@@ -11,7 +11,7 @@ import { useAuth } from "../api/AuthContext";
 
 
 const Admin: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const role = user?.role || "Inconnu";
   const [activeTab, setActiveTab] = useState<string>("dashboard");
 
