@@ -234,7 +234,7 @@ const EmployeeManagement: React.FC = () => {
   const sortedEmployees = sortEmployeesByGrade(employees);
 
   return (
-    <div className="p-6 bg-gray-900 rounded-lg shadow-md">
+    <div className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold mb-6">Gestion des Employés</h1>
         <button

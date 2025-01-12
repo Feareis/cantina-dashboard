@@ -75,7 +75,7 @@ const EmployeeTable: React.FC = () => {
   const sortedEmployees = sortEmployeesByGrade(employees);
 
   return (
-    <div className="p-6 bg-gray-900 rounded-lg shadow-md">
+    <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">Gestion des Quotas</h1>
       <table className="w-full text-center border-collapse rounded-lg overflow-hidden shadow-lg">
         <thead className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
