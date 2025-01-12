@@ -106,7 +106,7 @@ const Login: React.FC = () => {
 
             {/* Champ Password */}
             <InputCustom
-              type="text"
+              type="password"
               icon={KeyRound}
               value={password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}

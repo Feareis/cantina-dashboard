@@ -172,7 +172,7 @@ const Profile: React.FC = () => {
           <label className="block w-3/4">
             <p className="text-lg font-bold">Mot de passe actuel :</p>
             <InputCustom
-              type="text"
+              type="password"
               icon={KeyRound}
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
@@ -186,7 +186,7 @@ const Profile: React.FC = () => {
           <label className="block w-3/4">
             <p className="text-lg font-bold">Nouveau mot de passe :</p>
             <InputCustom
-              type="text"
+              type="password"
               icon={KeyRound}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
@@ -199,7 +199,7 @@ const Profile: React.FC = () => {
           <label className="block w-3/4">
             <p className="text-lg font-bold">Confirmer le mot de passe :</p>
             <InputCustom
-              type="text"
+              type="password"
               icon={KeyRound}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
