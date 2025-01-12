@@ -32,7 +32,7 @@ const Calculator: React.FC = () => {
     const { data, error } = await supabase
       .from("data")
       .select("key, value")
-      .in("key", ["quota_description", "quota-plus_description"]);
+      .in("key", ["quota_description", "quotaplus_description"]);
 
     if (error) {
       console.error("Error fetching quotas:", error);
@@ -40,7 +40,7 @@ const Calculator: React.FC = () => {
     }
 
     const quotaDescription = data?.find((item) => item.key === "quota_description")?.value || "";
-    const quotaPlusDescription = data?.find((item) => item.key === "quota-plus_description")?.value || "";
+    const quotaPlusDescription = data?.find((item) => item.key === "quotaplus_description")?.value || "";
     setQuota(quotaDescription);
     setQuotaPlus(quotaPlusDescription);
   };
