@@ -7,6 +7,7 @@ import AdminTeamsManagement from "./admin/AdminTeamsManagement";
 import AdminUsersManagement from "./admin/AdminUsersManagement";
 import AdminSiteSettings from "./admin/AdminSiteSettings";
 import AdminTeamsValidation from "./admin/AdminTeamsValidation";
+import AdminLogs from "./admin/AdminLogs";
 import { useAuth } from "../api/AuthContext";
 
 
@@ -58,6 +59,8 @@ const Admin: React.FC = () => {
         return <AdminTeamsManagement />;
       case "users-management":
         return <AdminUsersManagement />;
+      case "logs":
+        return <AdminLogs />;
       case "site-settings":
         return <AdminSiteSettings />;
       default:
