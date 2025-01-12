@@ -62,6 +62,7 @@ const Login: React.FC = () => {
 
         const userData = {
           username,
+          password,
           employeeID: user.employee_id,
           role: user.role,
           firstName: employee.first_name,

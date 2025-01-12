@@ -21,6 +21,11 @@ const Profile: React.FC = () => {
   const phoneNumber = user?.phone || "Inconnu";
   const hireDate = user?.hireDate || "Inconnu";
 
+  const username = user?.username || "Inconnu";
+  const password = user?.password || "Inconnu";
+
+
+
   const profilePictureMapping: { [key: string]: string } = {
     Patron: "/static/profile_picture/patron.png",
     "Co-Patron": "/static/profile_picture/patron.png",
@@ -30,18 +35,6 @@ const Profile: React.FC = () => {
   };
 
   const profilePicture = profilePictureMapping[grade] || "/static/profile_picture/default.png";
-
-  {/*
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) setProfileImage(event.target.result as string);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  };
-  */}
 
   const formatPhoneNumber = (value: string) => {
     const phone = value.replace(/\D/g, "").slice(0, 10);
@@ -59,33 +52,17 @@ const Profile: React.FC = () => {
       return;
     }
 
-    const username = localStorage.getItem("username");
-
-    if (!username) {
-      toast.error("Utilisateur introuvable.");
-      return;
-    }
-
-    // Utilisation de toast.promise
     const passwordChangePromise = async () => {
-      const { data: user, error: userError } = await supabase
-        .from("users")
-        .select("id, password")
-        .eq("username", username)
-        .single();
-
-      if (userError || !user) {
-        throw new Error("Utilisateur introuvable.");
-      }
-
-      if (user.password !== currentPassword) {
+      // Vérification du mot de passe actuel
+      if (currentPassword !== password) {
         throw new Error("L'ancien mot de passe est incorrect.");
       }
 
+      // Mise à jour du mot de passe dans la base de données
       const { error: updateError } = await supabase
         .from("users")
         .update({ password: newPassword })
-        .eq("id", user.id);
+        .eq("username", username);
 
       if (updateError) {
         throw new Error("Erreur lors de la mise à jour du mot de passe.");

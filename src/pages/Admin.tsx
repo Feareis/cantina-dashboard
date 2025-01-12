@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchBar from "../components/profile/SearchBar";
 import { Settings, Search, Users, FileLock, Album, SlidersHorizontal, Logs, TicketCheck } from "lucide-react";
 import AdminDashboard from "./admin/AdminDashboard";
@@ -7,25 +7,46 @@ import AdminTeamsManagement from "./admin/AdminTeamsManagement";
 import AdminUsersManagement from "./admin/AdminUsersManagement";
 import AdminSiteSettings from "./admin/AdminSiteSettings";
 import AdminTeamsValidation from "./admin/AdminTeamsValidation";
+import { useAuth } from "../api/AuthContext";
 
 
 const Admin: React.FC = () => {
+  const { user, logout } = useAuth();
+  const role = user?.role || "Inconnu";
   const [activeTab, setActiveTab] = useState<string>("dashboard");
 
+  // Définir les onglets disponibles en fonction du rôle
   const tabs = [
-    { id: "dashboard", label: "Dashboard", icon: Album, type: "tab" },
-    { id: "teams-validation", label: "Validation", icon: TicketCheck, type: "tab" },
-    { id: "separator-1", type: "separator" },
-    { id: "teams-management", label: "Liste Employés", icon: Users, type: "tab" },
-    { id: "users-management", label: "Accès Site", icon: FileLock, type: "tab" },
-    { id: "separator-2", type: "separator" },
-    { id: "logs", label: "Logs", icon: Logs, type: "tab" },
-    { id: "separator-3", type: "separator" },
-    { id: "enterprise-settings", label: "Paramètres Entreprise", icon: SlidersHorizontal, type: "tab" },
-    { id: "site-settings", label: "Paramètres du Site", icon: Settings, type: "tab" },
+    ...(role === "limited_admin"
+      ? [
+          { id: "teams-validation", label: "Validation", icon: TicketCheck, type: "tab" },
+        ]
+      : [
+          { id: "dashboard", label: "Dashboard", icon: Album, type: "tab" },
+          { id: "teams-validation", label: "Validation", icon: TicketCheck, type: "tab" },
+          { id: "separator-1", type: "separator" },
+          { id: "teams-management", label: "Liste Employés", icon: Users, type: "tab" },
+          { id: "users-management", label: "Accès Site", icon: FileLock, type: "tab" },
+          { id: "separator-2", type: "separator" },
+          { id: "logs", label: "Logs", icon: Logs, type: "tab" },
+          { id: "separator-3", type: "separator" },
+          { id: "enterprise-settings", label: "Paramètres Entreprise", icon: SlidersHorizontal, type: "tab" },
+          { id: "site-settings", label: "Paramètres du Site", icon: Settings, type: "tab" },
+        ]),
   ];
 
+  // Assurez-vous que l'onglet actif est `teams-validation` pour `limited_admin`
+  useEffect(() => {
+    if (role === "limited_admin") {
+      setActiveTab("teams-validation");
+    }
+  }, [role]);
+
   const renderTabContent = () => {
+    if (role === "limited_admin" && activeTab !== "teams-validation") {
+      return <div>Accès non autorisé</div>;
+    }
+
     switch (activeTab) {
       case "dashboard":
         return <AdminDashboard />;
