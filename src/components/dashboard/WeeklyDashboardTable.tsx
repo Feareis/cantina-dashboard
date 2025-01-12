@@ -50,17 +50,12 @@ const WeeklyDashboardTable: React.FC = () => {
   const fetchEmployees = async () => {
     setLoading(true);
     try {
-      // Fetch employee data
-      const { data: employees, error: employeeError } = await supabase
-        .from("employees")
-        .select("*");
+      const { data: employees, error: employeeError } = await supabase.from("employees").select("*");
       if (employeeError) throw employeeError;
 
-      // Fetch rate data
       const { data: rates, error: rateError } = await supabase.from("data").select("*");
       if (rateError) throw rateError;
 
-      // Extract rates for calculations
       const tred: Record<Grade, number> = {
         Patron: 0,
         "Co-Patron": 0,
@@ -68,21 +63,28 @@ const WeeklyDashboardTable: React.FC = () => {
         CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
         CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
       };
-      const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value);
-      const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value);
-      const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value);
-      const trevVe = parseNumericValue(rates?.find((r) => r.key === "trev_ve")?.value);
 
-      // Calculate primes and taxes for employees
+      const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value) ?? 0;
+      const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value) ?? 0;
+      const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value) ?? 0;
+      const trevVe = parseNumericValue(rates?.find((r) => r.key === "trev_ve")?.value) ?? 0;
+
       const calculatedData = employees.map((employee) => {
-        const gradeRate = tred[employee.grade as Grade] || 0;
-        const primeBase = employee.quota ? (employee.vcp + employee.vep) * gradeRate + quotaValue : 0;
-        const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
+        const gradeRate = tred[employee.grade as keyof typeof tred] || 0;
+
+        const primeBase = employee.quota
+          ? (employee.vcp + employee.vep) * gradeRate + quotaValue
+          : 0;
+
+        const prime = employee.quota_plus
+          ? primeBase + quotaPlusValue
+          : primeBase;
+
         const taxe = employee.vcs * trevVc + employee.ves * trevVe;
+
         return { ...employee, prime, taxe };
       });
 
-      // Sort and filter employees
       const sortedData = calculatedData
         .filter((e) => e.grade !== "Patron" && e.grade !== "Co-Patron")
         .sort((a, b) => rolePriority[a.grade] - rolePriority[b.grade]);
