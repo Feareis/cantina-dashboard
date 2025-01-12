@@ -61,10 +61,11 @@ const WeeklyDashboardTable: React.FC = () => {
       const tred: Record<Employee["grade"], number> = {
         Patron: 0,
         "Co-Patron": 0,
-        Responsable: parseNumericValue(rates?.find((r) => r.key === "tred_responsable")?.value),
-        CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
-        CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
+        Responsable: parseNumericValue(rates?.find((r) => r.key === "tred_responsable")?.value) ?? 0,
+        CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value) ?? 0,
+        CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value) ?? 0,
       };
+
       const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value) ?? 0;
       const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value) ?? 0;
       const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value) ?? 0;
@@ -74,8 +75,14 @@ const WeeklyDashboardTable: React.FC = () => {
       const calculatedData = employees.map((employee) => {
         const gradeRate = tred[employee.grade as keyof typeof tred] ?? 0;
 
-        const primeBase = employee.quota ? (employee.vcp + employee.vep) * gradeRate + quotaValue : 0;
-        const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
+        const primeBase = employee.quota
+          ? (employee.vcp + employee.vep) * gradeRate + quotaValue
+          : 0;
+
+        const prime = employee.quota_plus
+          ? primeBase + quotaPlusValue
+          : primeBase;
+
         const taxe = employee.vcs * trevVc + employee.ves * trevVe;
 
         return { ...employee, prime, taxe };
