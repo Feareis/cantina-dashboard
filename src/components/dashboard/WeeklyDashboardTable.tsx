@@ -20,6 +20,8 @@ interface Employee {
   ves: number; // Export sales (dirty)
   quota: boolean;
   quota_plus: boolean;
+  prime?: number;
+  taxe?: number;
 }
 
 const WeeklyDashboardTable: React.FC = () => {
