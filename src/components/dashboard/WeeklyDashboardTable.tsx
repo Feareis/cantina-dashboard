@@ -44,6 +44,7 @@ const WeeklyDashboardTable: React.FC = () => {
 
   // Fetch employee and rate data from Supabase
   const fetchEmployees = async () => {
+    setLoading(true);
     try {
       const { data: employees } = await supabase.from("employees").select("*");
       const { data: rates } = await supabase.from("data").select("*");
@@ -76,18 +77,14 @@ const WeeklyDashboardTable: React.FC = () => {
       setEmployeeData(sortedData);
     } catch (error) {
       console.error("Erreur :", error);
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const fetchData = async () => {
-    setLoading(true);
-    await Promise.all([fetchEmployees()]);
-    setLoading(false);
   };
 
   useEffect(() => {
     // Récupérer les employés au premier chargement
-    fetchData();
+    fetchEmployees();
 
     // Écouter les changements en temps réel sur sales_logs
     const salesLogsSubscription = supabase
@@ -97,7 +94,7 @@ const WeeklyDashboardTable: React.FC = () => {
         { event: "*", schema: "public", table: "sales_logs" },
         (payload) => {
           console.log("Changement détecté dans sales_logs :", payload);
-          fetchData(); // Actualiser les employés
+          fetchEmployees(); // Actualiser les employés
         }
       )
       .subscribe();
@@ -110,7 +107,7 @@ const WeeklyDashboardTable: React.FC = () => {
         { event: "*", schema: "public", table: "employees" },
         (payload) => {
           console.log("Changement détecté dans employees :", payload);
-          fetchData(); // Actualiser les employés
+          fetchEmployees(); // Actualiser les employés
         }
       )
       .subscribe();
