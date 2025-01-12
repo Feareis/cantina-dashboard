@@ -12,7 +12,7 @@ interface Employee {
   first_name: string;
   last_name: string;
   phone: string;
-  grade: "Patron" | "Co-Patron" | "Responsable" | "CDI" | "CDD";
+  grade: "Responsable" | "CDI" | "CDD";
   hire_date: string;
   vcp: number; // Sales to customers (clean)
   vcs: number; // Sales to customers (dirty)
@@ -31,8 +31,6 @@ const WeeklyDashboardTable: React.FC = () => {
 
   // Helper for role priority sorting
   const rolePriority: Record<Employee["grade"], number> = {
-    Patron: 0,
-    "Co-Patron": 0,
     Responsable: 1,
     CDI: 2,
     CDD: 3,
@@ -59,8 +57,6 @@ const WeeklyDashboardTable: React.FC = () => {
 
       // Extract rates for calculations
       const tred: Record<Employee["grade"], number> = {
-        Patron: 0,
-        "Co-Patron": 0,
         Responsable: parseNumericValue(rates?.find((r) => r.key === "tred_responsable")?.value),
         CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
         CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
