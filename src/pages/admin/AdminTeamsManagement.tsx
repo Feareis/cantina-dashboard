@@ -16,6 +16,7 @@ type Employee = {
 
 const EmployeeManagement: React.FC = () => {
   const gradeOrder = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"];
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [employeeToDelete, setEmployeeToDelete] = useState<Employee | null>(null);
 
@@ -137,8 +138,6 @@ const EmployeeManagement: React.FC = () => {
       closeDeleteModal(); // Fermer la modale
     }
   };
-
-  const [employees, setEmployees] = useState<Employee[]>([]);
 
   const formatPhoneNumber = (value: string) => {
     const phone = value.replace(/\D/g, "").slice(0, 10);

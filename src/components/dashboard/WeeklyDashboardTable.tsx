@@ -12,7 +12,7 @@ interface Employee {
   first_name: string;
   last_name: string;
   phone: string;
-  grade: "Patron" | "Co-Patron" | "Responsable" | "CDI" | "CDD";
+  grade: string;
   hire_date: string;
   vcp: number; // Sales to customers (clean)
   vcs: number; // Sales to customers (dirty)
@@ -26,14 +26,14 @@ interface Employee {
 
 const WeeklyDashboardTable: React.FC = () => {
   const { user } = useAuth();
+  const gradeOrder = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"];
   const [employeeData, setEmployeeData] = useState<Employee[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
-  const validGrades = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"] as const;
-  type Grade = typeof validGrades[number];
+  const loggedInFirstName = user?.firstName || "Inconnu";
+  const loggedInLastName = user?.lastName || "Inconnu";
 
   // Helper for role priority sorting
-  const rolePriority: Record<Grade, number> = {
+  const rolePriority: Record<gradeOrder, number> = {
     Patron: 0,
     "Co-Patron": 0,
     Responsable: 1,
@@ -42,44 +42,31 @@ const WeeklyDashboardTable: React.FC = () => {
   };
 
   // Parse numeric values safely
-  const parseNumericValue = (value: string): number => {
-    return value ? parseFloat(value) || 0 : 0;
-  };
+  const parseNumericValue = (value: string | null | undefined): number => parseFloat(value || "0");
 
   // Fetch employee and rate data from Supabase
   const fetchEmployees = async () => {
     setLoading(true);
     try {
-      const { data: employees, error: employeeError } = await supabase.from("employees").select("*");
-      if (employeeError) throw employeeError;
+      const { data: employees } = await supabase.from("employees").select("*");
+      const { data: rates } = await supabase.from("data").select("*");
 
-      const { data: rates, error: rateError } = await supabase.from("data").select("*");
-      if (rateError) throw rateError;
-
-      const tred: Record<Grade, number> = {
-        Patron: 0,
-        "Co-Patron": 0,
+      const tred = {
         Responsable: parseNumericValue(rates?.find((r) => r.key === "tred_responsable")?.value),
         CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
         CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
       };
-
-      const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value) ?? 0;
-      const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value) ?? 0;
-      const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value) ?? 0;
-      const trevVe = parseNumericValue(rates?.find((r) => r.key === "trev_ve")?.value) ?? 0;
+      const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value);
+      const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value);
+      const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value);
+      const trevVe = parseNumericValue(rates?.find((r) => r.key === "trev_ve")?.value);
 
       const calculatedData = employees.map((employee) => {
-        const gradeRate = tred[employee.grade as keyof typeof tred] || 0;
-
+        const gradeRate = tred[employee.grade] || 0;
         const primeBase = employee.quota
           ? (employee.vcp + employee.vep) * gradeRate + quotaValue
           : 0;
-
-        const prime = employee.quota_plus
-          ? primeBase + quotaPlusValue
-          : primeBase;
-
+        const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
         const taxe = employee.vcs * trevVc + employee.ves * trevVe;
 
         return { ...employee, prime, taxe };
@@ -87,18 +74,16 @@ const WeeklyDashboardTable: React.FC = () => {
 
       const sortedData = calculatedData
         .filter((e) => e.grade !== "Patron" && e.grade !== "Co-Patron")
-        .sort((a, b) => rolePriority[a.grade] - rolePriority[b.grade]);
+        .sort((a, b) => gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade)
+      );
 
       setEmployeeData(sortedData);
     } catch (error) {
-      console.error("Error fetching employee data:", error);
+      console.error("Erreur :", error);
     } finally {
       setLoading(false);
     }
   };
-
-  const loggedInFirstName = user?.firstName || "Inconnu";
-  const loggedInLastName = user?.lastName || "Inconnu";
 
   useEffect(() => {
     // Récupérer les employés au premier chargement
