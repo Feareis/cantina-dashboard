@@ -31,14 +31,36 @@ const WeeklyDashboardTable: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const loggedInFirstName = user?.firstName || "Inconnu";
   const loggedInLastName = user?.lastName || "Inconnu";
+  const [rates, setRates] = useState({
+    tred_cdd: 0,
+    tred_cdi: 0,
+    tred_responsable: 0,
+    trev_ve: 0,
+    trev_vc: 0,
+    quota_value: 0,
+    quotaplus_value: 0,
+  });
 
-  // Helper for role priority sorting
-  const rolePriority: Record<gradeOrder, number> = {
-    Patron: 0,
-    "Co-Patron": 0,
-    Responsable: 1,
-    CDI: 2,
-    CDD: 3,
+  const fetchRates = async () => {
+    try {
+      const { data: ratesData, error } = await supabase.from("data").select("*");
+      if (error) throw error;
+
+      const fetchedRates = {
+        tred_cdd: parseFloat(ratesData?.find((rate) => rate.key === "tred_cdd")?.value) || 0,
+        tred_cdi: parseFloat(ratesData?.find((rate) => rate.key === "tred_cdi")?.value) || 0,
+        tred_responsable: parseFloat(ratesData?.find((rate) => rate.key === "tred_responsable")?.value) || 0,
+        trev_ve: parseFloat(ratesData?.find((rate) => rate.key === "trev_ve")?.value) || 0,
+        trev_vc: parseFloat(ratesData?.find((rate) => rate.key === "trev_vc")?.value) || 0,
+        quota_value: parseFloat(ratesData?.find((rate) => rate.key === "quota_value")?.value) || 0,
+        quotaplus_value: parseFloat(ratesData?.find((rate) => rate.key === "quotaplus_value")?.value) || 0,
+      };
+
+      setRates(fetchedRates);
+      console.log("récupération des taux", fetchedRates)
+    } catch (error) {
+      console.error("Erreur lors de la récupération des taux :", error);
+    }
   };
 
   // Parse numeric values safely
@@ -85,9 +107,15 @@ const WeeklyDashboardTable: React.FC = () => {
     }
   };
 
+  const fetchData = async () => {
+    setLoading(true);
+    await Promise.all([fetchRates(), fetchEmployees()]);
+    setLoading(false);
+  };
+
   useEffect(() => {
     // Récupérer les employés au premier chargement
-    fetchEmployees();
+    fetchData();
 
     // Écouter les changements en temps réel sur sales_logs
     const salesLogsSubscription = supabase
@@ -97,7 +125,7 @@ const WeeklyDashboardTable: React.FC = () => {
         { event: "*", schema: "public", table: "sales_logs" },
         (payload) => {
           console.log("Changement détecté dans sales_logs :", payload);
-          fetchEmployees(); // Actualiser les employés
+          fetchData(); // Actualiser les employés
         }
       )
       .subscribe();
@@ -110,7 +138,7 @@ const WeeklyDashboardTable: React.FC = () => {
         { event: "*", schema: "public", table: "employees" },
         (payload) => {
           console.log("Changement détecté dans employees :", payload);
-          fetchEmployees(); // Actualiser les employés
+          fetchData(); // Actualiser les employés
         }
       )
       .subscribe();
