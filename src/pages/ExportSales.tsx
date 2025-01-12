@@ -20,7 +20,7 @@ const ExportSales: React.FC = () => {
   const fullName = `${firstName} ${lastName}`.trim();
 
   const logSale = async (
-    employeeId: uuid,
+    employeeId: string,
     type: "client" | "export",
     saleType: "propre" | "sale",
     employeeShare: number,
