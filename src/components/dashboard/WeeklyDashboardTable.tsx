@@ -57,7 +57,6 @@ const WeeklyDashboardTable: React.FC = () => {
       };
 
       setRates(fetchedRates);
-      console.log("récupération des taux", fetchedRates)
     } catch (error) {
       console.error("Erreur lors de la récupération des taux :", error);
     }
@@ -65,6 +64,14 @@ const WeeklyDashboardTable: React.FC = () => {
 
   // Parse numeric values safely
   const parseNumericValue = (value: string | null | undefined): number => parseFloat(value || "0");
+
+  const rolePriority: { [key in Employee["grade"]]: number } = {
+    Patron: 0,
+    "Co-Patron": 0,
+    Responsable: 1,
+    CDI: 2,
+    CDD: 3,
+  };
 
   // Fetch employee and rate data from Supabase
   const fetchEmployees = async () => {
