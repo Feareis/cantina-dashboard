@@ -217,11 +217,11 @@ const WeeklyDashboardTable: React.FC = () => {
             </div>
 
             <div className="font-bold text-green-600 border-x border-gray-800 flex-1 px-4 py-2">
-              {formatCurrency(employee.prime)}
+              {formatCurrency(employee.prime ?? 0)}
             </div>
 
             <div className="font-bold text-red-600 border-l border-gray-800 flex-1 px-4 py-2">
-              {formatCurrency(employee.taxe)}
+              {formatCurrency(employee.taxe ?? 0)}
             </div>
           </div>
         );
