@@ -20,6 +20,8 @@ interface Employee {
   ves: number; // Export sales (dirty)
   quota: boolean;
   quota_plus: boolean;
+  prime?: number;
+  taxe?: number;
 }
 
 const WeeklyDashboardTable: React.FC = () => {
@@ -29,8 +31,6 @@ const WeeklyDashboardTable: React.FC = () => {
 
   const validGrades = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"] as const;
   type Grade = typeof validGrades[number];
-
-  const isValidGrade = (grade: string): grade is Grade => validGrades.includes(grade as Grade);
 
   // Helper for role priority sorting
   const rolePriority: Record<Grade, number> = {
@@ -75,7 +75,7 @@ const WeeklyDashboardTable: React.FC = () => {
 
       // Calculate primes and taxes for employees
       const calculatedData = employees.map((employee) => {
-        const gradeRate = tred[employee.grade] || 0;
+        const gradeRate = tred[employee.grade as Grade] || 0;
         const primeBase = employee.quota ? (employee.vcp + employee.vep) * gradeRate + quotaValue : 0;
         const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
         const taxe = employee.vcs * trevVc + employee.ves * trevVe;
