@@ -34,15 +34,6 @@ const AdminDashboard: React.FC = () => {
     setInitialData(formattedData); // Save initial data for comparison
   };
 
-  // Toast
-  const saveSettings = () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("OK !");
-      }, 2000);
-    });
-  };
-
   // Update data in Supabase
   const handleSave = async () => {
     const updates: { key: string; value: string | number }[] = [];
