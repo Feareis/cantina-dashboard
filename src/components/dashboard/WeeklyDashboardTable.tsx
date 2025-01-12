@@ -40,7 +40,7 @@ const WeeklyDashboardTable: React.FC = () => {
 
   // Parse numeric values safely
   const parseNumericValue = (value: string | null | undefined): number => {
-    return value ? parseFloat(value) || 0 : 0;
+    return parseFloat(value || "0");
   };
 
   // Fetch employee and rate data from Supabase
@@ -65,19 +65,19 @@ const WeeklyDashboardTable: React.FC = () => {
         CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
         CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
       };
-      const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value);
-      const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value);
-      const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value);
-      const trevVe = parseNumericValue(rates?.find((r) => r.key === "trev_ve")?.value);
+      const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value) ?? 0;
+      const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value) ?? 0;
+      const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value) ?? 0;
+      const trevVe = parseNumericValue(rates?.find((r) => r.key === "trev_ve")?.value) ?? 0;
 
       // Calculate primes and taxes for employees
       const calculatedData = employees.map((employee) => {
         const gradeRate = tred[employee.grade as keyof typeof tred] ?? 0;
-        const primeBase = employee.quota
-          ? (employee.vcp + employee.vep) * gradeRate + (quotaValue ?? 0)
-          : 0;
-        const prime = employee.quota_plus ? primeBase + (quotaPlusValue ?? 0) : primeBase;
-        const taxe = employee.vcs * (trevVc ?? 0) + employee.ves * (trevVe ?? 0);
+
+        const primeBase = employee.quota ? (employee.vcp + employee.vep) * gradeRate + quotaValue : 0;
+        const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
+        const taxe = employee.vcs * trevVc + employee.ves * trevVe;
+
         return { ...employee, prime, taxe };
       });
 
