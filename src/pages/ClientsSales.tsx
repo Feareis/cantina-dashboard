@@ -38,11 +38,11 @@ const ClientsSales: React.FC = () => {
 
   const firstName = user?.firstName || "Inconnu";
   const lastName = user?.lastName || "Inconnu";
+  const employeeId = user?.employeeID;
   const fullName = `${firstName} ${lastName}`.trim();
 
   const logSale = async (
-    firstName: string,
-    lastName: string,
+    employeeId: uuid,
     type: "client" | "export",
     saleType: "propre" | "sale",
     employeeShare: number,
@@ -50,8 +50,7 @@ const ClientsSales: React.FC = () => {
   ) => {
     const { error } = await supabase.from("sales_logs").insert([
       {
-        firstName,
-        lastName,
+        employee_id : employeeId,
         type,
         sale_type: saleType,
         employee_share: employeeShare,
@@ -152,8 +151,7 @@ const ClientsSales: React.FC = () => {
     if (employeesTotal >= 0 && companyTotal > 0) {
 
         logSale(
-          firstName,
-          lastName,
+          employeeId,
           "client",
           selectedSale,
           employeesTotal,

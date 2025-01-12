@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import WeeklyDashboardTable from "../components/dashboard/WeeklyDashboardTable";
+import TestDashboard from "../components/dashboard/TestDashboard";
 import CardContainer from "../components/dashboard/CardContainer";
 import Stats from "../components/dashboard/Stats";
 
@@ -17,9 +18,8 @@ const Dashboard: React.FC = () => {
         );
       case "Semaine passée":
         return (
-          <div className="p-4">
-            <h2 className="text-xl font-bold">Semaine passée</h2>
-            <p>Contenu des statistiques de la semaine passée.</p>
+          <div>
+            <TestDashboard />
           </div>
         );
       case "Stats":

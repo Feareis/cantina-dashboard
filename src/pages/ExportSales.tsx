@@ -16,11 +16,11 @@ const ExportSales: React.FC = () => {
 
   const firstName = user?.firstName || "Inconnu";
   const lastName = user?.lastName || "Inconnu";
+  const employeeId = user?.employeeID;
   const fullName = `${firstName} ${lastName}`.trim();
 
   const logSale = async (
-    firstName: string,
-    lastName: string,
+    employeeId: uuid,
     type: "client" | "export",
     saleType: "propre" | "sale",
     employeeShare: number,
@@ -28,8 +28,7 @@ const ExportSales: React.FC = () => {
   ) => {
     const { error } = await supabase.from("sales_logs").insert([
       {
-        firstName,
-        lastName,
+        employee_id : employeeId,
         type,
         sale_type: saleType,
         employee_share: employeeShare,
@@ -84,10 +83,27 @@ const ExportSales: React.FC = () => {
 
   // Handle button click for adding sales
   const handleButtonClick = () => {
+    if (!employeeId || employeeId === "Inconnu") {
+      toast.error(
+        "L'utilisateur n'est pas authentifié.",
+        {
+          duration: 2500,
+          style: {
+            marginTop: '100px',
+            padding: '16px',
+            width: '450px',
+            borderRadius: '8px',
+            background: '#1f2937',
+            color: '#fff',
+          },
+        }
+      );
+      return;
+    }
+
     if (employeesTotal > 0 && companyTotal > 0) {
       logSale(
-        firstName,
-        lastName,
+        employeeId,
         "export",
         selectedSale,
         employeesTotal,

@@ -235,44 +235,51 @@ const EmployeeManagement: React.FC = () => {
   const sortedEmployees = sortEmployeesByGrade(employees);
 
   return (
-    <div className="p-4">
+    <div className="p-6 bg-gray-900 rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold mb-4">Gestion des Employés</h1>
+        <h1 className="text-3xl font-bold mb-6">Gestion des Employés</h1>
         <button
-          className="bg-gradient-to-r from-blue-400/70 to-purple-500/70 hover:bg-blue-600 text-white px-4 py-2 rounded mt-4"
+          className="bg-gradient-to-r from-blue-500 to-purple-500 hover:bg-blue-600 text-white text-xl px-4 py-2 rounded"
           onClick={() => openModal()}
         >
           Ajouter un Employé
         </button>
       </div>
-      <table className="w-full text-center">
-        <thead>
-          <tr className="bg-gray-800">
-            <th className="border border-gray-400 p-2">Grade</th>
-            <th className="border border-gray-400 p-2">Prénom</th>
-            <th className="border border-gray-400 p-2">Nom</th>
-            <th className="border border-gray-400 p-2">Téléphone</th>
-            <th className="border border-gray-400 p-2">Date d'embauche</th>
-            <th className="border border-gray-400 p-2">Actions</th>
+      <table className="w-full text-center border-collapse rounded-lg overflow-hidden shadow-lg">
+        <thead className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+          <tr>
+            <th className="p-4 text-base font-bold uppercase">Grade</th>
+            <th className="p-4 text-base font-bold uppercase">Nom</th>
+            <th className="p-4 text-base font-bold uppercase">Téléphone</th>
+            <th className="p-4 text-base font-bold uppercase">Date d'embauche</th>
+            <th className="p-4 text-base font-bold uppercase">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {sortedEmployees.map((employee) => (
-            <tr key={employee.id}>
-              <td className={`border border-gray-600 p-2 ${getGradeClass(employee.grade)}`}>{employee.grade}</td>
-              <td className="border border-gray-600 p-2">{employee.first_name}</td>
-              <td className="border border-gray-600 p-2">{employee.last_name}</td>
-              <td className="border border-gray-600 p-2">{formatPhoneNumber(employee.phone)}</td>
-              <td className="border border-gray-600 p-2">{employee.hire_date}</td>
-              <td className="border border-gray-600 p-2">
+          {sortedEmployees.map((employee, index) => (
+            <tr
+              key={employee.id}
+              className={index % 2 === 0 ? "bg-gray-800/50" : "bg-gray-800"}
+            >
+              <td className={`p-4 font-medium ${getGradeClass(employee.grade)}`}>
+                {employee.grade}
+              </td>
+              <td className="p-4 text-gray-200">
+                {employee.first_name} {employee.last_name}
+              </td>
+              <td className="p-4 text-gray-200">
+                {formatPhoneNumber(employee.phone)}
+              </td>
+              <td className="p-4 text-gray-200">{employee.hire_date}</td>
+              <td className="p-4">
                 <button
-                  className="bg-blue-500 text-white px-2 py-1 rounded mr-4"
+                  className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mr-2"
                   onClick={() => openModal(employee)}
                 >
                   Modifier
                 </button>
                 <button
-                  className="bg-red-500 text-white px-2 py-1 rounded"
+                  className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                   onClick={() => openDeleteModal(employee)}
                 >
                   Supprimer
@@ -386,7 +393,7 @@ const EmployeeManagement: React.FC = () => {
               Annuler
             </button>
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded"
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
               onClick={confirmDeleteEmployee}
             >
               Confirmer

@@ -6,6 +6,7 @@ import AdminEnterpriseSettings from "./admin/AdminEnterpriseSettings";
 import AdminTeamsManagement from "./admin/AdminTeamsManagement";
 import AdminUsersManagement from "./admin/AdminUsersManagement";
 import AdminSiteSettings from "./admin/AdminSiteSettings";
+import AdminTeamsValidation from "./admin/AdminTeamsValidation";
 
 
 const Admin: React.FC = () => {
@@ -28,6 +29,8 @@ const Admin: React.FC = () => {
     switch (activeTab) {
       case "dashboard":
         return <AdminDashboard />;
+      case "teams-validation":
+        return <AdminTeamsValidation />;
       case "enterprise-settings":
         return <AdminEnterpriseSettings />;
       case "teams-management":
