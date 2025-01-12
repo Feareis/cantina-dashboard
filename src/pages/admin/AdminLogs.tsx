@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../api/supabaseClient";
-import { Edit, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 
 type SalesLog = {
   id: string;
