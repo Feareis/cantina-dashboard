@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../api/supabaseClient";
-import CustomButton from "../../components/CustomButton";
 import { Edit, Trash } from "lucide-react";
 
 type SalesLog = {
@@ -63,12 +62,6 @@ const AdminLogs: React.FC = () => {
     }
 
     setLogs((prev) => prev.filter((log) => log.id !== id));
-  };
-
-  // Edit a log (placeholder for functionality)
-  const editLog = (id: string) => {
-    console.log(`Modification du log ${id} en cours...`);
-    // Ajouter ici la logique pour modifier un log.
   };
 
   useEffect(() => {
@@ -153,14 +146,6 @@ const AdminLogs: React.FC = () => {
                 {log.company_share.toLocaleString()} €
               </td>
               <td className="p-4 flex justify-center gap-4">
-                {/* Icone pour modifier */}
-                <button
-                  onClick={() => editLog(log.id)}
-                  className="p-2 rounded-full bg-yellow-500/20 hover:bg-yellow-500/50"
-                  title="Modifier le log"
-                >
-                  <Edit className="w-5 h-5 text-yellow-500" />
-                </button>
 
                 {/* Icone pour supprimer */}
                 <button
