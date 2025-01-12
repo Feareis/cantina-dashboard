@@ -8,9 +8,12 @@ import { useAuth } from "../../api/AuthContext";
 
 // Employee interface definition
 interface Employee {
+  id: string;
   first_name: string;
   last_name: string;
-  grade: string;
+  phone: string;
+  grade: "Patron" | "Co-Patron" | "Responsable" | "CDI" | "CDD";
+  hire_date: string;
   vcp: number; // Sales to customers (clean)
   vcs: number; // Sales to customers (dirty)
   vep: number; // Export sales (clean)
@@ -54,41 +57,47 @@ const WeeklyDashboardTable: React.FC = () => {
       };
 
       setRates(fetchedRates);
+      console.log("récupération des taux", fetchedRates)
     } catch (error) {
       console.error("Erreur lors de la récupération des taux :", error);
     }
   };
 
-  const gradeToKeyMap: Record<Employee["grade"], keyof typeof fetchedRates> = {
-    Responsable: "tred_responsable",
-    CDI: "tred_cdi",
-    CDD: "tred_cdd",
-  };
+  // Parse numeric values safely
+  const parseNumericValue = (value: string | null | undefined): number => parseFloat(value || "0");
 
   // Fetch employee and rate data from Supabase
   const fetchEmployees = async () => {
     try {
       const { data: employees } = await supabase.from("employees").select("*");
+      const { data: rates } = await supabase.from("data").select("*");
+
+      const tred: Partial<Record<Employee["grade"], number>> = {
+        Responsable: parseNumericValue(rates?.find((rate) => rate.key === "tred_responsable")?.value),
+        CDI: parseNumericValue(rates?.find((rate) => rate.key === "tred_cdi")?.value),
+        CDD: parseNumericValue(rates?.find((rate) => rate.key === "tred_cdd")?.value),
+      };
+      const quotaValue = parseNumericValue(rates?.find((r) => r.key === "quota_value")?.value);
+      const quotaPlusValue = parseNumericValue(rates?.find((r) => r.key === "quotaplus_value")?.value);
+      const trevVc = parseNumericValue(rates?.find((r) => r.key === "trev_vc")?.value);
+      const trevVe = parseNumericValue(rates?.find((r) => r.key === "trev_ve")?.value);
 
       const calculatedData = employees.map((employee) => {
-        const gradeRate = gradeToKeyMap[employee.grade]
-          ? rates[gradeToKeyMap[employee.grade]]
-          : 0;
+        const gradeRate = tred[employee.grade as keyof typeof tred] ?? 0;
         const primeBase = employee.quota
-          ? (employee.vcp + employee.vep) * gradeRate + rates.quota_value
+          ? (employee.vcp + employee.vep) * gradeRate + quotaValue
           : 0;
-        const prime = employee.quota_plus ? primeBase + rates.quotaplus_value : primeBase;
-        const taxe = employee.vcs * rates.trev_vc + employee.ves * rates.trev_ve;
+        const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
+        const taxe = employee.vcs * trevVc + employee.ves * trevVe;
 
         return { ...employee, prime, taxe };
       });
 
-      const sortedData = calculatedData
-        .filter((e) => e.grade !== "Patron" && e.grade !== "Co-Patron")
-        .sort((a, b) => gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade)
-      );
+      const sortedData = (calculatedData as Employee[])
+        .filter((employee) => employee.grade !== "Patron" && employee.grade !== "Co-Patron")
+        .sort((a, b) => rolePriority[a.grade] - rolePriority[b.grade]);
 
-      setEmployeeData(sortedData || []);
+      setEmployeeData(sortedData);
     } catch (error) {
       console.error("Erreur :", error);
     }
