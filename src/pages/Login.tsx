@@ -4,6 +4,7 @@ import { supabase } from "../api/supabaseClient";
 import { useAuth } from "../api/AuthContext";
 import InputCustom from "../components/InputCustom";
 import { User, KeyRound } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -20,22 +21,25 @@ const Login: React.FC = () => {
         .single();
 
       if (error || !data) {
-        throw new Error("Login ou mot de passe incorrect.");
+        toast.error("Login ou mot de passe incorrect.");
+        return null;
       }
 
       if (!data.is_active) {
-        throw new Error("Votre compte est inactif. Veuillez contacter l'administrateur.");
+        toast.error("Votre compte est inactif. Veuillez contacter l'administrateur.");
+        return null;
       }
 
       if (data.password !== password) {
-        throw new Error("Login ou mot de passe incorrect.");
+        toast.error("Login ou mot de passe incorrect.");
+        return null;
       }
 
       return data;
 
     } catch (error: any) {
-      // console.error("Erreur lors de l'authentification :", error.message);
-      throw error;
+      // toast.error("Erreur lors de l'authentification !");
+      return null;
     }
   };
 
@@ -55,7 +59,8 @@ const Login: React.FC = () => {
           .single();
 
         if (employeeError) {
-          throw new Error("Impossible de récupérer les informations de l'employé.");
+          toast.error("Impossible de récupérer les informations de l'employé.");
+          return null;
         }
 
         // console.log("Informations de l'employé :", employee);
@@ -76,12 +81,27 @@ const Login: React.FC = () => {
         navigate("/"); // Redirige après une connexion réussie
       }
     } catch (error: any) {
-      alert(error.message || "Une erreur est survenue lors de la connexion.");
+      // alert(error.message || "Une erreur est survenue lors de la connexion.");
+      return null;
     }
   };
 
   return (
     <div className="relative h-screen w-full">
+      {/* Toast configuration */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 2500,
+          style: {
+            background: "#1f2937",
+            color: "#fff",
+            borderRadius: "8px",
+            padding: "16px",
+          },
+        }}
+      />
+
       {/* Fond vidéo ou image */}
       <div className="absolute inset-0">
         <img src="/static/cayo.png" alt="Background" className="object-cover w-full h-full" />
