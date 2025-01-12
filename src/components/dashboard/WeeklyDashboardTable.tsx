@@ -20,8 +20,8 @@ interface Employee {
   ves: number; // Export sales (dirty)
   quota: boolean;
   quota_plus: boolean;
-  prime?: number;
-  taxe?: number;
+  prime?;
+  taxe?;
 }
 
 const WeeklyDashboardTable: React.FC = () => {
@@ -58,7 +58,7 @@ const WeeklyDashboardTable: React.FC = () => {
       if (rateError) throw rateError;
 
       // Extract rates for calculations
-      const tred = {
+      const tred: Record<Employee["grade"], number> = {
         Responsable: parseNumericValue(rates?.find((r) => r.key === "tred_responsable")?.value),
         CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
         CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
@@ -70,7 +70,7 @@ const WeeklyDashboardTable: React.FC = () => {
 
       // Calculate primes and taxes for employees
       const calculatedData = employees.map((employee) => {
-        const gradeRate = tred[employee.grade] || 0;
+        const gradeRate = tred[employee.grade as keyof typeof tred] || 0;
         const primeBase = employee.quota ? (employee.vcp + employee.vep) * gradeRate + quotaValue : 0;
         const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
         const taxe = employee.vcs * trevVc + employee.ves * trevVe;
@@ -136,13 +136,6 @@ const WeeklyDashboardTable: React.FC = () => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     })}`;
-  };
-
-  // Config for grade styles
-  const gradeStyles: Record<string, string> = {
-    Responsable: "bg-yellow-700 text-yellow-100",
-    CDI: "bg-blue-700 text-blue-100",
-    CDD: "bg-cyan-700 text-cyan-100",
   };
 
   if (loading) return <div className="text-center text-white">Loading data...</div>;
