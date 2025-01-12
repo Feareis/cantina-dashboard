@@ -27,15 +27,22 @@ const WeeklyDashboardTable: React.FC = () => {
   const [employeeData, setEmployeeData] = useState<Employee[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const validGrades = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"] as const;
+  type Grade = typeof validGrades[number];
+
+  const isValidGrade = (grade: string): grade is Grade => validGrades.includes(grade as Grade);
+
   // Helper for role priority sorting
-  const rolePriority = {
+  const rolePriority: Record<Grade, number> = {
+    Patron: 0,
+    "Co-Patron": 0,
     Responsable: 1,
     CDI: 2,
     CDD: 3,
   };
 
   // Parse numeric values safely
-  const parseNumericValue = (value: string | null | undefined): number => {
+  const parseNumericValue = (value: string): number => {
     return value ? parseFloat(value) || 0 : 0;
   };
 
@@ -54,7 +61,9 @@ const WeeklyDashboardTable: React.FC = () => {
       if (rateError) throw rateError;
 
       // Extract rates for calculations
-      const tred = {
+      const tred: Record<Grade, number> = {
+        Patron: 0,
+        "Co-Patron": 0,
         Responsable: parseNumericValue(rates?.find((r) => r.key === "tred_responsable")?.value),
         CDI: parseNumericValue(rates?.find((r) => r.key === "tred_cdi")?.value),
         CDD: parseNumericValue(rates?.find((r) => r.key === "tred_cdd")?.value),
@@ -132,13 +141,6 @@ const WeeklyDashboardTable: React.FC = () => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     })}`;
-  };
-
-  // Config for grade styles
-  const gradeStyles: Record<string, string> = {
-    Responsable: "bg-yellow-700 text-yellow-100",
-    CDI: "bg-blue-700 text-blue-100",
-    CDD: "bg-cyan-700 text-cyan-100",
   };
 
   if (loading) return <div className="text-center text-white">Loading data...</div>;
