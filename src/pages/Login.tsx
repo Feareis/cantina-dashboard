@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../api/supabaseClient";
 import { useAuth } from "../api/AuthContext";
@@ -9,8 +9,14 @@ import toast, { Toaster } from "react-hot-toast";
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isAnimating, setIsAnimating] = useState(true);
   const navigate = useNavigate();
-  const { login } = useAuth(); // Utilisation de login depuis AuthContext
+  const { login } = useAuth();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsAnimating(false), 200);
+    return () => clearTimeout(timer);
+  }, []);
 
   const authenticateUser = async (username: string, password: string) => {
     try {
@@ -36,9 +42,7 @@ const Login: React.FC = () => {
       }
 
       return data;
-
     } catch (error: any) {
-      // toast.error("Erreur lors de l'authentification !");
       return null;
     }
   };
@@ -50,8 +54,6 @@ const Login: React.FC = () => {
       const user = await authenticateUser(username, password);
 
       if (user) {
-
-        // Requête pour récupérer les informations de l'employé
         const { data: employee, error: employeeError } = await supabase
           .from("employees")
           .select("first_name, last_name, grade, phone, hire_date")
@@ -62,8 +64,6 @@ const Login: React.FC = () => {
           toast.error("Impossible de récupérer les informations de l'employé.");
           return null;
         }
-
-        // console.log("Informations de l'employé :", employee);
 
         const userData = {
           username,
@@ -77,17 +77,16 @@ const Login: React.FC = () => {
           hireDate: employee.hire_date,
         };
 
-        login(userData); // Active l'authentification via AuthContext
-        navigate("/"); // Redirige après une connexion réussie
+        login(userData);
+        navigate("/");
       }
     } catch (error: any) {
-      // alert(error.message || "Une erreur est survenue lors de la connexion.");
       return null;
     }
   };
 
   return (
-    <div className="relative h-screen w-full">
+    <div className="relative h-screen w-full bg-gray-900 overflow-hidden">
       {/* Toast configuration */}
       <Toaster
         position="top-center"
@@ -102,13 +101,21 @@ const Login: React.FC = () => {
         }}
       />
 
-      {/* Fond vidéo ou image */}
-      <div className="absolute inset-0">
+      {/* Animation d'apparition du fond */}
+      <div
+        className={`absolute inset-0 transition-opacity duration-1000 ${
+          isAnimating ? "opacity-50" : "opacity-100"
+        }`}
+      >
         <img src="/static/cayo.png" alt="Background" className="object-cover w-full h-full" />
       </div>
 
-      {/* Contenu centré */}
-      <div className="relative flex justify-center items-center h-full">
+      {/* Contenu centré avec animation */}
+      <div
+        className={`relative flex justify-center items-center h-full transition-all duration-1000 ${
+          isAnimating ? "opacity-0 scale-95" : "opacity-100 scale-100"
+        }`}
+      >
         <div className="bg-gray-700/95 p-10 rounded-2xl shadow-lg text-center text-gray-100 w-full max-w-md">
           <h2 className="text-2xl font-bold mb-8">Connexion</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -117,25 +124,27 @@ const Login: React.FC = () => {
               type="text"
               icon={User}
               value={username}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setUsername(e.target.value)
+              }
               placeholder="Nom d'utilisateur"
               bgColor="bg-gray-900/70"
               textColor="text-gray-400"
               className="w-full"
             />
-
             {/* Champ Password */}
             <InputCustom
               type="password"
               icon={KeyRound}
               value={password}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setPassword(e.target.value)
+              }
               placeholder="Mot de passe"
               bgColor="bg-gray-900/70"
               textColor="text-gray-400"
               className="w-full"
             />
-
             {/* Bouton Connexion */}
             <button
               type="submit"
