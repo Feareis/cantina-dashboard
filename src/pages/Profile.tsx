@@ -42,6 +42,11 @@ const Profile: React.FC = () => {
   };
 
   const handlePasswordChange = async () => {
+    if (username === "test.t") {
+      toast.error("Vous n'êtes pas autorisé à modifier le mot de passe pour cet utilisateur.");
+      return;
+    }
+
     if (!currentPassword || !newPassword || !confirmPassword) {
       toast.error("Tous les champs doivent être remplis.");
       return;
@@ -53,11 +58,6 @@ const Profile: React.FC = () => {
     }
 
     const passwordChangePromise = async () => {
-      if (username === "test.t") {
-        toast.error("Vous n'êtes pas autorisé à modifier le mot de passe pour cet utilisateur.");
-        return;
-      }
-
       // Vérification du mot de passe actuel
       if (currentPassword !== password) {
         throw new Error("L'ancien mot de passe est incorrect.");
