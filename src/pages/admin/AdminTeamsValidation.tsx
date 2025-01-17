@@ -45,7 +45,7 @@ const EmployeeTable: React.FC = () => {
       return a.last_name.localeCompare(b.last_name);
     });
 
-    setEmployees(data || []);
+    setEmployees(sortedEmployees);
   };
 
   const toggleSwitch = async (

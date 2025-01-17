@@ -34,7 +34,7 @@ const WeeklyDashboardTable: React.FC = () => {
   // Parse numeric values safely
   const parseNumericValue = (value: string | null | undefined): number => parseFloat(value || "0");
 
-  const rolePriority: { [key in Employee["grade"]]: number } = {
+  const rolePriority: { [key: string]: number } = {
     Patron: 0,
     "Co-Patron": 0,
     Responsable: 1,
