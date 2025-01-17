@@ -26,7 +26,29 @@ const EmployeeManagement: React.FC = () => {
       console.error("Erreur lors de la récupération des employés :", error.message);
       return;
     }
-    setEmployees(data || []);
+    const gradePriority: { [key: string]: number } = {
+      Patron: 1,
+      "Co-Patron": 2,
+      Responsable: 3,
+      CDI: 4,
+      CDD: 5,
+    };
+
+    const sortedEmployees = (data || []).sort((a, b) => {
+      // Tri par grade
+      const gradeComparison =
+        (gradePriority[a.grade] || Number.MAX_SAFE_INTEGER) -
+        (gradePriority[b.grade] || Number.MAX_SAFE_INTEGER);
+
+      if (gradeComparison !== 0) return gradeComparison;
+
+      // Tri par ordre alphabétique des noms
+      const dateA = new Date(a.hire_date).getTime();
+      const dateB = new Date(b.hire_date).getTime();
+      return dateA - dateB;
+    });
+
+    setEmployees(sortedEmployees);
   };
 
   useEffect(() => {
@@ -191,13 +213,6 @@ const EmployeeManagement: React.FC = () => {
     setModalOpen(false);
   };
 
-  // Fonction de tri basé sur l'ordre des grades
-  const sortEmployeesByGrade = (employees: Employee[]) => {
-    return [...employees].sort(
-      (a, b) => gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade)
-    );
-  };
-
   const getGradeClass = (grade: string): string => {
     switch (grade) {
       case "Patron":
@@ -231,8 +246,6 @@ const EmployeeManagement: React.FC = () => {
     }
   };
 
-  const sortedEmployees = sortEmployeesByGrade(employees);
-
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
@@ -255,7 +268,7 @@ const EmployeeManagement: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedEmployees.map((employee, index) => (
+          {employees.map((employee, index) => (
             <tr
               key={employee.id}
               className={index % 2 === 0 ? "bg-gray-800/50" : "bg-gray-800"}

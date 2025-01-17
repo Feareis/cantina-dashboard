@@ -1,8 +1,7 @@
-import { BadgeDollarSign, Calculator, ChartArea, Users } from "lucide-react";
+import { Home, BadgeDollarSign, Calculator, ChartArea, Users, Gem } from "lucide-react";
 import { Link, useLocation, Outlet } from "react-router-dom";
 import Breadcrumb from "./Breadcrumb";
 import ProfileDropdown from "./profile/ProfileDropdown";
-import { Home } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Layout() {
@@ -14,6 +13,7 @@ export function Layout() {
     "/calculator": { pageName: "Calculateur de matières premières", description: "Effectuez des calculs rapides sur le nombre de matières premières dont vous avez besoins" },
     "/export-sales": { pageName: "Vente Exportateur", description: "Saisissez vos ventes exportateurs" },
     "/clients-sales": { pageName: "Vente Clients", description: "Saisissez vos ventes clients" },
+    "/price": { pageName: "Nos Prix", description: "Retrouvez toutes les informations concernant nos produit et nos menus" },
     "/profile": { pageName: "Profil utilisateur", description: "Gérez vos paramètres" },
     "/admin": { pageName: "Admin panel", description: "Gérez vos tout vos paramètres içi" },
   };
@@ -118,6 +118,18 @@ export function Layout() {
               >
                 <Users size={18} />
                 Vente Clients
+              </Link>
+              <Link
+                to="/price"
+                state={{ from: location.pathname }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                  location.pathname === "/price"
+                    ? "bg-blue-500/20 text-blue-400"
+                    : "hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <Gem size={18} />
+                Nos Prix
               </Link>
             </nav>
             <ProfileDropdown />

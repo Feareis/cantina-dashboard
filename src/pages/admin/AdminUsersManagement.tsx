@@ -8,6 +8,8 @@ type User = {
   password: string; // Mot de passe en clair
   role: string;
   is_active: boolean;
+  employee_id: string;
+  grade: string;
 };
 
 const AdminUsersManagement: React.FC = () => {
@@ -17,18 +19,50 @@ const AdminUsersManagement: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
 
   const fetchUsers = async () => {
-    const { data, error } = await supabase.from("users").select("*");
+    const { data, error } = await supabase
+      .from("users")
+      .select(`
+        id,
+        username,
+        password,
+        role,
+        is_active,
+        employee_id,
+        employees(grade)
+      `);
+
     if (error) {
       console.error("Erreur lors de la récupération des utilisateurs :", error.message);
-    } else {
-      const rolePriority: { [key: string]: number } = { admin: 1, limited_admin: 2, user: 3 };
-
-      const sortedUsers = (data || []).sort(
-        (a, b) => rolePriority[a.role] - rolePriority[b.role]
-      );
-
-      setUsers(sortedUsers);
+      return;
     }
+
+    const formattedUsers = (data || []).map((user) => ({
+      ...user,
+      grade: user.employees?.grade || "Non spécifié",
+    }));
+
+    // Tri des utilisateurs selon le rôle
+    const rolePriority: { [key: string]: number } = { admin: 1, limited_admin: 2, user: 3 };
+    const gradePriority: { [key: string]: number } = {
+      Patron: 1,
+      "Co-Patron": 2,
+      Responsable: 3,
+      CDI: 4,
+      CDD: 5,
+    };
+    const sortedUsers = formattedUsers.sort((a, b) => {
+      const roleComparison = rolePriority[a.role] - rolePriority[b.role];
+      if (roleComparison !== 0) return roleComparison;
+
+      const gradeComparison =
+        (gradePriority[a.grade] || Number.MAX_SAFE_INTEGER) -
+        (gradePriority[b.grade] || Number.MAX_SAFE_INTEGER);
+      if (gradeComparison !== 0) return gradeComparison;
+
+      return a.username.localeCompare(b.username);
+    });
+
+    setUsers(sortedUsers);
   };
 
   const toggleUserAccess = async (userId: string, newStatus: boolean) => {
@@ -86,6 +120,22 @@ const AdminUsersManagement: React.FC = () => {
     }
   };
 
+  const getGradeClass = (grade: string): string => {
+    switch (grade) {
+      case "Patron":
+      case "Co-Patron":
+        return "bg-red-800/50 text-red-600";
+      case "Responsable":
+        return "bg-yellow-800/50 text-yellow-600";
+      case "CDI":
+        return "bg-blue-800/50 text-blue-600";
+      case "CDD":
+        return "bg-cyan-800/50 text-cyan-600";
+      default:
+        return "bg-gray-800 text-gray-100"; // Classe par défaut si le grade est inconnu
+    }
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">Gestion des Utilisateurs</h1>
@@ -93,8 +143,9 @@ const AdminUsersManagement: React.FC = () => {
         <thead className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
           <tr>
             <th className="p-4 text-sm font-semibold uppercase">Rôle</th>
-            <th className="p-4 text-sm font-semibold uppercase">Nom d'utilisateur</th>
-            <th className="p-4 text-sm font-semibold uppercase">Mot de passe</th>
+            <th className="p-4 text-sm font-semibold uppercase">Grade</th>
+            <th className="p-4 text-sm font-semibold uppercase">Username</th>
+            <th className="p-4 text-sm font-semibold uppercase">Password</th>
             <th className="p-4 text-sm font-semibold uppercase">État</th>
             <th className="p-4 text-sm font-semibold uppercase">Actions</th>
           </tr>
@@ -108,6 +159,7 @@ const AdminUsersManagement: React.FC = () => {
               <td className={`p-4 font-medium ${getRoleClass(user.role)}`}>
                 {user.role}
               </td>
+              <td className={`p-4 font-medium ${getGradeClass(user.grade)}`}>{user.grade}</td>
               <td className="p-4 text-gray-200">{user.username}</td>
               <td className="p-4 text-gray-200">{user.password}</td>
               <td className="p-4">
@@ -145,7 +197,7 @@ const AdminUsersManagement: React.FC = () => {
                     setIsModalOpen(true);
                   }}
                 >
-                  Modifier mot de passe
+                  Modifier password
                 </button>
               </td>
             </tr>

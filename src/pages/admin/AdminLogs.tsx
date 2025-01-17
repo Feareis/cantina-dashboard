@@ -49,6 +49,13 @@ const AdminLogs: React.FC = () => {
       date: log.date,
     }));
 
+    const sortedLogs = formattedLogs.sort((a, b) => {
+      const dateComparison = new Date(a.date).getTime() - new Date(b.date).getTime();
+      if (dateComparison !== 0) return dateComparison;
+
+      return a.employee_name.localeCompare(b.employee_name);
+    });
+
     setLogs(formattedLogs);
   };
 

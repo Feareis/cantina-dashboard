@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Dashboard, Calculator, ExportSales, ClientsSales, Profile, Admin, Login } from "./pages";
+import { Dashboard, Calculator, ExportSales, ClientsSales, Profile, Admin, Login, Price } from "./pages";
 import { AuthProvider } from "./api/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Layout } from "./components/Layout"; // Import du Layout
@@ -26,6 +26,7 @@ function App() {
             <Route path="calculator" element={<Calculator />} />
             <Route path="export-sales" element={<ExportSales />} />
             <Route path="clients-sales" element={<ClientsSales />} />
+            <Route path="price" element={<Price />} />
             <Route path="profile" element={<Profile />} />
             <Route path="admin" element={<Admin />} />
           </Route>

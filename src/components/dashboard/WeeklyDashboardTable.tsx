@@ -70,9 +70,18 @@ const WeeklyDashboardTable: React.FC = () => {
         return { ...employee, prime, taxe };
       });
 
-      const sortedData = (calculatedData as Employee[])
+      const sortedData = calculatedData
         .filter((employee) => employee.grade !== "Patron" && employee.grade !== "Co-Patron")
-        .sort((a, b) => rolePriority[a.grade] - rolePriority[b.grade]);
+        .sort((a, b) => {
+              // Tri par poste (grade)
+          const gradeComparison = rolePriority[a.grade] - rolePriority[b.grade];
+          if (gradeComparison !== 0) return gradeComparison;
+
+              // Tri par prénom et nom
+          const nameA = `${a.first_name} ${a.last_name}`.toLowerCase();
+          const nameB = `${b.first_name} ${b.last_name}`.toLowerCase();
+          return nameA.localeCompare(nameB);
+        });
 
       setEmployeeData(sortedData);
     } catch (error) {

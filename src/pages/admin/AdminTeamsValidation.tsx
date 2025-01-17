@@ -12,7 +12,6 @@ type Employee = {
 
 const EmployeeTable: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const gradeOrder = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"];
 
   const fetchEmployees = async () => {
     const { data, error } = await supabase
@@ -22,6 +21,30 @@ const EmployeeTable: React.FC = () => {
       console.error("Erreur lors de la récupération des employés :", error.message);
       return;
     }
+
+    const gradePriority: { [key: string]: number } = {
+      Patron: 1,
+      "Co-Patron": 2,
+      Responsable: 3,
+      CDI: 4,
+      CDD: 5,
+    };
+
+    const sortedEmployees = (data || []).sort((a, b) => {
+      // Tri par grade
+      const gradeComparison =
+        (gradePriority[a.grade] || Number.MAX_SAFE_INTEGER) -
+        (gradePriority[b.grade] || Number.MAX_SAFE_INTEGER);
+      if (gradeComparison !== 0) return gradeComparison;
+
+      // Tri par nom de famille
+      const firstNameComparison = a.first_name.localeCompare(b.first_name);
+      if (firstNameComparison !== 0) return firstNameComparison;
+
+      // Tri par prénom si les noms de famille sont identiques
+      return a.last_name.localeCompare(b.last_name);
+    });
+
     setEmployees(data || []);
   };
 
@@ -46,12 +69,6 @@ const EmployeeTable: React.FC = () => {
     );
   };
 
-  const sortEmployeesByGrade = (employees: Employee[]) => {
-    return [...employees].sort(
-      (a, b) => gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade)
-    );
-  };
-
   const getGradeClass = (grade: string): string => {
     switch (grade) {
       case "Patron":
@@ -72,8 +89,6 @@ const EmployeeTable: React.FC = () => {
     fetchEmployees();
   }, []);
 
-  const sortedEmployees = sortEmployeesByGrade(employees);
-
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">Gestion des Quotas</h1>
@@ -87,7 +102,7 @@ const EmployeeTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedEmployees.map((employee, index) => (
+          {employees.map((employee, index) => (
             <tr
               key={employee.id}
               className={index % 2 === 0 ? "bg-gray-800/50" : "bg-gray-800"}
