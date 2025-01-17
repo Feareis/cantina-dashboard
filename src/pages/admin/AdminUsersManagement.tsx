@@ -38,10 +38,9 @@ const AdminUsersManagement: React.FC = () => {
 
     const formattedUsers = (data || []).map((user) => ({
       ...user,
-      grade: user.employees?.grade || "Non spécifié",
+      grade: user.employees ? user.employees.grade : "Non spécifié",
     }));
 
-    // Tri des utilisateurs selon le rôle
     const rolePriority: { [key: string]: number } = { admin: 1, limited_admin: 2, user: 3 };
     const gradePriority: { [key: string]: number } = {
       Patron: 1,
@@ -50,6 +49,7 @@ const AdminUsersManagement: React.FC = () => {
       CDI: 4,
       CDD: 5,
     };
+
     const sortedUsers = formattedUsers.sort((a, b) => {
       const roleComparison = rolePriority[a.role] - rolePriority[b.role];
       if (roleComparison !== 0) return roleComparison;
