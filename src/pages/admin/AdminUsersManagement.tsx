@@ -9,7 +9,7 @@ type User = {
   role: string;
   is_active: boolean;
   employee_id: string;
-  grade: string;
+  grade?: string;
 };
 
 const AdminUsersManagement: React.FC = () => {
@@ -28,7 +28,7 @@ const AdminUsersManagement: React.FC = () => {
         role,
         is_active,
         employee_id,
-        employees!inner(grade)
+        employees(grade)
       `);
       console.log(data);
 
@@ -37,7 +37,7 @@ const AdminUsersManagement: React.FC = () => {
       return;
     }
 
-    const formattedUsers = (data || []).map((user) => ({
+    const formattedUsers = (data || []).map((user: any) => ({
       ...user,
       grade: user.employees?.grade || "...",
     }));
@@ -160,7 +160,7 @@ const AdminUsersManagement: React.FC = () => {
               <td className={`p-4 font-medium ${getRoleClass(user.role)}`}>
                 {user.role}
               </td>
-              <td className={`p-4 font-medium ${getGradeClass(user.grade)}`}>{user.grade}</td>
+              <td className={`p-4 font-medium ${getGradeClass(user.grade)}`}>{user.grade || "..."}</td>
               <td className="p-4 text-gray-200">{user.username}</td>
               <td className="p-4 text-gray-200">{user.password}</td>
               <td className="p-4">
