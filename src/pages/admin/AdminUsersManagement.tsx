@@ -28,7 +28,7 @@ const AdminUsersManagement: React.FC = () => {
         role,
         is_active,
         employee_id,
-        employees(grade)
+        employees!inner(grade)
       `);
 
     if (error) {
@@ -38,7 +38,7 @@ const AdminUsersManagement: React.FC = () => {
 
     const formattedUsers = (data || []).map((user) => ({
       ...user,
-      grade: user.employees ? user.employees.grade : "Non spécifié",
+      grade: user.employees?.grade || "Non spécifié",
     }));
 
     const rolePriority: { [key: string]: number } = { admin: 1, limited_admin: 2, user: 3 };
