@@ -56,7 +56,7 @@ const AdminLogs: React.FC = () => {
       return a.employee_name.localeCompare(b.employee_name);
     });
 
-    setLogs(formattedLogs);
+    setLogs(sortedLogs);
   };
 
   // Delete a log
