@@ -9,7 +9,7 @@ type User = {
   role: string;
   is_active: boolean;
   employee_id: string;
-  employees?: { grade: string };
+  grade: string;
 };
 
 const AdminUsersManagement: React.FC = () => {
@@ -160,7 +160,7 @@ const AdminUsersManagement: React.FC = () => {
               <td className={`p-4 font-medium ${getRoleClass(user.role)}`}>
                 {user.role}
               </td>
-              <td className={`p-4 font-medium ${getGradeClass(user.grade)}`}>{user.grade || "..."}</td>
+              <td className={`p-4 font-medium ${getGradeClass(user.grade)}`}>{user.grade}</td>
               <td className="p-4 text-gray-200">{user.username}</td>
               <td className="p-4 text-gray-200">{user.password}</td>
               <td className="p-4">
