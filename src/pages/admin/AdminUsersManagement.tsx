@@ -9,7 +9,9 @@ type User = {
   role: string;
   is_active: boolean;
   employee_id: string;
-  grade: string;
+  employees?: {
+    grade: string;
+  };
 };
 
 const AdminUsersManagement: React.FC = () => {
@@ -30,6 +32,7 @@ const AdminUsersManagement: React.FC = () => {
         employee_id,
         employees!inner(grade)
       `);
+      console.log(data);
 
     if (error) {
       console.error("Erreur lors de la récupération des utilisateurs :", error.message);
@@ -38,7 +41,7 @@ const AdminUsersManagement: React.FC = () => {
 
     const formattedUsers = (data || []).map((user) => ({
       ...user,
-      grade: user.employees?.grade || "Non spécifié",
+      grade: user.employees?.grade || "...",
     }));
 
     const rolePriority: { [key: string]: number } = { admin: 1, limited_admin: 2, user: 3 };
