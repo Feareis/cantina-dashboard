@@ -121,7 +121,7 @@ const AdminUsersManagement: React.FC = () => {
     }
   };
 
-  const getGradeClass = (grade: string): string => {
+  const getGradeClass = (grade?: string): string => {
     switch (grade) {
       case "Patron":
       case "Co-Patron":
@@ -133,7 +133,7 @@ const AdminUsersManagement: React.FC = () => {
       case "CDD":
         return "bg-cyan-800/50 text-cyan-600";
       default:
-        return "bg-gray-800 text-gray-100"; // Classe par défaut si le grade est inconnu
+        return "bg-gray-800 text-gray-100";
     }
   };
 
@@ -160,7 +160,7 @@ const AdminUsersManagement: React.FC = () => {
               <td className={`p-4 font-medium ${getRoleClass(user.role)}`}>
                 {user.role}
               </td>
-              <td className={`p-4 font-medium ${getGradeClass(user.grade)}`}>{user.grade || "..."}</td>
+              <td className={`p-4 font-medium ${getGradeClass(user.grade!)}`}>{user.grade!}</td>
               <td className="p-4 text-gray-200">{user.username}</td>
               <td className="p-4 text-gray-200">{user.password}</td>
               <td className="p-4">
