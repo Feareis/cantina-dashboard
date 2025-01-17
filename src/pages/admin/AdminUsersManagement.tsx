@@ -9,7 +9,9 @@ type User = {
   role: string;
   is_active: boolean;
   employee_id: string;
-  grade: string;
+  employees?:{
+    grade: string;
+  };
 };
 
 const AdminUsersManagement: React.FC = () => {
