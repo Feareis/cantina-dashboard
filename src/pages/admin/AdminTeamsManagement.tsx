@@ -111,12 +111,10 @@ const EmployeeManagement: React.FC = () => {
         .insert([newEmployeeData])
         .select();
 
-      if (employeeError || !employeeData || employeeData.length === 0) {
+      if (employeeError) {
         console.error("Erreur lors de l'ajout de l'employé :", employeeError.message);
-        return;
       } else {
         console.error("Erreur inconnue lors de l'ajout de l'employé.");
-        return;
       }
 
       alert(`Utilisateur créé avec succès !\nNom d'utilisateur : ${username}\nMot de passe : ${generatedPassword}`);
