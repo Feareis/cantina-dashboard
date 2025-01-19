@@ -106,7 +106,7 @@ const EmployeeManagement: React.FC = () => {
       };
 
       // Insérer l'employé dans la table `employees`
-      const { data: employeeData, error: employeeError } = await supabase
+      const { error: employeeError } = await supabase
         .from("employees")
         .insert([newEmployeeData])
         .select();
