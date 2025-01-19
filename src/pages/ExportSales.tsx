@@ -31,8 +31,8 @@ const ExportSales: React.FC = () => {
         employee_id : employeeId,
         type,
         sale_type: saleType,
-        employee_share: employeeShare,
-        company_share: companyShare,
+        employee_share: Math.round(employeeShare),
+        company_share: Math.round(companyShare),
         date: new Date().toISOString(),
       },
     ]);

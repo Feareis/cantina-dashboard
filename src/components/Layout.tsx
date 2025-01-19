@@ -15,7 +15,7 @@ export function Layout() {
     "/clients-sales": { pageName: "Vente Clients", description: "Saisissez vos ventes clients" },
     "/price": { pageName: "Nos Prix", description: "Retrouvez toutes les informations concernant nos produit et nos menus" },
     "/profile": { pageName: "Profil utilisateur", description: "Gérez vos paramètres" },
-    "/admin": { pageName: "Admin panel", description: "Gérez vos tout vos paramètres içi" },
+    "/admin": { pageName: "Admin panel", description: "Gérez vos tout vos paramètres ici" },
   };
 
   const currentBreadcrumb = breadcrumbs[location.pathname] || {

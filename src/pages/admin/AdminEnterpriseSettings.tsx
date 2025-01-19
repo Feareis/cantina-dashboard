@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 
 const AdminEnterpriseSettings: React.FC = () => {
-  return <div>Gestion des paramètres généraux de l'entreprise.</div>;
+
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6">Paramètres Entreprise</h1>
+    </div>
+  );
 };
 
 export default AdminEnterpriseSettings;

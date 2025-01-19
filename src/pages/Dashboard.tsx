@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import WeeklyDashboardTable from "../components/dashboard/WeeklyDashboardTable";
+import PastWeeklyDashboardTable from "../components/dashboard/PastWeeklyDashboardTable";
 import TestDashboard from "../components/dashboard/TestDashboard";
 import CardContainer from "../components/dashboard/CardContainer";
 import Stats from "../components/dashboard/Stats";
@@ -16,10 +17,10 @@ const Dashboard: React.FC = () => {
             <WeeklyDashboardTable />
           </div>
         );
-      case "test tests":
+      case "Semaine passée":
         return (
           <div>
-            <TestDashboard />
+            <PastWeeklyDashboardTable />
           </div>
         );
       case "Stats":
@@ -37,7 +38,7 @@ const Dashboard: React.FC = () => {
     <div className="flex flex-col items-center text-gray-900 w-full mx-auto">
       {/* Tabs */}
       <div className="flex w-full border-b border-gray-600">
-        {["Semaine en cours", "test tests", "Stats (soon)"].map((tab) => (
+        {["Semaine en cours", "Semaine passée", "Stats (soon)"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}

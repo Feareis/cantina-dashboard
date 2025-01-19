@@ -73,11 +73,15 @@ const WeeklyDashboardTable: React.FC = () => {
       const sortedData = calculatedData
         .filter((employee) => employee.grade !== "Patron" && employee.grade !== "Co-Patron")
         .sort((a, b) => {
-              // Tri par poste (grade)
+          const isUserA = a.first_name === loggedInFirstName && a.last_name === loggedInLastName;
+          const isUserB = b.first_name === loggedInFirstName && b.last_name === loggedInLastName;
+
+          if (isUserA && !isUserB) return -1; // L'utilisateur connecté passe avant
+          if (!isUserA && isUserB) return 1;  // Les autres suivent
+
           const gradeComparison = rolePriority[a.grade] - rolePriority[b.grade];
           if (gradeComparison !== 0) return gradeComparison;
 
-              // Tri par prénom et nom
           const nameA = `${a.first_name} ${a.last_name}`.toLowerCase();
           const nameB = `${b.first_name} ${b.last_name}`.toLowerCase();
           return nameA.localeCompare(nameB);
@@ -130,23 +134,23 @@ const WeeklyDashboardTable: React.FC = () => {
 
   // Format numbers as currency
   const formatCurrency = (value: number): string => {
-    return `$ ${value.toLocaleString("en-US", {
+    return `${value.toLocaleString("en-US", {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    })}`;
+    })} $`;
   };
 
   if (loading) return <div className="text-center text-white">Loading data...</div>;
 
   const headerStyle = "border flex-1 px-4 py-2 font-bold h-16 flex items-center justify-center rounded-lg shadow-2xl";
-  const headerGreen = `${headerStyle} bg-green-900`;
   const headerGray = `${headerStyle} bg-gray-900`;
+  const headerGreen = `${headerStyle} bg-green-900`;
   const headerRed = `${headerStyle} bg-red-900`;
 
   return (
     <div className="overflow-x-auto rounded-lg mt-4">
       {/* Table Header */}
-      <div className="flex flex-wrap items-stretch justify-between text-white text-center text-lg space-x-2 p-2">
+      <div className="flex flex-wrap items-stretch justify-between text-white text-center text-lg space-x-2 p-2 mb-2">
         <div className={headerGray}>Poste</div>
         <div className={headerGray}>Nom</div>
         <div className={headerGreen}>Vente Client</div>
@@ -168,7 +172,7 @@ const WeeklyDashboardTable: React.FC = () => {
           <div
             key={index}
             className={`flex flex-wrap items-center justify-between text-lg border-b border-gray-600 text-center p-2 ${
-              isLoggedInUser ? "bg-gray-700/30" : ""
+              isLoggedInUser ? "bg-gray-700/50 rounded-lg" : ""
             }`}
           >
             <div
@@ -190,15 +194,15 @@ const WeeklyDashboardTable: React.FC = () => {
               <p className="text-xs text-gray-600">{`${employee.first_name} ${employee.last_name}`}</p>
             </div>
 
-            <div className="font-bold text-green-700 border-x border-gray-800 flex-1 px-4 py-2">
+            <div className="font-bold text-green-700 border-r border-gray-700 flex-1 px-4 py-2">
               {formatCurrency(employee.vcp)}
             </div>
 
-            <div className="font-bold text-red-700 border-x border-gray-800 flex-1 px-4 py-2">
+            <div className="font-bold text-red-700 border-r border-gray-700 flex-1 px-4 py-2">
               {formatCurrency(employee.vcs)}
             </div>
 
-            <div className="font-bold text-green-700 border-x border-gray-800 flex-1 px-4 py-2">
+            <div className="font-bold text-green-700 border-r border-gray-700 flex-1 px-4 py-2">
               {formatCurrency(employee.vep)}
             </div>
 
@@ -206,7 +210,7 @@ const WeeklyDashboardTable: React.FC = () => {
               {formatCurrency(employee.ves)}
             </div>
 
-            <div className="flex-1 px-4 py-2 border-x border-gray-800 flex justify-center items-center">
+            <div className="flex-1 px-4 py-2 border-r border-gray-700 flex justify-center items-center">
               {employee.quota ? (
                 <CheckCircle className="text-center text-green-600" size={20} />
               ) : (
@@ -222,11 +226,11 @@ const WeeklyDashboardTable: React.FC = () => {
               )}
             </div>
 
-            <div className="font-bold text-green-600 border-x border-gray-800 flex-1 px-4 py-2">
+            <div className="font-bold text-green-600 border-r border-gray-700 flex-1 px-4 py-2">
               {formatCurrency(employee.prime ?? 0)}
             </div>
 
-            <div className="font-bold text-red-600 border-l border-gray-800 flex-1 px-4 py-2">
+            <div className="font-bold text-red-600 flex-1 px-4 py-2">
               {formatCurrency(employee.taxe ?? 0)}
             </div>
           </div>

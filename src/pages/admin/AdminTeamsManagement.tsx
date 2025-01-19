@@ -112,7 +112,7 @@ const EmployeeManagement: React.FC = () => {
         .select();
 
       if (employeeError || !employeeData || employeeData.length === 0) {
-        console.error("Erreur lors de l'ajout de l'employé :", employeeError?.message);
+        console.error("Erreur lors de l'ajout de l'employé :", employeeError.message);
         return;
       }
 

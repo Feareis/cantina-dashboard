@@ -119,6 +119,14 @@ const AdminLogs: React.FC = () => {
     };
   }, []);
 
+  const getTypeColor = (type: string, saleType: string) => {
+    if (type === "export" && saleType === "propre") return "text-green-500";
+    if (type === "export" && saleType === "sale") return "text-red-500";
+    if (type === "client" && saleType === "propre") return "text-green-500";
+    if (type === "client" && saleType === "sale") return "text-red-500";
+    return "text-gray-200";
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">Logs des Ventes</h1>
@@ -144,16 +152,31 @@ const AdminLogs: React.FC = () => {
                 {new Date(log.date).toLocaleDateString("fr-FR")}
               </td>
               <td className="p-4 text-gray-200">{log.employee_name}</td>
-              <td className="p-4 text-gray-200">{log.type}</td>
-              <td className="p-4 text-gray-200">{log.sale_type}</td>
-              <td className="p-4 text-green-400">
-                {log.employee_share.toLocaleString()} €
+              <td
+                className={`p-4 font-semibold ${getTypeColor(log.type, log.sale_type)}`}
+              >
+                {log.type}
               </td>
-              <td className="p-4 text-blue-400">
-                {log.company_share.toLocaleString()} €
+              <td
+                className={`p-4 font-semibold ${getTypeColor(log.type, log.sale_type)}`}
+              >
+                {log.sale_type}
+              </td>
+              <td
+                className={`p-4 font-semibold ${
+                  log.sale_type === "propre" ? "text-green-400" : "text-red-500"
+                }`}
+              >
+                {log.employee_share.toLocaleString()} $
+              </td>
+              <td
+                className={`p-4 font-semibold ${
+                  log.sale_type === "propre" ? "text-blue-400" : "text-orange-400"
+                }`}
+              >
+                {log.company_share.toLocaleString()} $
               </td>
               <td className="p-4 flex justify-center gap-4">
-
                 {/* Icone pour supprimer */}
                 <button
                   onClick={() => deleteLog(log.id)}
