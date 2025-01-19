@@ -92,13 +92,19 @@ const PastWeeklyDashboardTable: React.FC = () => {
       });
 
       const filteredData = combinedData
-        .filter((entry) => entry.grade !== "Patron" && entry.grade !== "Co-Patron")
+        .filter((employee) => employee.grade !== "Patron" && employee.grade !== "Co-Patron")
         .sort((a, b) => {
+          const isUserA = a.first_name === loggedInFirstName && a.last_name === loggedInLastName;
+          const isUserB = b.first_name === loggedInFirstName && b.last_name === loggedInLastName;
+
+          if (isUserA && !isUserB) return -1; // L'utilisateur connecté passe avant
+          if (!isUserA && isUserB) return 1;  // Les autres suivent
+
           const gradeComparison = rolePriority[a.grade] - rolePriority[b.grade];
           if (gradeComparison !== 0) return gradeComparison;
 
-          const nameA = a.first_name.toLowerCase();
-          const nameB = b.first_name.toLowerCase();
+          const nameA = `${a.first_name} ${a.last_name}`.toLowerCase();
+          const nameB = `${b.first_name} ${b.last_name}`.toLowerCase();
           return nameA.localeCompare(nameB);
         });
 
