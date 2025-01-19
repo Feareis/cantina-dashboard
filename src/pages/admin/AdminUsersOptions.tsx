@@ -3,8 +3,18 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../api/supabaseClient";
 
+interface Employee {
+  id: string;
+  grade: string;
+  first_name: string;
+  last_name: string;
+  holidays: boolean;
+  warning1: boolean;
+  warning2: boolean;
+}
+
 const AdminUsersOptions: React.FC = () => {
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(false);
 
   const gradeOrder = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"];
@@ -12,14 +22,16 @@ const AdminUsersOptions: React.FC = () => {
   const fetchEmployees = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.from("employees").select("id, grade, first_name, last_name, holidays, warning1, warning2");
+      const { data, error } = await supabase
+        .from("employees")
+        .select("id, grade, first_name, last_name, holidays, warning1, warning2");
 
       if (error) {
         console.error("Erreur lors de la récupération des employés :", error.message);
         return;
       }
 
-      const sortedData = (data || []).sort((a, b) => {
+      const sortedData: Employee[] = (data || []).sort((a, b) => {
         const gradeComparison =
           gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade);
         if (gradeComparison !== 0) {
