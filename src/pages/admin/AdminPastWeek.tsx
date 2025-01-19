@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../api/supabaseClient";
 
-type WeeklyPast = {
-  employee_id: string;
-  grade: string;
-  first_name: string;
-  last_name: string;
-  employee_prime: number;
-  employee_taxe: number;
-  quota: boolean;
-  quota_plus: boolean;
-};
 
 const AdminPastWeek: React.FC = () => {
   const [loading, setLoading] = useState(false);
