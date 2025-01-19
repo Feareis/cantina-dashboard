@@ -197,6 +197,8 @@ const AdminRebootCompta: React.FC = () => {
           last_name: employee.last_name,
           employee_prime: Math.round(employee_prime),
           employee_taxe: Math.round(employee_taxe),
+          quota: employee.quota,
+          quota_plus: employee.quota_plus,
         };
       });
 
@@ -208,6 +210,8 @@ const AdminRebootCompta: React.FC = () => {
           .update({
             employee_prime: update.employee_prime,
             employee_taxe: update.employee_taxe,
+            quota: update.quota,
+            quota_plus: update.quota_plus,
           })
           .eq("employee_id", update.employee_id);
 

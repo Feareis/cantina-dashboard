@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SearchBar from "../components/profile/SearchBar";
-import { Settings, Search, Users, FileLock, Album, SlidersHorizontal, Logs, TicketCheck, CirclePower, CircleEllipsis, FolderArchive } from "lucide-react";
+import { Settings, Search, Users, FileLock, Album, SlidersHorizontal, Logs, TicketCheck, CirclePower, CircleEllipsis, FolderArchive, ChartPie } from "lucide-react";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminEnterpriseSettings from "./admin/AdminEnterpriseSettings";
 import AdminTeamsManagement from "./admin/AdminTeamsManagement";
@@ -11,6 +11,7 @@ import AdminTeamsValidation from "./admin/AdminTeamsValidation";
 import AdminLogs from "./admin/AdminLogs";
 import AdminRebootCompta from "./admin/AdminRebootCompta";
 import AdminArchives from "./admin/AdminArchives";
+import AdminPastWeek from "./admin/AdminPastWeek";
 import { useAuth } from "../api/AuthContext";
 
 
@@ -34,8 +35,9 @@ const Admin: React.FC = () => {
           { id: "users-management", label: "Accès Site", icon: FileLock, type: "tab" },
           { id: "separator-2", type: "separator" },
           { id: "reboot-c", label: "Reboot Compta", icon: CirclePower, type: "tab" },
-          { id: "logs", label: "Logs", icon: Logs, type: "tab" },
+          { id: "past-week", label: "Stats Semaine Passée", icon: ChartPie, type: "tab" },
           { id: "separator-3", type: "separator" },
+          { id: "logs", label: "Logs", icon: Logs, type: "tab" },
           { id: "archives", label: "Archives", icon: FolderArchive, type: "tab" },
           { id: "separator-4", type: "separator" },
           { id: "enterprise-settings", label: "Paramètres Entreprise", icon: SlidersHorizontal, type: "tab" },
@@ -72,6 +74,8 @@ const Admin: React.FC = () => {
         return <AdminLogs />;
       case "reboot-c":
         return <AdminRebootCompta />;
+      case "past-week":
+        return <AdminPastWeek />;
       case "archives":
         return <AdminArchives />;
       case "site-settings":
