@@ -13,6 +13,7 @@ type WeeklyPast = {
 };
 
 const AdminPastWeek: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [weeklyPast, setWeeklyPast] = useState<WeeklyPast[]>([]);
   const [loading, setLoading] = useState(false);
 
