@@ -13,8 +13,6 @@ type WeeklyPast = {
 };
 
 const AdminPastWeek: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [weeklyPast, setWeeklyPast] = useState<WeeklyPast[]>([]);
   const [loading, setLoading] = useState(false);
 
   const [totalPrime, setTotalPrime] = useState(0);
@@ -32,9 +30,7 @@ const AdminPastWeek: React.FC = () => {
         return;
       }
 
-      setWeeklyPast(data || []);
-
-      // Calculs des totaux
+      // Calculs des totaux directement sans stocker weeklyPast
       const totalPrimeCalc = data?.reduce((sum, record) => sum + record.employee_prime, 0) || 0;
       const totalTaxeCalc = data?.reduce((sum, record) => sum + record.employee_taxe, 0) || 0;
       const quotaCountCalc = data?.filter((record) => record.quota).length || 0;
