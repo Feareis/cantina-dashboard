@@ -12,6 +12,9 @@ type Employee = {
   ves: number;
   quota: boolean;
   quota_plus: boolean;
+  holidays: boolean;
+  warning1: boolean;
+  warning2: boolean;
 };
 
 type WeeklyPast = {
@@ -21,13 +24,10 @@ type WeeklyPast = {
   last_name: string;
   employee_prime: number;
   employee_taxe: number;
-  holidays: boolean;
-  warning1: boolean;
-  warning2: boolean;
 };
 
 const AdminRebootCompta: React.FC = () => {
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employees] = useState<Employee[]>([]);
   const [weeklyPast, setWeeklyPast] = useState<WeeklyPast[]>([]);
   const [loading, setLoading] = useState(false);
   const gradeOrder = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"];
@@ -123,12 +123,13 @@ const AdminRebootCompta: React.FC = () => {
           ? primeBase + quotaPlusValue
           : primeBase;
 
-        // Calcul de la taxe
         const employee_taxe = employee.vcs * trevVc + employee.ves * trevVe;
 
-        // Arrondir les résultats à l'entier le plus proche
         return {
           employee_id: employee.id,
+          grade: employee.grade,
+          first_name: employee.first_name,
+          last_name: employee.last_name,
           employee_prime: Math.round(employee_prime),
           employee_taxe: Math.round(employee_taxe),
         };
@@ -160,8 +161,11 @@ const AdminRebootCompta: React.FC = () => {
       alert("Reboot comptabilité effectué avec succès !");
       fetchWeeklyPast();
     } catch (error) {
-      console.error("Erreur inattendue :", error);
-      alert(`Une erreur s'est produite : ${error.message}`);
+      if (error instanceof Error) {
+        console.error("Erreur inattendue :", error.message);
+      } else {
+        console.error("Erreur inconnue :", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -188,11 +192,9 @@ const AdminRebootCompta: React.FC = () => {
 
     const subscription = supabase
       .channel("weekly_past_changes")
-      .on("postgres_changes", { event: "*", schema: "public", table: "weekly_past" }, (payload) => {
-          // console.log("Modification détectée :", payload);
+      .on("postgres_changes", { event: "*", schema: "public", table: "weekly_past" }, (_) => {
           fetchWeeklyPast();
-        }
-      )
+      })
       .subscribe();
 
     return () => {
