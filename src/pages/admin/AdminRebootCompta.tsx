@@ -29,8 +29,6 @@ type WeeklyPast = {
 };
 
 const AdminRebootCompta: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [employees] = useState<Employee[]>([]);
   const [weeklyPast, setWeeklyPast] = useState<WeeklyPast[]>([]);
   const [loading, setLoading] = useState(false);
   const gradeOrder = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"];
