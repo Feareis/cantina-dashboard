@@ -64,23 +64,23 @@ const AdminPastWeek: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-gray-800 text-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold">Totale de Prime</h2>
-            <p className="text-2xl font-bold">{totalPrime.toLocaleString()} $</p>
+            <h2 className="text-xl font-semibold">Total des Primes</h2>
+            <p className="text-2xl m-6 text-center text-green-500 font-bold">{totalPrime.toLocaleString()} $</p>
           </div>
 
           <div className="bg-gray-800 text-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold">Totale de Taxe</h2>
-            <p className="text-2xl font-bold">{totalTaxe.toLocaleString()} $</p>
+            <h2 className="text-xl font-semibold">Total des Taxes</h2>
+            <p className="text-2xl m-6 text-center text-red-500 font-bold">{totalTaxe.toLocaleString()} $</p>
           </div>
 
           <div className="bg-gray-800 text-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold">Personnes avec Quota</h2>
-            <p className="text-2xl font-bold">{quotaCount}</p>
+            <h2 className="text-xl font-semibold">Quota OK</h2>
+            <p className="text-2xl m-6 text-center text-blue-500 font-bold">{quotaCount}</p>
           </div>
 
           <div className="bg-gray-800 text-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold">Personnes avec Quota Plus</h2>
-            <p className="text-2xl font-bold">{quotaPlusCount}</p>
+            <h2 className="text-xl font-semibold">Quota+ OK</h2>
+            <p className="text-2xl m-6 text-center text-purple-500 font-bold">{quotaPlusCount}</p>
           </div>
         </div>
       )}
