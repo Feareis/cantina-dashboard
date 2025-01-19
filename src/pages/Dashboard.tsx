@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import WeeklyDashboardTable from "../components/dashboard/WeeklyDashboardTable";
 import PastWeeklyDashboardTable from "../components/dashboard/PastWeeklyDashboardTable";
-import TestDashboard from "../components/dashboard/TestDashboard";
 import CardContainer from "../components/dashboard/CardContainer";
 import Stats from "../components/dashboard/Stats";
 

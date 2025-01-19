@@ -27,6 +27,7 @@ type WeeklyPast = {
 };
 
 const AdminRebootCompta: React.FC = () => {
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [weeklyPast, setWeeklyPast] = useState<WeeklyPast[]>([]);
   const [loading, setLoading] = useState(false);
   const gradeOrder = ["Patron", "Co-Patron", "Responsable", "CDI", "CDD"];
@@ -52,7 +53,13 @@ const AdminRebootCompta: React.FC = () => {
 
       setWeeklyPast(sortedData);
     } catch (error) {
-      console.error("Erreur inattendue :", error);
+        if (error instanceof Error) {
+          console.error("Erreur inattendue :", error.message);
+          alert(`Une erreur s'est produite : ${error.message}`);
+        } else {
+          console.error("Erreur inattendue :", error);
+          alert("Une erreur inconnue s'est produite.");
+        }
     } finally {
       setLoading(false);
     }
@@ -181,10 +188,7 @@ const AdminRebootCompta: React.FC = () => {
 
     const subscription = supabase
       .channel("weekly_past_changes")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "weekly_past" },
-        (payload) => {
+      .on("postgres_changes", { event: "*", schema: "public", table: "weekly_past" }, (payload) => {
           // console.log("Modification détectée :", payload);
           fetchWeeklyPast();
         }
@@ -203,7 +207,7 @@ const AdminRebootCompta: React.FC = () => {
       <div className="flex justify-end items-center p-2 rounded-md mb-8">
         <button
           className="bg-red-600/70 hover:bg-red-700 text-white text-2xl font-bold py-2 px-4 rounded transition-transform duration-200 hover:scale-105"
-          onClick={() => {}}  // {handleRebootCompta}
+          onClick={handleRebootCompta}
           disabled={true}     // {loading}
         >
           {loading ? "Reboot en cours..." : "Reboot comptabilité"}
