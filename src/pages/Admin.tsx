@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SearchBar from "../components/profile/SearchBar";
-import { Settings, Search, Users, FileLock, Album, SlidersHorizontal, Logs, TicketCheck, CirclePower, CircleEllipsis } from "lucide-react";
+import { Settings, Search, Users, FileLock, Album, SlidersHorizontal, Logs, TicketCheck, CirclePower, CircleEllipsis, FolderArchive } from "lucide-react";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminEnterpriseSettings from "./admin/AdminEnterpriseSettings";
 import AdminTeamsManagement from "./admin/AdminTeamsManagement";
@@ -10,6 +10,7 @@ import AdminSiteSettings from "./admin/AdminSiteSettings";
 import AdminTeamsValidation from "./admin/AdminTeamsValidation";
 import AdminLogs from "./admin/AdminLogs";
 import AdminRebootCompta from "./admin/AdminRebootCompta";
+import AdminArchives from "./admin/AdminArchives";
 import { useAuth } from "../api/AuthContext";
 
 
@@ -32,9 +33,10 @@ const Admin: React.FC = () => {
           { id: "teams-options", label: "Options Employés", icon: CircleEllipsis, type: "tab" },
           { id: "users-management", label: "Accès Site", icon: FileLock, type: "tab" },
           { id: "separator-2", type: "separator" },
+          { id: "reboot-c", label: "Reboot Compta", icon: CirclePower, type: "tab" },
           { id: "logs", label: "Logs", icon: Logs, type: "tab" },
           { id: "separator-3", type: "separator" },
-          { id: "reboot-c", label: "Reboot Compta", icon: CirclePower, type: "tab" },
+          { id: "archives", label: "Archives", icon: FolderArchive, type: "tab" },
           { id: "separator-4", type: "separator" },
           { id: "enterprise-settings", label: "Paramètres Entreprise", icon: SlidersHorizontal, type: "tab" },
           { id: "site-settings", label: "Paramètres du Site", icon: Settings, type: "tab" },
@@ -70,6 +72,8 @@ const Admin: React.FC = () => {
         return <AdminLogs />;
       case "reboot-c":
         return <AdminRebootCompta />;
+      case "archives":
+        return <AdminArchives />;
       case "site-settings":
         return <AdminSiteSettings />;
       default:

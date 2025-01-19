@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../api/supabaseClient";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 type Employee = {
   id: string;
@@ -94,9 +96,72 @@ const AdminRebootCompta: React.FC = () => {
     }
   };
 
+  const getCurrentWeekDate = (): string => {
+    const today = new Date();
+
+    // Si nous sommes dimanche (day = 0), ajuster pour inclure dans la semaine précédente
+    if (today.getDay() === 0) {
+      today.setDate(today.getDate() - 1); // Reculer d'un jour pour revenir au samedi
+    }
+
+    // Obtenir le lundi de la semaine
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(startOfWeek.getDate() - (startOfWeek.getDay() - 1)); // Reculer au lundi (day = 1)
+
+    // Obtenir le dimanche de la semaine
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // Avancer de 6 jours pour atteindre dimanche
+
+    // Fonction pour formater la date (ex : 13/01/25)
+    const format = (date: Date): string =>
+      `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}/${date.getFullYear()}`;
+
+    return `${format(startOfWeek)} - ${format(endOfWeek)}`;
+  };
+
+  const createArchive = async (
+    employees: any[],
+    salesLogs: any[],
+    archiveData: any[],
+    currentWeekDate: string
+  ): Promise<{ zipBlob: Blob; archiveName: string }> => {
+    const zip = new JSZip();
+
+    // Ajouter les données au fichier zip
+    zip.file("employees.json", JSON.stringify(employees, null, 2));
+    zip.file("sales_logs.json", JSON.stringify(salesLogs, null, 2));
+    zip.file("data.json", JSON.stringify(archiveData, null, 2));
+
+    // Générer le fichier zip
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    const archiveName = `archive_${currentWeekDate}.zip`;
+
+    return { zipBlob, archiveName };
+  };
+
   const handleRebootCompta = async () => {
     setLoading(true);
     try {
+      const { data: employees, error: employeesError } = await supabase.from("employees").select("*");
+      const { data: salesLogs, error: salesLogsError } = await supabase.from("sales_logs").select("*");
+      const { data: archiveData, error: archiveDataError } = await supabase.from("data").select("*");
+
+      console.log("Employees :", employees);
+      console.log("Sales Logs :", salesLogs);
+      console.log("Archive Data :", archiveData);
+
+      // Vérification des erreurs
+      if (employeesError) throw new Error("Erreur lors de la récupération des employés.");
+      if (salesLogsError) throw new Error("Erreur lors de la récupération des logs.");
+      if (archiveDataError) throw new Error("Erreur lors de la récupération des données d'archive.");
+
+      if (!employees || !salesLogs || !archiveData) {
+        throw new Error("Impossible de récupérer toutes les données nécessaires.");
+      }
+
+
       // Étape 1 : Récupérer les données nécessaires pour le calcul
       const { data: rates } = await supabase.from("data").select("*");
       if (!rates) throw new Error("Impossible de récupérer les taux pour le calcul.");
@@ -110,6 +175,7 @@ const AdminRebootCompta: React.FC = () => {
       const quotaPlusValue = parseFloat(rates?.find((r) => r.key === "quotaplus_value")?.value || "0");
       const trevVc = parseFloat(rates?.find((r) => r.key === "trev_vc")?.value || "0");
       const trevVe = parseFloat(rates?.find((r) => r.key === "trev_ve")?.value || "0");
+
 
       // Étape 2 : Préparer les mises à jour pour weekly_past
       const updates = employees.map((employee) => {
@@ -135,6 +201,7 @@ const AdminRebootCompta: React.FC = () => {
         };
       });
 
+
       // Étape 3 : Mettre à jour les données dans weekly_past
       for (const update of updates) {
         const { error } = await supabase
@@ -154,10 +221,38 @@ const AdminRebootCompta: React.FC = () => {
         }
       }
 
-      // Étape 4 : Supprimer toutes les lignes de sales_logs
+
+      // Étape 4 : Créer l'archive
+      const currentWeekDate = getCurrentWeekDate();
+      const { zipBlob, archiveName } = await createArchive(employees, salesLogs, archiveData, currentWeekDate);
+      const downloadLink = URL.createObjectURL(zipBlob);
+      const { error: archiveSaveError } = await supabase
+        .from("archives")
+        .insert([{ week_date: currentWeekDate, archive_name: archiveName, download_link: downloadLink }]);
+
+      if (archiveSaveError) {
+        throw new Error("Erreur lors de la sauvegarde de l'archive.");
+      }
+
+      saveAs(zipBlob, archiveName);
+
+
+      // Étape 5 : Supprimer toutes les lignes de sales_logs
       deleteAllLogs();
 
-      // Étape 5 : Rafraîchir les données
+
+      // Étape 6 : Reset les quotas / quotas+
+      const { error: resetError } = await supabase
+        .from("employees")
+        .update({ quota: false, quota_plus: false });
+
+      if (resetError) {
+        console.error("Erreur lors de la réinitialisation des quotas :", resetError.message);
+        throw new Error("Échec de la réinitialisation des quotas.");
+      }
+
+
+      // Étape 7 : Rafraîchir les données
       alert("Reboot comptabilité effectué avec succès !");
       fetchWeeklyPast();
     } catch (error) {
@@ -210,7 +305,7 @@ const AdminRebootCompta: React.FC = () => {
         <button
           className="bg-red-600/70 hover:bg-red-700 text-white text-2xl font-bold py-2 px-4 rounded transition-transform duration-200 hover:scale-105"
           onClick={handleRebootCompta}
-          disabled={true}     // {loading}
+          disabled={loading}
         >
           {loading ? "Reboot en cours..." : "Reboot comptabilité"}
         </button>
