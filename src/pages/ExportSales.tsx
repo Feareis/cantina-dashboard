@@ -239,9 +239,10 @@ const ExportSales: React.FC = () => {
                 className={`w-full ${
                   selectedSale === 'sale'
                     ? 'bg-red-500 text-white'
-                    : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                    : 'bg-gray-800 text-gray-500 cursor-not-allowed'
                 }`}
                 icon={BadgeCent}
+                disabled={true} // Désactive complètement le bouton
               />
             </div>
           </div>
