@@ -57,6 +57,14 @@ const Admin: React.FC = () => {
       return <div>Accès non autorisé</div>;
     }
 
+    if (
+        activeTab === "reboot-c" &&
+        user?.firstName !== "Oscar" &&
+        user?.lastName !== "Kirk"
+      ) {
+        return <div>Accès refusé. Vous n'êtes pas autorisé à consulter cette page.</div>;
+      }
+
     switch (activeTab) {
       case "dashboard":
         return <AdminDashboard />;
