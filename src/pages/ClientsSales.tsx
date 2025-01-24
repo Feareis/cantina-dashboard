@@ -6,7 +6,7 @@ import ProductCard from "../components/card/ProductCard";
 import ProductsTabs from "../components/clients-sales/ProductsTabs";
 import { BadgeDollarSign, BadgeCent, RefreshCw, Percent } from "lucide-react";
 import toast, { Toaster } from 'react-hot-toast';
-import { RisottoCayo, PlateauCayo, MontaraCayo, JusDeCerise, Biere, BierePils, BiereRed, BiereTriple, MenuXpress, MenuSurvivaliste, MenuParadise, MenuElPatron } from "../assets/products/indexProducts";
+import { RisottoCayo, PlateauCayo, MontaraCayo, JusDeCerise, Biere, BierePils, BiereRed, BiereTriple } from "../assets/products/indexProducts";  // MenuXpress, MenuSurvivaliste, MenuParadise, MenuElPatron
 import ProductsPrice from "../data/ProductsPrice";
 import Discounts from "../data/Discounts";
 import { supabase } from "../api/supabaseClient";
@@ -273,7 +273,7 @@ const ClientsSales: React.FC = () => {
 
             {/* Product Filter Tabs */}
             <ProductsTabs
-              tabs={["Nourriture", "Boisson", "Alcool", {/* "Menu" */}]}
+              tabs={["Nourriture", "Boisson", "Alcool"]} // "Menu"
               activeTab={activeTab}
               onTabChange={(tab) => setActiveTab(tab)}
             />
