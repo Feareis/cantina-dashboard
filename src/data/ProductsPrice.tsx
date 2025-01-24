@@ -5,20 +5,20 @@
 
 const ProductPrices: { [key: string]: { propre: number; sale: number } } = {
   "Risotto": {
-    propre: 250, // Clean sale price
-    sale: 300,   // Dirty sale price
+    propre: 200, // Clean sale price
+    sale: 250,   // Dirty sale price
   },
   "Plateau": {
-    propre: 350,
-    sale: 400,
+    propre: 300,
+    sale: 350,
   },
   "Montara": {
-    propre: 150,
-    sale: 185,
+    propre: 100,
+    sale: 150,
   },
   "Jus de cerise": {
-    propre: 70,
-    sale: 85,
+    propre: 55,
+    sale: 75,
   },
   "Bière": {
     propre: 120,

@@ -23,10 +23,10 @@ const items = [
   { name: "Bière Pils", image: BierePils, increments: [1], decrements: [1], category: "Alcool" },
   { name: "Bière Red", image: BiereRed, increments: [1], decrements: [1], category: "Alcool" },
   { name: "Bière Triple", image: BiereTriple, increments: [1], decrements: [1], category: "Alcool" },
-  { name: "Menu Xpress", image: MenuXpress, increments: [1], decrements: [1], category: "Menu" },
-  { name: "Menu Survivaliste", image: MenuSurvivaliste, increments: [1], decrements: [1], category: "Menu" },
-  { name: "Menu Paradise", image: MenuParadise, increments: [1], decrements: [1], category: "Menu" },
-  { name: "Menu El Patron's", image: MenuElPatron, increments: [1], decrements: [1], category: "Menu" },
+  // { name: "Menu Xpress", image: MenuXpress, increments: [1], decrements: [1], category: "Menu" },
+  // { name: "Menu Survivaliste", image: MenuSurvivaliste, increments: [1], decrements: [1], category: "Menu" },
+  // { name: "Menu Paradise", image: MenuParadise, increments: [1], decrements: [1], category: "Menu" },
+  // { name: "Menu El Patron's", image: MenuElPatron, increments: [1], decrements: [1], category: "Menu" },
 ];
 
 const ClientsSales: React.FC = () => {
@@ -273,7 +273,7 @@ const ClientsSales: React.FC = () => {
 
             {/* Product Filter Tabs */}
             <ProductsTabs
-              tabs={["Nourriture", "Boisson", "Alcool", "Menu", "Autre"]}
+              tabs={["Nourriture", "Boisson", "Alcool", {/* "Menu" */}]}
               activeTab={activeTab}
               onTabChange={(tab) => setActiveTab(tab)}
             />

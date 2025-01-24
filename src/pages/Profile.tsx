@@ -226,7 +226,6 @@ const Profile: React.FC = () => {
       </div>
     </div>
   );
-
 };
 
 export default Profile;
