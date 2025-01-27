@@ -6,3 +6,4 @@ export { default as Price } from "./Price";
 export { default as Profile } from "./Profile";
 export { default as Admin } from "./Admin";
 export { default as Login } from "./Login";
+export { default as Milice } from "./Milice";

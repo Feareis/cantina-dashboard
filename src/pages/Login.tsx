@@ -109,6 +109,14 @@ const Login: React.FC = () => {
       >
         <img src="/static/cayo.png" alt="Background" className="object-cover w-full h-full" />
       </div>
+      <div className="absolute top-4 right-4 z-50">
+        <button
+          onClick={() => navigate("/milice")}
+          className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-4 py-2 rounded-lg hover:scale-105 transition-transform"
+        >
+          Milice
+        </button>
+      </div>
 
       {/* Contenu centré avec animation */}
       <div

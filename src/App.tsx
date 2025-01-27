@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Dashboard, Calculator, ExportSales, ClientsSales, Profile, Admin, Login, Price } from "./pages";
+import { Dashboard, Calculator, ExportSales, ClientsSales, Profile, Admin, Login, Price, Milice } from "./pages";
 import { AuthProvider } from "./api/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Layout } from "./components/Layout"; // Import du Layout
@@ -11,6 +11,7 @@ function App() {
         <Routes>
           {/* Route publique */}
           <Route path="/login" element={<Login />} />
+          <Route path="/milice" element={<Milice />} />
 
           {/* Routes protégées avec Layout */}
           <Route

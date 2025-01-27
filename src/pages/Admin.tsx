@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import SearchBar from "../components/profile/SearchBar";
-import { Settings, Search, Users, FileLock, Album, SlidersHorizontal, Logs, TicketCheck, CirclePower, CircleEllipsis, FolderArchive, ChartPie } from "lucide-react";
+import { Settings, Search, Users, FileLock, Album, SlidersHorizontal, Logs, TicketCheck, CirclePower, CircleEllipsis, FolderArchive, ChartPie, ChartBar } from "lucide-react";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminEnterpriseSettings from "./admin/AdminEnterpriseSettings";
 import AdminTeamsManagement from "./admin/AdminTeamsManagement";
+import AdminStatsTeams from "./admin/AdminStatsTeams";
 import AdminUsersOptions from "./admin/AdminUsersOptions";
 import AdminUsersManagement from "./admin/AdminUsersManagement";
 import AdminSiteSettings from "./admin/AdminSiteSettings";
@@ -31,6 +32,7 @@ const Admin: React.FC = () => {
           { id: "teams-validation", label: "Gestion des Quotas", icon: TicketCheck, type: "tab" },
           { id: "separator-1", type: "separator" },
           { id: "teams-management", label: "Liste Employés", icon: Users, type: "tab" },
+          { id: "teams-stats", label: "Stats Employés", icon: ChartBar, type: "tab" },
           { id: "teams-options", label: "Options Employés", icon: CircleEllipsis, type: "tab" },
           { id: "users-management", label: "Accès Site", icon: FileLock, type: "tab" },
           { id: "separator-2", type: "separator" },
@@ -74,6 +76,8 @@ const Admin: React.FC = () => {
         return <AdminEnterpriseSettings />;
       case "teams-management":
         return <AdminTeamsManagement />;
+      case "teams-stats":
+        return <AdminStatsTeams />;
       case "teams-options":
         return <AdminUsersOptions />;
       case "users-management":
