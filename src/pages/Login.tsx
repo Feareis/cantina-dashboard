@@ -112,7 +112,7 @@ const Login: React.FC = () => {
       <div className="absolute top-4 right-4 z-50">
         <button
           onClick={() => navigate("/milice")}
-          className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-4 py-2 rounded-lg hover:scale-105 transition-transform"
+          className="bg-gray-700/95 border border-4 border-red-600 text-8xl font-bold text-white px-4 py-2 rounded-lg hover:scale-105 transition-transform"
         >
           Milice
         </button>
