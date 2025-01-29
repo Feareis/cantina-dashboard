@@ -17,7 +17,6 @@ interface Employee {
   vcp: number; // Sales to customers (clean)
   vcs: number; // Sales to customers (dirty)
   vep: number; // Export sales (clean)
-  ves: number; // Export sales (dirty)
   quota: boolean;
   quota_plus: boolean;
   prime?: number;
@@ -65,7 +64,7 @@ const WeeklyDashboardTable: React.FC = () => {
           ? (employee.vcp + employee.vep) * gradeRate + quotaValue
           : 0;
         const prime = employee.quota_plus ? primeBase + quotaPlusValue : primeBase;
-        const taxe = employee.vcs * trevVc + employee.ves * trevVe;
+        const taxe = employee.vcs * trevVc;
 
         return { ...employee, prime, taxe };
       });
@@ -156,7 +155,6 @@ const WeeklyDashboardTable: React.FC = () => {
         <div className={headerGreen}>Vente Client</div>
         <div className={headerRed}>Vente Client</div>
         <div className={headerGreen}>Vente Export</div>
-        <div className={headerRed}>Vente Export</div>
         <div className={headerGray}>Quota</div>
         <div className={headerGray}>Quota+</div>
         <div className={headerGreen}>Prime</div>
@@ -204,10 +202,6 @@ const WeeklyDashboardTable: React.FC = () => {
 
             <div className="font-bold text-green-700 border-r border-gray-700 flex-1 px-4 py-2">
               {formatCurrency(employee.vep)}
-            </div>
-
-            <div className="font-bold text-red-700 border-r border-gray-600 flex-1 px-4 py-2">
-              {formatCurrency(employee.ves)}
             </div>
 
             <div className="flex-1 px-4 py-2 border-r border-gray-700 flex justify-center items-center">
